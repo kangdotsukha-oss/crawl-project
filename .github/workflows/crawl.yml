@@ -2,47 +2,45 @@ name: 매일 공고 크롤링
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 매일 오전 9시 (KST = UTC+9, 즉 UTC 00:00)
-  workflow_dispatch:       # 수동 실행도 가능
+    - cron: '0 22 * * *'   # 오전 7시 KST (UTC 22:00 전날)
+    - cron: '0 8 * * *'    # 오후 5시 KST (UTC 08:00)
+  workflow_dispatch:        # 수동 실행 가능
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write       # ← Git push 권한 (403 오류 해결)
+
     steps:
-      # 1. 코드 체크아웃
       - name: 저장소 체크아웃
         uses: actions/checkout@v3
 
-      # 2. Python 설치
       - name: Python 3.11 설치
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # 3. Chrome & ChromeDriver 설치 (Selenium용)
       - name: Chrome 설치
         uses: browser-actions/setup-chrome@latest
 
       - name: ChromeDriver 설치
         uses: nanasess/setup-chromedriver@master
 
-      # 4. 라이브러리 설치
       - name: 패키지 설치
         run: pip install -r requirements.txt
 
-      # 5. 크롤링 실행
       - name: 크롤링 실행
         env:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
         run: python crawl_optimized.py
 
-      # 6. 결과 파일을 저장소에 커밋
       - name: 결과 파일 커밋
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add df_log_*.xlsx df_list_*.xlsx crawl.log || true
-          git diff --staged --quiet || git commit -m "자동 크롤링 결과 업데이트 $(date +'%Y-%m-%d')"
+          git diff --staged --quiet || git commit -m "자동 크롤링 결과 업데이트 $(date +'%Y-%m-%d %H:%M')"
           git push
