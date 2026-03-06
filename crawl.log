@@ -1,0 +1,12 @@
+2026-03-06 09:58:34,074 [INFO] ===== 크롤링 시작: 2026-03-06 09:58:34 =====
+2026-03-06 09:58:35,155 [INFO] [사이트목록] 구글시트에서 2개 로드
+2026-03-06 09:58:35,155 [INFO] 총 2개 사이트
+2026-03-06 09:58:35,156 [INFO] [시작] 서울시설관리공단
+2026-03-06 09:58:35,157 [INFO] [시작] 부산시설관리공단
+2026-03-06 09:59:25,593 [ERROR] [정적 크롤링 오류] 서울시설관리공단: HTTPSConnectionPool(host='www.sisul.or.kr', port=443): Max retries exceeded with url: /open_content/main/bbs/bbsMsgList.do?bcd=specific&listsz=10&symd=&eymd=&keyfield=title&keyword= (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.sisul.or.kr', port=443) at 0x7fb4f010d510>, 'Connection to www.sisul.or.kr timed out. (connect timeout=50)'))
+2026-03-06 10:00:15,971 [ERROR] [정적 크롤링 오류] 서울시설관리공단: HTTPSConnectionPool(host='www.sisul.or.kr', port=443): Max retries exceeded with url: /open_content/main/bbs/bbsMsgList.do?bcd=specific&listsz=10&symd=&eymd=&keyfield=title&keyword= (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.sisul.or.kr', port=443) at 0x7fb4ecf21b50>, 'Connection to www.sisul.or.kr timed out. (connect timeout=50)'))
+2026-03-06 10:00:15,971 [ERROR] [최종 실패] 서울시설관리공단 페이지 1
+2026-03-06 10:00:15,975 [INFO] 필터링 후 1개 공고
+2026-03-06 10:00:17,459 [INFO] [업로드 완료] '공고목록' 1행
+2026-03-06 10:00:17,954 [INFO] [로그 업로드 완료] 2행
+2026-03-06 10:00:17,954 [INFO] ===== 크롤링 완료: 2026-03-06 10:00:17 =====
