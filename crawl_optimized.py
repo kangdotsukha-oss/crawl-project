@@ -991,6 +991,7 @@ def crawl_site(row, gc=None) -> dict:
     failed = False
     error_msg = ""
     auto_fixed = False  # 자동복구 성공 여부
+    _pending_url_search = None  # URL탐색 pending 정보 (Phase 2에서 처리)
 
     # 연속 실패 자동 스킵
     if site_name in _auto_skip_sites:
@@ -1035,7 +1036,6 @@ def crawl_site(row, gc=None) -> dict:
             )
 
             soup, status = None, 'ok'
-            url_searched = False
 
             try:
                 ct = row['crawl_type']
@@ -1068,36 +1068,12 @@ def crawl_site(row, gc=None) -> dict:
                         error_msg = "웹방화벽 차단 (IP차단, 우회 실패)"
                         failed = True
 
-                # ── HTTP 오류 → URL 탐색 시도 (사이트당 1회) ──
+                # ── HTTP 오류 → URL 탐색 필요 (Phase 2 Claude 처리로 위임) ──
                 if not failed and soup is None and (status.startswith('http_') or status == 'error'):
-                    url_searched = True
                     error_code = status.split('_')[1] if '_' in status else '?'
-                    original_url = row['URL']  # 시트 업데이트용 원본 URL 보존
-                    with _url_search_cache_lock:
-                        if site_name in _url_search_cache:
-                            new_url = _url_search_cache[site_name]
-                            logger.info(f"[URL탐색 캐시 사용] {site_name}: {new_url}")
-                        else:
-                            logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
-                            new_url = search_new_url_with_claude(site_name, row['URL'])
-                            _url_search_cache[site_name] = new_url
-                    if new_url:
-                        row = row.copy()
-                        row['URL'] = new_url
-                        soup, status = static_crawl(row)
-                        if soup is None:
-                            soup, status = dynamic_crawl(row)
-                        if soup:
-                            if gc:
-                                update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=original_url)
-                            auto_fixed = True
-                            logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
-                        else:
-                            error_msg = "URL 복구 후에도 접근 불가 (IP차단 추정)"
-                            failed = True
-                    else:
-                        error_msg = f"HTTP {error_code}: 새 URL 탐색 실패"
-                        failed = True
+                    error_msg = f"HTTP {error_code}: URL탐색 대기"
+                    _pending_url_search = {'error_code': error_code, 'original_url': row['URL']}
+                    failed = True
 
                 if not failed and soup is None:
                     error_msg = error_msg or "HTML 수집 실패"
@@ -1148,24 +1124,140 @@ def crawl_site(row, gc=None) -> dict:
             failed = True
             break
 
-    # ──────────────────────────────────────────
-    # 자가치유: 셀렉터 자동수정 + 즉시 재크롤링 (월요일만)
-    # ──────────────────────────────────────────
+    # ── Claude 처리 위임: URL탐색 / 자가치유 / Zero-Selector ──
+    needs_self_healing = failed and not auto_fixed and is_self_healing_day()
+    needs_zero_selector = not auto_fixed and (failed or not all_titles) and soup is not None
+    if _pending_url_search or needs_self_healing or needs_zero_selector:
+        return {
+            'data': collected_data,
+            'all_data': all_unfiltered,
+            'log': {
+                'SITE_NAME': site_name, 'URL': row['URL'],
+                'len_tbody': 0, 'unique_date': 0, 'min_date': '', 'max_date': '',
+                'status': 'Claude대기', 'error_msg': error_msg, 'auto_fixed': '',
+                '최신제목': '', '최신날짜': '',
+            },
+            'pending': {
+                'site_name': site_name, 'row': row, 'soup': soup,
+                'error_msg': error_msg, 'failed': failed, 'auto_fixed': auto_fixed,
+                'all_titles': all_titles, 'cleaned_dates': cleaned_dates,
+                'collected_data': collected_data, 'all_unfiltered': all_unfiltered,
+                'url_search': _pending_url_search,
+            }
+        }
+
+    zero_selector_used = False
+    final_status = '성공'
+    if not failed and zero_selector_used:
+        final_status = 'Zero-Selector성공'
+    elif not failed and auto_fixed:
+        final_status = '자가치유성공'
+    elif failed:
+        final_status = f'실패({error_msg[:30]})'
+
+    # 최신 공고 샘플 (제목, 날짜) - 실패 시 비움, 제목 없는 항목 제외
+    latest_title, latest_date = '', ''
+    if not failed:
+        pool = [x for x in collected_data if x.get('제목')] or \
+               [x for x in all_unfiltered if x.get('제목')]
+        if pool:
+            latest = max(pool, key=lambda x: str(x.get('작성일', '')))
+            latest_title = str(latest.get('제목', ''))[:80]
+            latest_date  = str(latest.get('작성일', ''))
+
+    return {
+        'data': collected_data,
+        'all_data': all_unfiltered,
+        'log': {
+            'SITE_NAME': site_name,
+            'URL': row['URL'],
+            'len_tbody': len(all_titles),
+            'unique_date': len(set(cleaned_dates)),
+            'min_date': min(cleaned_dates) if cleaned_dates else "",
+            'max_date': max(cleaned_dates) if cleaned_dates else "",
+            'status': final_status,
+            'error_msg': error_msg,
+            'auto_fixed': '✅' if auto_fixed else '',
+            '최신제목': latest_title,
+            '최신날짜': latest_date,
+        }
+    }
+
+
+# ─────────────────────────────────────────────
+# Claude 순차 처리 (URL탐색 / 자가치유 / Zero-Selector)
+# ─────────────────────────────────────────────
+def process_with_claude(pending: dict, gc) -> dict:
+    """Phase 2: Claude API 호출이 필요한 사이트를 순차 처리"""
+    site_name     = pending['site_name']
+    row           = pending['row']
+    soup          = pending['soup']
+    error_msg     = pending['error_msg']
+    failed        = pending['failed']
+    auto_fixed    = pending['auto_fixed']
+    all_titles    = list(pending['all_titles'])
+    cleaned_dates = list(pending['cleaned_dates'])
+    collected_data   = list(pending['collected_data'])
+    all_unfiltered   = list(pending['all_unfiltered'])
+    url_search    = pending.get('url_search')
+
+    # ── Phase A: URL 탐색 ──
+    if url_search and failed:
+        error_code   = url_search['error_code']
+        original_url = url_search['original_url']
+
+        with _url_search_cache_lock:
+            if site_name in _url_search_cache:
+                new_url = _url_search_cache[site_name]
+                logger.info(f"[URL탐색 캐시] {site_name}: {new_url}")
+            else:
+                logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색")
+                new_url = search_new_url_with_claude(site_name, original_url)
+                _url_search_cache[site_name] = new_url
+
+        if new_url:
+            new_row = row.copy()
+            new_row['URL'] = new_url
+            retry_soup, _ = static_crawl(new_row)
+            if retry_soup is None:
+                retry_soup, _ = dynamic_crawl(new_row)
+            if retry_soup:
+                titles, dates, data, unfiltered, parse_err = parse_soup(retry_soup, new_row, site_name)
+                if not parse_err:
+                    all_titles.extend(titles)
+                    cleaned_dates.extend(dates)
+                    collected_data.extend(data)
+                    all_unfiltered.extend(unfiltered)
+                    failed = False
+                    auto_fixed = True
+                    soup = retry_soup
+                    row = new_row
+                    error_msg = ""
+                    if gc:
+                        update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=original_url)
+                    logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
+                else:
+                    error_msg = f"URL 복구 후 파싱 실패: {parse_err}"
+                    failed = True
+            else:
+                error_msg = "URL 복구 후에도 접근 불가"
+                failed = True
+        else:
+            error_msg = f"HTTP {error_code}: 새 URL 탐색 실패"
+            failed = True
+
+    # ── Phase B: 자가치유 (월요일만) ──
     if failed and not auto_fixed and gc is not None and is_self_healing_day():
         logger.info(f"[자가치유 시작] {site_name}")
-        # soup이 있으면 재활용 (CSS 파싱 실패), 없으면 재수집 (HTML 수집 실패)
         html = str(soup) if soup is not None else fetch_html_for_analysis(row)
         if html:
             suggested = analyze_with_claude(site_name, row['URL'], html)
             if suggested and suggested.get('table_body') not in (None, '', 'null', 'Unable to determine'):
-
-                # 새 셀렉터로 즉시 재크롤링 시도
                 logger.info(f"[새 셀렉터로 재시도] {site_name}")
                 new_row = row.copy()
                 new_row['table_body'] = suggested['table_body']
                 new_row['title'] = suggested['title']
                 new_row['date'] = suggested['date']
-
                 try:
                     ct = new_row['crawl_type']
                     if ct == 's':
@@ -1176,11 +1268,9 @@ def crawl_site(row, gc=None) -> dict:
                         retry_soup, _ = click_dynamic_crawl(new_row, 1)
                     else:
                         retry_soup = None
-
                     if retry_soup:
                         titles, dates, data, unfiltered, parse_err = parse_soup(retry_soup, new_row, site_name)
                         if not parse_err and titles:
-                            # 재크롤링 성공!
                             all_titles.extend(titles)
                             cleaned_dates.extend(dates)
                             collected_data.extend(data)
@@ -1188,8 +1278,8 @@ def crawl_site(row, gc=None) -> dict:
                             failed = False
                             auto_fixed = True
                             error_msg = ""
-                            logger.info(f"[자가치유 성공] {site_name}: {len(titles)}개 공고 수집")
-                            # 구글시트 사이트목록 자동 업데이트
+                            soup = retry_soup
+                            logger.info(f"[자가치유 성공] {site_name}: {len(titles)}개")
                             update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {
                                 'table_body': suggested['table_body'],
                                 'title': suggested['title'],
@@ -1199,21 +1289,17 @@ def crawl_site(row, gc=None) -> dict:
                             logger.warning(f"[자가치유 실패-파싱] {site_name}: {parse_err}")
                     else:
                         logger.warning(f"[자가치유 실패-수집] {site_name}")
-
                 except Exception as e:
                     logger.error(f"[자가치유 오류] {site_name}: {e}")
             else:
                 logger.warning(f"[자가치유 불가] {site_name}: Claude가 셀렉터 찾지 못함")
 
-    # ──────────────────────────────────────────
-    # Zero-Selector: CSS 실패 또는 0건 추출 시 Claude 직접 추출
-    # ──────────────────────────────────────────
+    # ── Phase C: Zero-Selector ──
     zero_selector_used = False
     if not auto_fixed and (failed or not all_titles):
-        logger.info(f"[Zero-Selector 시도] {site_name}")
-        # soup이 있으면 재활용, HTML 수집 자체가 실패한 경우 Zero-Selector 스킵
         html_for_zero = str(soup) if soup is not None else None
         if html_for_zero:
+            logger.info(f"[Zero-Selector 시도] {site_name}")
             zs_titles, zs_dates, zs_data, zs_unfiltered, zs_err = zero_selector_extract(site_name, html_for_zero, row)
             if not zs_err and zs_titles:
                 all_titles.extend(zs_titles)
@@ -1229,6 +1315,7 @@ def crawl_site(row, gc=None) -> dict:
         else:
             logger.warning(f"[Zero-Selector] {site_name}: HTML 수집 실패")
 
+    # ── 최종 상태 ──
     final_status = '성공'
     if not failed and zero_selector_used:
         final_status = 'Zero-Selector성공'
@@ -1237,16 +1324,12 @@ def crawl_site(row, gc=None) -> dict:
     elif failed:
         final_status = f'실패({error_msg[:30]})'
 
-    # 최신 공고 샘플 (제목, 날짜)
     latest_title, latest_date = '', ''
-    if collected_data:
-        latest = max(collected_data, key=lambda x: str(x.get('작성일', '')), default=None)
-        if latest:
-            latest_title = str(latest.get('제목', ''))[:80]
-            latest_date  = str(latest.get('작성일', ''))
-    elif all_unfiltered:
-        latest = max(all_unfiltered, key=lambda x: str(x.get('작성일', '')), default=None)
-        if latest:
+    if not failed:
+        pool = [x for x in collected_data if x.get('제목')] or \
+               [x for x in all_unfiltered if x.get('제목')]
+        if pool:
+            latest = max(pool, key=lambda x: str(x.get('작성일', '')))
             latest_title = str(latest.get('제목', ''))[:80]
             latest_date  = str(latest.get('작성일', ''))
 
@@ -1274,31 +1357,57 @@ def crawl_site(row, gc=None) -> dict:
 # ─────────────────────────────────────────────
 def run_crawling_parallel(df, gc, static_workers=15, dynamic_workers=7):
     """정적(requests) 사이트와 동적(Selenium) 사이트를 분리 실행
-    - 정적: I/O 바운드 → 15 workers로 빠르게
-    - 동적: Chrome 메모리 제약 → 7 workers로 안정적으로
+    - Phase 1 정적: I/O 바운드 → 15 workers로 빠르게
+    - Phase 1 동적: Chrome 메모리 제약 → 7 workers로 안정적으로
+    - Phase 2: Claude API 호출 필요 사이트 순차 처리
     """
     all_data, all_logs, all_unfiltered = [], [], []
+    pending_claude = []
 
     def collect(futures, desc):
         for future in tqdm(as_completed(futures), total=len(futures), desc=desc):
             try:
                 result = future.result()
-                all_data.extend(result['data'])
-                all_unfiltered.extend(result.get('all_data', []))
-                all_logs.append(result['log'])
+                if 'pending' in result:
+                    pending_claude.append(result['pending'])
+                else:
+                    all_data.extend(result['data'])
+                    all_unfiltered.extend(result.get('all_data', []))
+                    all_logs.append(result['log'])
             except Exception as e:
                 logger.error(f"[병렬 오류] {e}")
 
     df_static  = df[df['crawl_type'] == 's']
     df_dynamic = df[df['crawl_type'] != 's']
 
+    # Phase 1: 병렬 HTTP 크롤링 (gc 불필요)
     with ThreadPoolExecutor(max_workers=static_workers) as ex:
-        collect({ex.submit(crawl_site, row, gc): i for i, row in df_static.iterrows()},
+        collect({ex.submit(crawl_site, row): i for i, row in df_static.iterrows()},
                 f"정적 크롤링 ({len(df_static)}개)")
 
     with ThreadPoolExecutor(max_workers=dynamic_workers) as ex:
-        collect({ex.submit(crawl_site, row, gc): i for i, row in df_dynamic.iterrows()},
+        collect({ex.submit(crawl_site, row): i for i, row in df_dynamic.iterrows()},
                 f"동적 크롤링 ({len(df_dynamic)}개)")
+
+    # Phase 2: Claude 순차 처리
+    if pending_claude:
+        logger.info(f"[Phase 2] Claude 처리 대상: {len(pending_claude)}개")
+        for pending in tqdm(pending_claude, desc=f"Claude 처리 ({len(pending_claude)}개)"):
+            try:
+                result = process_with_claude(pending, gc)
+                all_data.extend(result['data'])
+                all_unfiltered.extend(result.get('all_data', []))
+                all_logs.append(result['log'])
+            except Exception as e:
+                site = pending.get('site_name', '?')
+                logger.error(f"[Claude 처리 오류] {site}: {e}")
+                all_logs.append({
+                    'SITE_NAME': site,
+                    'URL': pending.get('row', {}).get('URL', ''),
+                    'len_tbody': 0, 'unique_date': 0, 'min_date': '', 'max_date': '',
+                    'status': '실패(Claude처리오류)', 'error_msg': str(e)[:80],
+                    'auto_fixed': '', '최신제목': '', '최신날짜': '',
+                })
 
     return pd.DataFrame(all_data), pd.DataFrame(all_logs), pd.DataFrame(all_unfiltered)
 
@@ -1387,7 +1496,12 @@ def upload_to_sheet(gc, df, sheet_name, keyword_tab=False):
 
 
 def upload_log(gc, df, crawled_time: str = ""):
-    """크롤링로그 탭 덮어쓰기 (사이트당 최신 1행, 연속실패횟수 누적)"""
+    """크롤링로그 업데이트
+    - 사이트당 항상 1행 유지
+    - 이번에 실행된 사이트: 전체 컬럼 갱신 + 연속실패횟수 누적
+    - 이번에 실행 안 된 사이트(테스트 모드 등): 기존 행 유지
+    - 최신제목/최신날짜: 성공 시만 갱신, 실패/스킵 시 이전 성공값 유지
+    """
     if gc is None or df.empty:
         return
     try:
@@ -1397,35 +1511,49 @@ def upload_log(gc, df, crawled_time: str = ""):
         except gspread.exceptions.WorksheetNotFound:
             ws = sh.add_worksheet(title="크롤링로그", rows="5000", cols="20")
 
-        df = df.copy()
-        df['수집일시'] = crawled_time
-
-        # 기존 연속실패횟수 읽어서 누적
-        prev_failures: dict[str, int] = {}
+        # 기존 크롤링로그 읽기
+        existing = pd.DataFrame()
         try:
             existing = pd.DataFrame(ws.get_all_records())
-            if not existing.empty and '연속실패횟수' in existing.columns:
-                for _, row in existing.iterrows():
-                    site = str(row.get('SITE_NAME', ''))
-                    prev_failures[site] = int(row.get('연속실패횟수', 0) or 0)
         except Exception:
             pass
 
+        # 기존 로그에서 사이트별 상태 추출
+        prev_failures: dict[str, int] = {}   # 연속실패횟수
+        if not existing.empty and '연속실패횟수' in existing.columns:
+            for _, row in existing.iterrows():
+                site = str(row.get('SITE_NAME', ''))
+                prev_failures[site] = int(row.get('연속실패횟수', 0) or 0)
+
+        # 새 데이터 전처리
+        df = df.copy()
+        df['수집일시'] = crawled_time
+        df = df.drop_duplicates(subset=['SITE_NAME'], keep='last')
+
+        # 연속실패횟수 누적 계산
         def calc_consecutive(row):
             prev = prev_failures.get(str(row.get('SITE_NAME', '')), 0)
             status = str(row.get('status', ''))
             if status.startswith('실패'):
-                return prev + 1   # 실패 → 카운트 증가
+                return prev + 1   # 실패 → +1
             if '스킵' in status:
-                return prev       # 자동스킵 → 이전 값 유지 (리셋 방지)
+                return prev       # 스킵 → 유지
             return 0              # 성공 → 리셋
 
         df['연속실패횟수'] = df.apply(calc_consecutive, axis=1)
 
-        df = df.fillna("").astype(str)
+        # 기존 로그와 병합: 이번 실행 사이트 교체, 나머지 기존 유지
+        if not existing.empty:
+            new_sites = set(df['SITE_NAME'].astype(str))
+            existing_keep = existing[~existing['SITE_NAME'].astype(str).isin(new_sites)]
+            merged = pd.concat([existing_keep, df], ignore_index=True)
+        else:
+            merged = df
+
+        merged = merged.fillna("").astype(str)
         ws.clear()
-        ws.update([df.columns.tolist()] + df.values.tolist())
-        logger.info(f"[로그 업로드 완료] {len(df)}행 (덮어쓰기)")
+        ws.update([merged.columns.tolist()] + merged.values.tolist())
+        logger.info(f"[로그 업로드 완료] 전체 {len(merged)}행 (이번 갱신 {len(df)}행)")
     except Exception as e:
         logger.error(f"[로그 업로드 오류]: {e}")
 
