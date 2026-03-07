@@ -80,9 +80,26 @@ logger = logging.getLogger(__name__)
 # 상수 설정
 # ─────────────────────────────────────────────
 MAX_RETRIES = 2
-MAX_PAGES = 9
+MAX_PAGES = 5
 FILTER_KEYWORDS = ['특허', '제안', '심의', '공법', '실시설계', '보수보강']
 DAYS_RANGE = 1
+
+# 지역 분류 매핑 (출처명 → 지역)
+REGION_MAP = [
+    ('서울', '서울'), ('부산', '부산'), ('대구', '대구'), ('인천', '인천'),
+    ('광주', '광주'), ('대전', '대전'), ('울산', '울산'), ('세종', '세종'),
+    ('경기', '경기도'), ('강원', '강원도'),
+    ('충북', '충청도'), ('충남', '충청도'), ('충청', '충청도'),
+    ('전북', '전라도'), ('전남', '전라도'), ('전라', '전라도'),
+    ('경북', '경상도'), ('경남', '경상도'), ('경상', '경상도'),
+    ('제주', '제주도'),
+]
+
+def extract_region(site_name: str) -> str:
+    for key, region in REGION_MAP:
+        if key in site_name:
+            return region
+    return '기타'
 
 # 기본 헤더
 HEADERS = {
@@ -238,7 +255,7 @@ def is_firewall_blocked(html: str, status_code: int = 200) -> bool:
 def static_crawl(row, headers_override=None):
     h = headers_override or HEADERS
     try:
-        res = requests.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+        res = requests.get(row['URL'], headers=h, timeout=(10, 30), verify=False)
         res.raise_for_status()
         res.encoding = 'utf-8'
         if is_firewall_blocked(res.text, res.status_code):
@@ -269,7 +286,7 @@ def static_crawl(row, headers_override=None):
 
             s = requests.Session()
             s.mount("https://", _SSLAdapter())
-            res = s.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+            res = s.get(row['URL'], headers=h, timeout=(10, 30), verify=False)
             res.raise_for_status()
             res.encoding = 'utf-8'
             if is_firewall_blocked(res.text, res.status_code):
@@ -284,7 +301,7 @@ def static_crawl(row, headers_override=None):
         return None, 'error'
 
 
-def dynamic_crawl(row, wait=10, ua=None):
+def dynamic_crawl(row, wait=7, ua=None):
     driver = get_driver(ua=ua)
     try:
         try:
@@ -304,7 +321,7 @@ def dynamic_crawl_1(row):
     driver = get_driver()
     try:
         driver.get(row['URL'])
-        time.sleep(10)
+        time.sleep(7)
         driver.find_element(By.ID, 'ofr_pageSize').click()
         driver.find_element(By.XPATH, '//*[@id="ofr_pageSize"]/option[1]').click()
         time.sleep(3)
@@ -317,7 +334,7 @@ def dynamic_crawl_2(row):
     driver = get_driver()
     try:
         driver.get(row['URL'])
-        time.sleep(10)
+        time.sleep(7)
         driver.find_element(By.CSS_SELECTOR, row['click_button']).click()
         time.sleep(3)
         return BeautifulSoup(driver.page_source, 'html.parser'), 'ok'
@@ -521,7 +538,7 @@ def fetch_html_for_analysis(row, url_override=None) -> str | None:
     site_name = row['SITE_NAME']
     url = url_override or row['URL']
 
-    # 1) Selenium 8초 대기 (동적 페이지 완전 로드)
+    # 1) Selenium 6초 대기 (동적 페이지 완전 로드)
     for ua in [None, UA_ROTATION[1]]:  # 기본 UA, Mac UA 순으로 시도
         try:
             driver = get_driver(timeout=20, ua=ua)
@@ -529,7 +546,7 @@ def fetch_html_for_analysis(row, url_override=None) -> str | None:
                 driver.get(url)
             except TimeoutException:
                 pass
-            time.sleep(8)
+            time.sleep(6)
             html = driver.page_source
             driver.quit()
 
@@ -546,7 +563,7 @@ def fetch_html_for_analysis(row, url_override=None) -> str | None:
     for ua in UA_ROTATION[:3]:
         try:
             h = {**HEADERS, "User-Agent": ua}
-            res = requests.get(url, headers=h, timeout=(20, 20), verify=False)
+            res = requests.get(url, headers=h, timeout=(10, 20), verify=False)
             res.encoding = 'utf-8'
             if len(res.text) > 1000 and not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[HTML수집-정적] {site_name}: {len(res.text)}bytes")
@@ -746,7 +763,7 @@ def try_bypass_firewall(row) -> tuple:
         }
         try:
             time.sleep(2 + i)  # 점진적 대기
-            res = requests.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
+            res = requests.get(row['URL'], headers=headers, timeout=(15, 30), verify=False)
             if not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[방화벽 우회 성공-정적] {site_name} UA#{i+1}")
                 return BeautifulSoup(res.text, 'html.parser'), 'ok'
@@ -1069,11 +1086,15 @@ def crawl_site(row, gc=None) -> dict:
 # ─────────────────────────────────────────────
 # 병렬 크롤링
 # ─────────────────────────────────────────────
-def run_crawling_parallel(df, gc, max_workers=5):
+def run_crawling_parallel(df, gc, static_workers=15, dynamic_workers=7):
+    """정적(requests) 사이트와 동적(Selenium) 사이트를 분리 실행
+    - 정적: I/O 바운드 → 15 workers로 빠르게
+    - 동적: Chrome 메모리 제약 → 7 workers로 안정적으로
+    """
     all_data, all_logs, all_unfiltered = [], [], []
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(crawl_site, row, gc): idx for idx, row in df.iterrows()}
-        for future in tqdm(as_completed(futures), total=len(futures), desc="크롤링 진행"):
+
+    def collect(futures, desc):
+        for future in tqdm(as_completed(futures), total=len(futures), desc=desc):
             try:
                 result = future.result()
                 all_data.extend(result['data'])
@@ -1081,13 +1102,25 @@ def run_crawling_parallel(df, gc, max_workers=5):
                 all_logs.append(result['log'])
             except Exception as e:
                 logger.error(f"[병렬 오류] {e}")
+
+    df_static  = df[df['crawl_type'] == 's']
+    df_dynamic = df[df['crawl_type'] != 's']
+
+    with ThreadPoolExecutor(max_workers=static_workers) as ex:
+        collect({ex.submit(crawl_site, row, gc): i for i, row in df_static.iterrows()},
+                f"정적 크롤링 ({len(df_static)}개)")
+
+    with ThreadPoolExecutor(max_workers=dynamic_workers) as ex:
+        collect({ex.submit(crawl_site, row, gc): i for i, row in df_dynamic.iterrows()},
+                f"동적 크롤링 ({len(df_dynamic)}개)")
+
     return pd.DataFrame(all_data), pd.DataFrame(all_logs), pd.DataFrame(all_unfiltered)
 
 
 # ─────────────────────────────────────────────
 # Google Sheets 업로드
 # ─────────────────────────────────────────────
-def upload_to_sheet(gc, df, sheet_name):
+def upload_to_sheet(gc, df, sheet_name, keyword_tab=False):
     if gc is None or df.empty:
         return
     try:
@@ -1095,21 +1128,80 @@ def upload_to_sheet(gc, df, sheet_name):
         try:
             ws = sh.worksheet(sheet_name)
         except gspread.exceptions.WorksheetNotFound:
-            ws = sh.add_worksheet(title=sheet_name, rows="5000", cols="20")
+            ws = sh.add_worksheet(title=sheet_name, rows="5000", cols="30")
 
         existing = pd.DataFrame(ws.get_all_records())
+
+        # ── 기존 확인여부/비고 보존 ──
+        preserved_meta = {}
+        if not existing.empty:
+            for _, row in existing.iterrows():
+                key = (str(row.get('출처', '')), str(row.get('제목', '')))
+                preserved_meta[key] = {
+                    '확인여부': row.get('확인여부', ''),
+                    '비고':     row.get('비고', ''),
+                }
+
+        # ── 신규 데이터와 병합 ──
         combined = pd.concat([existing, df], ignore_index=True) if not existing.empty else df.copy()
         if '출처' in combined.columns and '제목' in combined.columns:
             combined = combined.drop_duplicates(subset=['출처', '제목'], keep='last')
+
+        # ── 키워드 탭 전용 컬럼 추가 ──
+        if keyword_tab:
+            # 지역
+            if '지역' not in combined.columns:
+                combined.insert(2, '지역', combined['출처'].apply(extract_region))
+            # 경과일
+            today_dt = now_kst().date()
+            def days_elapsed(d):
+                try:
+                    return (today_dt - pd.to_datetime(d).date()).days
+                except Exception:
+                    return ''
+            combined['경과일'] = combined['작성일'].apply(days_elapsed)
+            # 키워드별 분리
+            for kw in FILTER_KEYWORDS:
+                combined[kw] = combined.get('키워드', pd.Series(dtype=str)).apply(
+                    lambda v: 'Y' if kw in str(v) else ''
+                )
+            # 확인여부/비고 컬럼
+            if '확인여부' not in combined.columns:
+                combined['확인여부'] = ''
+            if '비고' not in combined.columns:
+                combined['비고'] = ''
+            # 기존 확인여부/비고 복원
+            for idx, row in combined.iterrows():
+                key = (str(row.get('출처', '')), str(row.get('제목', '')))
+                meta = preserved_meta.get(key, {})
+                if meta.get('확인여부'):
+                    combined.at[idx, '확인여부'] = meta['확인여부']
+                if meta.get('비고'):
+                    combined.at[idx, '비고'] = meta['비고']
+            # 작성일 내림차순 정렬
+            combined['작성일'] = pd.to_datetime(combined['작성일'], errors='coerce')
+            combined = combined.sort_values('작성일', ascending=False)
+            combined['작성일'] = combined['작성일'].dt.strftime('%Y-%m-%d').fillna('')
+
         combined = combined.fillna("").astype(str)
+
+        # ── 원문링크 컬럼 (HYPERLINK 수식) ──
+        if keyword_tab and 'URL' in combined.columns and '제목' in combined.columns:
+            combined['원문링크'] = combined.apply(
+                lambda r: f'=HYPERLINK("{r["URL"]}","{r["제목"][:30].replace(chr(34), "")}")'
+                if r['URL'].startswith('http') else '', axis=1
+            )
+
         ws.clear()
-        ws.update([combined.columns.tolist()] + combined.values.tolist())
+        ws.update([combined.columns.tolist()] + combined.values.tolist(),
+                  value_input_option='USER_ENTERED')
         logger.info(f"[업로드 완료] '{sheet_name}' {len(combined)}행")
     except Exception as e:
         logger.error(f"[업로드 오류] {sheet_name}: {e}")
 
 
-def upload_log(gc, df):
+def upload_log(gc, df, crawled_time: str = ""):
+    """크롤링로그 탭에 이력 누적 (30일치 보존)"""
     if gc is None or df.empty:
         return
     try:
@@ -1117,13 +1209,122 @@ def upload_log(gc, df):
         try:
             ws = sh.worksheet("크롤링로그")
         except gspread.exceptions.WorksheetNotFound:
-            ws = sh.add_worksheet(title="크롤링로그", rows="1000", cols="20")
-        df = df.fillna("").astype(str)
+            ws = sh.add_worksheet(title="크롤링로그", rows="10000", cols="20")
+
+        df = df.copy()
+        df['수집일시'] = crawled_time
+
+        existing = pd.DataFrame(ws.get_all_records())
+        combined = pd.concat([existing, df], ignore_index=True) if not existing.empty else df.copy()
+
+        # 30일 초과 이력 제거
+        if '수집일시' in combined.columns:
+            cutoff = (now_kst() - timedelta(days=30)).strftime('%Y-%m-%d')
+            combined = combined[combined['수집일시'].astype(str) >= cutoff]
+
+        combined = combined.fillna("").astype(str)
         ws.clear()
-        ws.update([df.columns.tolist()] + df.values.tolist())
-        logger.info(f"[로그 업로드 완료] {len(df)}행")
+        ws.update([combined.columns.tolist()] + combined.values.tolist())
+        logger.info(f"[로그 업로드 완료] {len(combined)}행 (누적)")
     except Exception as e:
         logger.error(f"[로그 업로드 오류]: {e}")
+
+
+# ─────────────────────────────────────────────
+# 키워드 공고 즉시 이메일 알림
+# ─────────────────────────────────────────────
+def send_keyword_email(df_keyword: pd.DataFrame, crawled_time: str):
+    """키워드 매칭 신규 공고를 이메일로 즉시 발송"""
+    if not all([EMAIL_SENDER, EMAIL_PASSWORD, EMAIL_RECEIVER]):
+        return
+    if df_keyword.empty:
+        return
+
+    body_lines = [f"[신규 키워드 공고] {crawled_time}\n",
+                  f"총 {len(df_keyword)}건 수집됨:\n"]
+    for _, row in df_keyword.iterrows():
+        body_lines.append(f"  [{row.get('출처','')}] {row.get('제목','')}")
+        body_lines.append(f"    작성일: {row.get('작성일','')} | 키워드: {row.get('키워드','')}")
+        body_lines.append(f"    링크: {row.get('URL','')}\n")
+
+    body = "\n".join(body_lines)
+    try:
+        msg = MIMEText(body, 'plain', 'utf-8')
+        msg['Subject'] = f"[공고알림] 신규 {len(df_keyword)}건 ({now_kst().strftime('%m/%d %H:%M')} KST)"
+        msg['From'] = EMAIL_SENDER
+        msg['To'] = EMAIL_RECEIVER
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+        logger.info(f"[키워드 이메일 발송] {len(df_keyword)}건")
+    except Exception as e:
+        logger.error(f"[키워드 이메일 오류] {e}")
+
+
+# ─────────────────────────────────────────────
+# 대시보드 탭 업로드
+# ─────────────────────────────────────────────
+def upload_dashboard(gc, df_log: pd.DataFrame, df_keyword: pd.DataFrame, crawled_time: str):
+    """대시보드 탭: 수집 현황 요약"""
+    if gc is None:
+        return
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        try:
+            ws = sh.worksheet("📊대시보드")
+        except gspread.exceptions.WorksheetNotFound:
+            ws = sh.add_worksheet(title="📊대시보드", rows="50", cols="10")
+
+        today_str = now_kst().strftime('%Y-%m-%d')
+
+        # 크롤링 현황
+        total   = len(df_log)
+        success = len(df_log[df_log['status'] == '성공'])
+        healed  = len(df_log[df_log['status'] == '자가치유성공'])
+        skipped = len(df_log[df_log['status'].str.startswith('스킵', na=False)])
+        failed  = len(df_log[df_log['status'].str.startswith('실패', na=False)])
+        rate    = f"{round((success+healed)/max(total-skipped,1)*100, 1)}%"
+
+        # 키워드별 집계
+        kw_counts = {}
+        if not df_keyword.empty and '키워드' in df_keyword.columns:
+            for kw in FILTER_KEYWORDS:
+                kw_counts[kw] = df_keyword['키워드'].str.contains(kw, na=False).sum()
+
+        # 지역별 집계
+        region_counts = {}
+        if not df_keyword.empty and '출처' in df_keyword.columns:
+            df_keyword['_지역'] = df_keyword['출처'].apply(extract_region)
+            region_counts = df_keyword['_지역'].value_counts().to_dict()
+
+        rows = [
+            ["📊 공고 수집 대시보드", "", f"기준: {crawled_time}"],
+            [""],
+            ["▶ 크롤링 현황"],
+            ["구분", "건수", ""],
+            ["전체 대상", total, ""],
+            ["✅ 성공", success, ""],
+            ["🔧 자가치유 성공", healed, ""],
+            ["⏭ 스킵(IP차단 등)", skipped, ""],
+            ["❌ 실패", failed, ""],
+            ["성공률", rate, ""],
+            [""],
+            ["▶ 오늘 키워드 공고", len(df_keyword), "건"],
+            [""],
+            ["▶ 키워드별 집계"],
+            ["키워드", "건수", ""],
+        ]
+        for kw, cnt in kw_counts.items():
+            rows.append([kw, cnt, ""])
+        rows += [[""], ["▶ 지역별 집계"], ["지역", "건수", ""]]
+        for region, cnt in sorted(region_counts.items(), key=lambda x: -x[1]):
+            rows.append([region, cnt, ""])
+
+        ws.clear()
+        ws.update(rows, value_input_option='USER_ENTERED')
+        logger.info("[대시보드 업로드 완료]")
+    except Exception as e:
+        logger.error(f"[대시보드 업로드 오류] {e}")
 
 
 # ─────────────────────────────────────────────
@@ -1173,7 +1374,7 @@ def main():
     df = load_sites(gc)
     logger.info(f"총 {len(df)}개 사이트")
 
-    df_fin, df_log, df_all = run_crawling_parallel(df, gc, max_workers=5)
+    df_fin, df_log, df_all = run_crawling_parallel(df, gc)
 
     # timezone-aware → naive 변환 (pandas datetime64[us]와 비교를 위해)
     today_naive = today.replace(tzinfo=None)
@@ -1214,12 +1415,14 @@ def main():
         df_filtered.to_excel(f'./df_list_{today_str}.xlsx', index=False)
 
     # 구글시트 업로드
-    upload_to_sheet(gc, df_filtered, "✅키워드공고")        # 키워드 매칭 공고
-    upload_to_sheet(gc, df_all_filtered, "📋전체공고(키워드제외)") # 키워드 미해당 공고
-    upload_log(gc, df_log)
+    upload_to_sheet(gc, df_filtered, "✅키워드공고", keyword_tab=True)
+    upload_to_sheet(gc, df_all_filtered, "📋전체공고(키워드제외)")
+    upload_log(gc, df_log, crawled_time)
+    upload_dashboard(gc, df_log, df_filtered, crawled_time)
 
-    # 이메일 알림 (실패 사이트만)
-    send_failure_email(df_log)
+    # 이메일 알림
+    send_keyword_email(df_filtered, crawled_time)   # 키워드 공고 즉시 발송
+    send_failure_email(df_log)                      # 실패 사이트 발송
 
     logger.info(f"===== 크롤링 완료: {now_kst().strftime('%Y-%m-%d %H:%M:%S')} KST =====")
 
