@@ -14,6 +14,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
 
+import argparse
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -1517,12 +1518,20 @@ def send_failure_email(df_log: pd.DataFrame):
 # 메인
 # ─────────────────────────────────────────────
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test', type=int, metavar='N', default=0,
+                        help='테스트 모드: 정적 N개 + 동적 N개만 실행')
+    args = parser.parse_args()
+
     today = now_kst()
     crawled_time = today.strftime('%Y-%m-%d %H:%M:%S KST')
     today_str = today.strftime('%Y%m%d')
     one_day_ago = today - timedelta(days=DAYS_RANGE)
 
-    logger.info(f"===== 크롤링 시작 (v4 자가치유): {crawled_time} =====")
+    if args.test:
+        logger.info(f"===== [테스트 모드] 정적 {args.test}개 + 동적 {args.test}개 실행 =====")
+    else:
+        logger.info(f"===== 크롤링 시작 (v4 자가치유): {crawled_time} =====")
 
     gc = get_gspread_client()
     global _auto_skip_sites
@@ -1531,6 +1540,14 @@ def main():
         logger.info(f"[자동스킵] {len(_auto_skip_sites)}개 사이트 등록 (연속 5회 실패)")
     df = load_sites(gc)
     logger.info(f"총 {len(df)}개 사이트")
+
+    if args.test:
+        n = args.test
+        skip_mask = df['div'].astype(str).str.contains('IP|fail', na=False)
+        df_static  = df[~skip_mask & (df['crawl_type'] == 's')].head(n)
+        df_dynamic = df[~skip_mask & (df['crawl_type'] != 's')].head(n)
+        df = pd.concat([df_static, df_dynamic], ignore_index=True)
+        logger.info(f"[테스트] 정적 {len(df_static)}개 + 동적 {len(df_dynamic)}개 = {len(df)}개 실행")
 
     df_fin, df_log, df_all = run_crawling_parallel(df, gc)
 
