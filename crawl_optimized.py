@@ -37,6 +37,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from google.oauth2.service_account import Credentials
 import threading
+from logging.handlers import TimedRotatingFileHandler
 
 # .env 파일 지원 (Oracle/NAS 로컬 실행 시)
 try:
@@ -52,7 +53,13 @@ def now_kst() -> datetime:
     """현재 KST 시각 반환"""
     return datetime.now(KST)
 
-SELF_HEALING_ENABLED = now_kst().weekday() == 0  # 월요일만 자가치유
+def is_self_healing_day() -> bool:
+    """월요일(0)만 자가치유 활성화. 환경변수로 강제 ON/OFF 가능"""
+    if os.environ.get("FORCE_SELF_HEALING") == "1":
+        return True
+    if os.environ.get("DISABLE_SELF_HEALING") == "1":
+        return False
+    return now_kst().weekday() == 0
 
 # Claude API 동시 호출 방지 Lock (rate limit 대응)
 _claude_lock = threading.Lock()
@@ -75,7 +82,9 @@ class _KSTFormatter(logging.Formatter):
         return dt.strftime('%Y-%m-%d %H:%M:%S') + f',{int(record.msecs):03d}'
 
 _fmt = _KSTFormatter("%(asctime)s [%(levelname)s] %(message)s")
-_fh = logging.FileHandler("crawl.log", encoding="utf-8")
+_fh = TimedRotatingFileHandler(
+    "crawl.log", when="midnight", interval=1, backupCount=30, encoding="utf-8", utc=False
+)
 _fh.setFormatter(_fmt)
 _sh = logging.StreamHandler()
 _sh.setFormatter(_fmt)
@@ -139,6 +148,15 @@ EMAIL_RECEIVER = os.environ.get("EMAIL_RECEIVER", "")  # 수신 주소
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+# 전역 HTTP 세션 (Keep-Alive, 연결 풀 재사용)
+_http_session = requests.Session()
+_http_session.headers.update(HEADERS)
+_http_adapter = requests.adapters.HTTPAdapter(
+    pool_connections=20, pool_maxsize=50, max_retries=0
+)
+_http_session.mount("http://", _http_adapter)
+_http_session.mount("https://", _http_adapter)
+
 
 # ─────────────────────────────────────────────
 # 유틸: 빈값 판별 (구글시트 "" / 엑셀 NaN 모두 처리)
@@ -164,6 +182,9 @@ def get_gspread_client():
             "https://www.googleapis.com/auth/drive"
         ]
         creds_dict = json.loads(GOOGLE_CREDENTIALS_JSON)
+        required_fields = {"type", "project_id", "private_key", "client_email"}
+        if not required_fields.issubset(creds_dict.keys()):
+            raise ValueError(f"Google Credentials JSON 필수 필드 누락: {required_fields - creds_dict.keys()}")
         creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
         return gspread.authorize(creds)
     except Exception as e:
@@ -285,7 +306,7 @@ def is_firewall_blocked(html: str, status_code: int = 200) -> bool:
 def static_crawl(row, headers_override=None):
     h = headers_override or HEADERS
     try:
-        res = requests.get(row['URL'], headers=h, timeout=(10, 30), verify=False)
+        res = _http_session.get(row['URL'], headers=h, timeout=(10, 30), verify=False)
         res.raise_for_status()
         res.encoding = 'utf-8'
         if is_firewall_blocked(res.text, res.status_code):
@@ -431,12 +452,23 @@ CLICK_CRAWL_CONFIG = {
 }
 
 
+def _resolve_selector(template: str, page_number: int) -> str:
+    """eval 없이 안전하게 셀렉터 내 page_number 표현식 치환"""
+    return (template
+        .replace("{(page_number-1)*2+1}", str((page_number - 1) * 2 + 1))
+        .replace("{page_number+4}", str(page_number + 4))
+        .replace("{page_number+3}", str(page_number + 3))
+        .replace("{page_number+2}", str(page_number + 2))
+        .replace("{page_number}", str(page_number))
+    )
+
+
 def click_dynamic_crawl(row, page_number):
     ct = row['crawl_type']
     config = CLICK_CRAWL_CONFIG.get(ct)
     if not config:
         raise ValueError(f"알 수 없는 crawl_type: {ct}")
-    selector = eval(f'f"{config["selector"]}"')
+    selector = _resolve_selector(config["selector"], page_number)
     wait_time = config.get('wait', 5)
     driver = get_driver()
     try:
@@ -593,7 +625,7 @@ def fetch_html_for_analysis(row, url_override=None) -> str | None:
     for ua in UA_ROTATION[:3]:
         try:
             h = {**HEADERS, "User-Agent": ua}
-            res = requests.get(url, headers=h, timeout=(10, 20), verify=False)
+            res = _http_session.get(url, headers=h, timeout=(10, 20), verify=False)
             res.encoding = 'utf-8'
             if len(res.text) > 1000 and not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[HTML수집-정적] {site_name}: {len(res.text)}bytes")
@@ -864,7 +896,7 @@ def try_bypass_firewall(row) -> tuple:
         }
         try:
             time.sleep(2 + i)  # 점진적 대기
-            res = requests.get(row['URL'], headers=headers, timeout=(15, 30), verify=False)
+            res = _http_session.get(row['URL'], headers=headers, timeout=(15, 30), verify=False)
             if not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[방화벽 우회 성공-정적] {site_name} UA#{i+1}")
                 return BeautifulSoup(res.text, 'html.parser'), 'ok'
@@ -1110,7 +1142,7 @@ def crawl_site(row, gc=None) -> dict:
     # ──────────────────────────────────────────
     # 자가치유: 셀렉터 자동수정 + 즉시 재크롤링 (월요일만)
     # ──────────────────────────────────────────
-    if failed and not auto_fixed and gc is not None and SELF_HEALING_ENABLED:
+    if failed and not auto_fixed and gc is not None and is_self_healing_day():
         logger.info(f"[자가치유 시작] {site_name}")
         # soup이 있으면 재활용 (CSS 파싱 실패), 없으면 재수집 (HTML 수집 실패)
         html = str(soup) if soup is not None else fetch_html_for_analysis(row)
