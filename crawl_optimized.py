@@ -407,8 +407,12 @@ def post_crawl(row):
         'recent_mm': '', 'last_mm': '', 'nodate_recent_mm': '',
         'nodate_last_mm': '', 'not_ancmt_reg_no': '', 'Key': 'B_Subject', 'temp': ''
     }
-    res = requests.post(row['URL'], data=data).content
-    return BeautifulSoup(res.decode('utf-8-sig'), 'html.parser'), 'ok'
+    try:
+        res = _http_session.post(row['URL'], data=data, timeout=(10, 30))
+        return BeautifulSoup(res.content.decode('utf-8-sig'), 'html.parser'), 'ok'
+    except Exception as e:
+        logger.error(f"[POST 크롤링 오류] {row['SITE_NAME']}: {e}")
+        return None, 'error'
 
 
 # ─────────────────────────────────────────────
@@ -490,8 +494,7 @@ def click_dynamic_crawl(row, page_number):
                 time.sleep(wait_time)
             except NoSuchElementException:
                 logger.warning(f"[버튼 없음] {row['SITE_NAME']} 페이지 {page_number}")
-                driver.quit()
-                return None, 'no_button'  # 버튼 없음 → 페이지 순회 중단 신호
+                return None, 'no_button'  # 버튼 없음 → 페이지 순회 중단 신호 (finally에서 quit)
         html = driver.page_source
         if is_firewall_blocked(html):
             return None, 'firewall'
@@ -1065,6 +1068,7 @@ def crawl_site(row, gc=None) -> dict:
                 if not failed and soup is None and (status.startswith('http_') or status == 'error'):
                     url_searched = True
                     error_code = status.split('_')[1] if '_' in status else '?'
+                    original_url = row['URL']  # 시트 업데이트용 원본 URL 보존
                     with _url_search_cache_lock:
                         if site_name in _url_search_cache:
                             new_url = _url_search_cache[site_name]
@@ -1081,7 +1085,7 @@ def crawl_site(row, gc=None) -> dict:
                             soup, status = dynamic_crawl(row)
                         if soup:
                             if gc:
-                                update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=row['URL'])
+                                update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=original_url)
                             auto_fixed = True
                             logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
                         else:
@@ -1405,7 +1409,12 @@ def upload_log(gc, df, crawled_time: str = ""):
 
         def calc_consecutive(row):
             prev = prev_failures.get(str(row.get('SITE_NAME', '')), 0)
-            return prev + 1 if str(row.get('status', '')).startswith('실패') else 0
+            status = str(row.get('status', ''))
+            if status.startswith('실패'):
+                return prev + 1   # 실패 → 카운트 증가
+            if '스킵' in status:
+                return prev       # 자동스킵 → 이전 값 유지 (리셋 방지)
+            return 0              # 성공 → 리셋
 
         df['연속실패횟수'] = df.apply(calc_consecutive, axis=1)
 
