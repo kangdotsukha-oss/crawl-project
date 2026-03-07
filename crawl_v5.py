@@ -60,7 +60,7 @@ KST          = timezone(timedelta(hours=9))
 DAYS_RANGE   = 1
 MAX_PAGES    = 5
 STATIC_CONC  = 10
-DYNAMIC_CONC = 4
+DYNAMIC_CONC = 8
 PAGE_TIMEOUT = 30_000
 FILTER_KEYWORDS = ['특허', '제안', '심의', '공법', '실시설계', '보수보강']
 SITES_FILE   = Path(__file__).parent / "sites.json"
@@ -251,14 +251,14 @@ def fetch_static(url: str, ua_idx: int = 0) -> Optional[str]:
     }
     for enc in ['utf-8', 'euc-kr', 'cp949']:
         try:
-            r = requests.get(url, headers=headers, timeout=(15, 30), verify=False)
+            r = requests.get(url, headers=headers, timeout=(8, 20), verify=False)
             r.raise_for_status()
             r.encoding = enc
             if is_firewall(r.text, r.status_code):
                 # UA 로테이션 재시도
                 for i in range(1, len(UA_LIST)):
                     h2 = {**headers, "User-Agent": UA_LIST[i]}
-                    r2 = requests.get(url, headers=h2, timeout=(15, 30), verify=False)
+                    r2 = requests.get(url, headers=h2, timeout=(8, 20), verify=False)
                     if not is_firewall(r2.text, r2.status_code):
                         r2.encoding = enc
                         return r2.text
