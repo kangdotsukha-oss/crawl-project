@@ -636,6 +636,7 @@ def call_claude_api(prompt: str, tools: list = None, max_tokens: int = 1000) -> 
             if response.status_code != 200:
                 logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
                 return None
+            time.sleep(3)  # 연속 호출 rate limit 방지
             return response.json()
         except Exception as e:
             logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
