@@ -1,0 +1,834 @@
+2026-03-07 23:51:37 [INFO] ===== crawl_v5 시작 (Hybrid): 2026-03-07 23:51:37 KST =====
+2026-03-07 23:51:37 [INFO] 전체 229개 | 활성 213개 | 스킵 16개
+2026-03-07 23:51:39 [INFO] [시작] \ucda9\uccad\ub3c4_\uc81c\ucc9c\uc2dc
+2026-03-07 23:51:43 [INFO] [추출] \ucda9\uccad\ub3c4_\uc81c\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-07 23:51:47 [INFO] [추출] \ucda9\uccad\ub3c4_\uc81c\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-07 23:51:47 [INFO] [완료] \ucda9\uccad\ub3c4_\uc81c\ucc9c\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:51:47 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc774\ub3d9\uba74
+2026-03-07 23:51:49 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc774\ub3d9\uba74 p1: 10건 (selector)
+2026-03-07 23:51:49 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc774\ub3d9\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:51:49 [INFO] [시작] \ucda9\ubd81\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:51:52 [INFO] [추출] \ucda9\ubd81\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-07 23:51:54 [INFO] [추출] \ucda9\ubd81\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-07 23:51:56 [INFO] [추출] \ucda9\ubd81\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-07 23:51:56 [INFO] [완료] \ucda9\ubd81\uace0\uc2dc\uacf5\uace0: 키워드 1건 / 전체 30건 (selector)
+2026-03-07 23:51:56 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uacbd\uc8fc\uc2dc
+2026-03-07 23:51:59 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uacbd\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-07 23:52:02 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uacbd\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-07 23:52:05 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uacbd\uc8fc\uc2dc p3: 10건 (selector)
+2026-03-07 23:52:05 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uacbd\uc8fc\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-07 23:52:05 [INFO] [시작] \uacbd\uae30\ub3c4_\uc758\uc815\ubd80\uc2dc
+2026-03-07 23:52:05 [INFO] [시작] \uc804\ub77c\ub3c4_\uc644\uc8fc\uad70
+2026-03-07 23:52:05 [INFO] [시작] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc
+2026-03-07 23:52:08 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-07 23:52:11 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-07 23:52:13 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc p3: 10건 (selector)
+2026-03-07 23:52:16 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc p4: 10건 (selector)
+2026-03-07 23:52:19 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc p5: 10건 (selector)
+2026-03-07 23:52:19 [INFO] [완료] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:52:19 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc758\ub839\uad70
+2026-03-07 23:52:21 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc758\ub839\uad70 p1: 10건 (selector)
+2026-03-07 23:52:21 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc758\ub839\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:52:21 [INFO] [시작] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:52:25 [INFO] [추출] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-07 23:52:29 [INFO] [추출] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-07 23:52:33 [INFO] [추출] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-07 23:52:36 [INFO] [추출] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0 p4: 10건 (selector)
+2026-03-07 23:52:40 [INFO] [추출] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0 p5: 10건 (selector)
+2026-03-07 23:52:40 [INFO] [완료] \ucda9\ub0a8\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:52:40 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uae40\ucc9c\uc2dc
+2026-03-07 23:52:48 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uae40\ucc9c\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:52:48 [INFO] [시작] \uacbd\uae30\ub3c4_\uc774\ucc9c\uc2dc
+2026-03-07 23:52:48 [INFO] [시작] \uc804\ub77c\ub3c4_\uc784\uc2e4\uad70
+2026-03-07 23:52:48 [INFO] [시작] \ucda9\uccad\ub3c4_\ucda9\uc8fc\uc2dc
+2026-03-07 23:52:52 [INFO] [추출] \ucda9\uccad\ub3c4_\ucda9\uc8fc\uc2dc p1: 90건 (selector)
+2026-03-07 23:52:52 [INFO] [완료] \ucda9\uccad\ub3c4_\ucda9\uc8fc\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-07 23:52:52 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\ub155\uad70
+2026-03-07 23:55:10 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\ub155\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:55:10 [INFO] [시작] \uc804\ubd81\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:55:14 [INFO] [추출] \uc804\ubd81\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-07 23:55:16 [INFO] [추출] \uc804\ubd81\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-07 23:55:16 [INFO] [완료] \uc804\ubd81\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:55:16 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ubb38\uacbd\uc2dc
+2026-03-07 23:55:20 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubb38\uacbd\uc2dc p1: 10건 (selector)
+2026-03-07 23:55:20 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ubb38\uacbd\uc2dc: 키워드 1건 / 전체 10건 (selector)
+2026-03-07 23:55:20 [INFO] [시작] \ucda9\uccad\ub3c4_\uc625\ucc9c\uad70
+2026-03-07 23:55:24 [INFO] [추출] \ucda9\uccad\ub3c4_\uc625\ucc9c\uad70 p1: 10건 (selector)
+2026-03-07 23:55:27 [INFO] [추출] \ucda9\uccad\ub3c4_\uc625\ucc9c\uad70 p2: 10건 (selector)
+2026-03-07 23:55:27 [INFO] [완료] \ucda9\uccad\ub3c4_\uc625\ucc9c\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:55:27 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc0bc\ub3d9\uba74
+2026-03-07 23:55:29 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc0bc\ub3d9\uba74 p1: 10건 (selector)
+2026-03-07 23:55:29 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc0bc\ub3d9\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:55:29 [INFO] [시작] \uc804\ub0a8\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:55:33 [INFO] [추출] \uc804\ub0a8\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-07 23:55:33 [INFO] [완료] \uc804\ub0a8\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:55:33 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc
+2026-03-07 23:55:41 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc p1: 100건 (selector)
+2026-03-07 23:55:41 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc: 키워드 0건 / 전체 100건 (selector)
+2026-03-07 23:55:41 [INFO] [시작] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70
+2026-03-07 23:55:44 [INFO] [추출] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70 p1: 10건 (selector)
+2026-03-07 23:55:47 [INFO] [추출] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70 p2: 10건 (selector)
+2026-03-07 23:55:51 [INFO] [추출] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70 p3: 10건 (selector)
+2026-03-07 23:55:54 [INFO] [추출] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70 p4: 10건 (selector)
+2026-03-07 23:55:57 [INFO] [추출] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70 p5: 10건 (selector)
+2026-03-07 23:55:57 [INFO] [완료] \ucda9\uccad\ub3c4_\uc74c\uc131\uad70: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:55:57 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud558\ub3d9\uad70
+2026-03-07 23:55:59 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud558\ub3d9\uad70 p1: 10건 (selector)
+2026-03-07 23:56:01 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud558\ub3d9\uad70 p2: 10건 (selector)
+2026-03-07 23:56:02 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud558\ub3d9\uad70 p3: 10건 (selector)
+2026-03-07 23:56:02 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud558\ub3d9\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-07 23:56:02 [INFO] [시작] \uacbd\ubd81\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:56:05 [INFO] [추출] \uacbd\ubd81\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-07 23:56:07 [INFO] [추출] \uacbd\ubd81\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-07 23:56:07 [INFO] [완료] \uacbd\ubd81\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:56:07 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc
+2026-03-07 23:56:14 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc p1: 15건 (selector)
+2026-03-07 23:56:14 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc0c1\uc8fc\uc2dc: 키워드 0건 / 전체 15건 (selector)
+2026-03-07 23:56:14 [INFO] [시작] \ucda9\uccad\ub3c4_\uacc4\ub8e1\uc2dc
+2026-03-07 23:56:16 [INFO] [추출] \ucda9\uccad\ub3c4_\uacc4\ub8e1\uc2dc p1: 10건 (selector)
+2026-03-07 23:56:19 [INFO] [추출] \ucda9\uccad\ub3c4_\uacc4\ub8e1\uc2dc p2: 10건 (selector)
+2026-03-07 23:56:19 [INFO] [완료] \ucda9\uccad\ub3c4_\uacc4\ub8e1\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:56:19 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ubbf8\uc870\uba74
+2026-03-07 23:56:21 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ubbf8\uc870\uba74 p1: 10건 (selector)
+2026-03-07 23:56:21 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ubbf8\uc870\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:56:21 [INFO] [시작] \uacbd\ub0a8\uace0\uc2dc\uacf5\uace0
+2026-03-07 23:56:27 [INFO] [추출] \uacbd\ub0a8\uace0\uc2dc\uacf5\uace0 p1: 90건 (selector)
+2026-03-07 23:56:27 [INFO] [완료] \uacbd\ub0a8\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 90건 (selector)
+2026-03-07 23:56:27 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc
+2026-03-07 23:56:30 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc p1: 10건 (selector)
+2026-03-07 23:56:30 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc: 'cd11' → fallback
+2026-03-07 23:56:33 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc p2: 10건 (selector)
+2026-03-07 23:56:33 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc: 'cd11' → fallback
+2026-03-07 23:56:36 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc p3: 10건 (selector)
+2026-03-07 23:56:36 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc: 'cd11' → fallback
+2026-03-07 23:56:39 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc p4: 10건 (selector)
+2026-03-07 23:56:39 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc: 'cd11' → fallback
+2026-03-07 23:56:42 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc p5: 10건 (selector)
+2026-03-07 23:56:42 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc548\ub3d9\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:56:42 [INFO] [시작] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc
+2026-03-07 23:56:45 [INFO] [추출] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-07 23:56:45 [INFO] [완료] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:56:45 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud568\uc548\uad70
+2026-03-07 23:56:47 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud568\uc548\uad70 p1: 10건 (selector)
+2026-03-07 23:56:47 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud568\uc548\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:56:47 [INFO] [시작] \uacbd\uae30\ub3c4_\uace0\uc591\uc2dc
+2026-03-07 23:56:49 [INFO] [추출] \uacbd\uae30\ub3c4_\uace0\uc591\uc2dc p1: 60건 (selector)
+2026-03-07 23:56:49 [INFO] [완료] \uacbd\uae30\ub3c4_\uace0\uc591\uc2dc: 키워드 0건 / 전체 60건 (selector)
+2026-03-07 23:56:49 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\uc8fc\uc2dc
+2026-03-07 23:56:50 [WARNING] discarding data: None
+2026-03-07 23:56:50 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-07 23:56:50 [WARNING] [Claude→regex fallback 전환]
+2026-03-07 23:56:50 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\uc8fc\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:56:50 [INFO] [시작] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc
+2026-03-07 23:56:53 [INFO] [추출] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-07 23:56:53 [INFO] [완료] \ucda9\uccad\ub3c4_\uacf5\uc8fc\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:56:53 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\uba74
+2026-03-07 23:56:55 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\uba74 p1: 10건 (selector)
+2026-03-07 23:56:55 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:56:55 [INFO] [시작] \uacbd\uae30\ub3c4_\uc218\uc6d0\uc2dc
+2026-03-07 23:57:08 [INFO] [완료] \uacbd\uae30\ub3c4_\uc218\uc6d0\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:57:08 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\ucc9c\uc2dc
+2026-03-07 23:57:17 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\ucc9c\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:57:17 [INFO] [시작] \ucda9\uccad\ub3c4_\ubcf4\ub839\uc2dc
+2026-03-07 23:57:19 [INFO] [추출] \ucda9\uccad\ub3c4_\ubcf4\ub839\uc2dc p1: 10건 (selector)
+2026-03-07 23:57:21 [INFO] [추출] \ucda9\uccad\ub3c4_\ubcf4\ub839\uc2dc p2: 10건 (selector)
+2026-03-07 23:57:21 [INFO] [완료] \ucda9\uccad\ub3c4_\ubcf4\ub839\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-07 23:57:21 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uace0\ud604\uba74
+2026-03-07 23:57:28 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uace0\ud604\uba74 p1: 10건 (selector)
+2026-03-07 23:57:28 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uace0\ud604\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-07 23:57:28 [INFO] [시작] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc
+2026-03-07 23:57:30 [INFO] [추출] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-07 23:57:30 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc: 'cd7' → fallback
+2026-03-07 23:57:33 [INFO] [추출] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-07 23:57:33 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc: 'cd7' → fallback
+2026-03-07 23:57:35 [INFO] [추출] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc p3: 10건 (selector)
+2026-03-07 23:57:35 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc: 'cd7' → fallback
+2026-03-07 23:57:37 [INFO] [추출] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc p4: 10건 (selector)
+2026-03-07 23:57:37 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc: 'cd7' → fallback
+2026-03-07 23:57:40 [INFO] [추출] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc p5: 10건 (selector)
+2026-03-07 23:57:40 [INFO] [완료] \uacbd\uae30\ub3c4_\uacfc\ucc9c\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:57:40 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\ucc9c\uc2dc
+2026-03-07 23:57:49 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\ucc9c\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:57:49 [INFO] [시작] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc
+2026-03-07 23:59:00 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc p1: 10건 (selector)
+2026-03-07 23:59:00 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc: 'cd19' → fallback
+2026-03-07 23:59:23 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc p2: 10건 (selector)
+2026-03-07 23:59:23 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc: 'cd19' → fallback
+2026-03-07 23:59:29 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc p3: 10건 (selector)
+2026-03-07 23:59:29 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc: 'cd19' → fallback
+2026-03-07 23:59:42 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc p4: 10건 (selector)
+2026-03-07 23:59:42 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc: 'cd19' → fallback
+2026-03-07 23:59:50 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc p5: 10건 (selector)
+2026-03-07 23:59:50 [INFO] [완료] \ucda9\uccad\ub3c4_\uc11c\uc0b0\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-07 23:59:50 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uace0\uc131\uad70
+2026-03-07 23:59:59 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uace0\uc131\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-07 23:59:59 [INFO] [시작] \uacbd\uae30\ub3c4_\uad11\uba85\uc2dc
+2026-03-08 00:00:05 [INFO] [추출] \uacbd\uae30\ub3c4_\uad11\uba85\uc2dc p1: 90건 (selector)
+2026-03-08 00:00:05 [INFO] [완료] \uacbd\uae30\ub3c4_\uad11\uba85\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:00:05 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uace0\ub839\uad70
+2026-03-08 00:00:11 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uace0\ub839\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:00:11 [INFO] [시작] \ucda9\uccad\ub3c4_\uae08\uc0b0\uad70
+2026-03-08 00:00:13 [WARNING] Failed to parse headers (url=https://www.geumsan.go.kr:443/kr/html/sub03/030302.html?GotoPage=1): [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=kskjcf7nksmd9ivtpt1pa1ohk1; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/connection.py", line 574, in getresponse
+    assert_header_parsing(httplib_response.msg)
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/util/response.py", line 88, in assert_header_parsing
+    raise HeaderParsingError(defects=defects, unparsed_data=unparsed_data)
+urllib3.exceptions.HeaderParsingError: [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=kskjcf7nksmd9ivtpt1pa1ohk1; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+2026-03-08 00:00:19 [INFO] [추출] \ucda9\uccad\ub3c4_\uae08\uc0b0\uad70 p1: 10건 (selector)
+2026-03-08 00:00:19 [INFO] [완료] \ucda9\uccad\ub3c4_\uae08\uc0b0\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:00:19 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc124\ucc9c\uba74
+2026-03-08 00:00:20 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc124\ucc9c\uba74 p1: 10건 (selector)
+2026-03-08 00:00:20 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\uc124\ucc9c\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:00:20 [INFO] [시작] \uacbd\uae30\ub3c4_\uad6c\ub9ac\uc2dc
+2026-03-08 00:00:22 [INFO] [추출] \uacbd\uae30\ub3c4_\uad6c\ub9ac\uc2dc p1: 10건 (selector)
+2026-03-08 00:00:24 [INFO] [추출] \uacbd\uae30\ub3c4_\uad6c\ub9ac\uc2dc p2: 10건 (selector)
+2026-03-08 00:00:24 [INFO] [완료] \uacbd\uae30\ub3c4_\uad6c\ub9ac\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:00:24 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uace0\ub839\uad70
+2026-03-08 00:00:30 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uace0\ub839\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:00:30 [INFO] [시작] \ucda9\uccad\ub3c4_\ubd80\uc5ec\uad70
+2026-03-08 00:01:22 [INFO] [추출] \ucda9\uccad\ub3c4_\ubd80\uc5ec\uad70 p1: 12건 (selector)
+2026-03-08 00:01:22 [INFO] [완료] \ucda9\uccad\ub3c4_\ubd80\uc5ec\uad70: 키워드 0건 / 전체 12건 (selector)
+2026-03-08 00:01:22 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70
+2026-03-08 00:01:24 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70 p1: 10건 (selector)
+2026-03-08 00:01:25 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70 p2: 10건 (selector)
+2026-03-08 00:01:26 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70 p3: 10건 (selector)
+2026-03-08 00:01:27 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70 p4: 10건 (selector)
+2026-03-08 00:01:27 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uac70\ucc3d\uad70: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:01:27 [INFO] [시작] \uacbd\uae30\ub3c4_\uad70\ud3ec\uc2dc
+2026-03-08 00:01:33 [INFO] [추출] \uacbd\uae30\ub3c4_\uad70\ud3ec\uc2dc p1: 90건 (selector)
+2026-03-08 00:01:33 [INFO] [완료] \uacbd\uae30\ub3c4_\uad70\ud3ec\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:01:33 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uad70\uc704\uad70
+2026-03-08 00:01:35 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad70\uc704\uad70 p1: 10건 (selector)
+2026-03-08 00:01:35 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uad70\uc704\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:01:35 [INFO] [시작] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70
+2026-03-08 00:01:38 [INFO] [추출] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70 p1: 20건 (selector)
+2026-03-08 00:01:38 [INFO] [완료] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:01:38 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ucc3d\uc120\uba74
+2026-03-08 00:01:40 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ucc3d\uc120\uba74 p1: 10건 (selector)
+2026-03-08 00:01:40 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ucc3d\uc120\uba74: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:01:40 [INFO] [시작] \uacbd\uae30\ub3c4_\uae40\ud3ec\uc2dc
+2026-03-08 00:01:43 [INFO] [추출] \uacbd\uae30\ub3c4_\uae40\ud3ec\uc2dc p1: 90건 (selector)
+2026-03-08 00:01:43 [INFO] [완료] \uacbd\uae30\ub3c4_\uae40\ud3ec\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:01:43 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70
+2026-03-08 00:01:45 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70 p1: 10건 (selector)
+2026-03-08 00:01:48 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70 p2: 10건 (selector)
+2026-03-08 00:01:48 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:01:48 [INFO] [시작] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70
+2026-03-08 00:01:50 [INFO] [추출] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70 p1: 20건 (selector)
+2026-03-08 00:01:50 [INFO] [완료] \ucda9\uccad\ub3c4_\uc608\uc0b0\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:01:50 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc6b8\ub989\uad70
+2026-03-08 00:01:52 [WARNING] discarding data: None
+2026-03-08 00:01:52 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc6b8\ub989\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:01:52 [INFO] [시작] \uacbd\uae30\ub3c4_\ub0a8\uc591\uc8fc\uc2dc
+2026-03-08 00:01:54 [INFO] [추출] \uacbd\uae30\ub3c4_\ub0a8\uc591\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-08 00:01:57 [INFO] [추출] \uacbd\uae30\ub3c4_\ub0a8\uc591\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-08 00:01:57 [INFO] [완료] \uacbd\uae30\ub3c4_\ub0a8\uc591\uc8fc\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:01:57 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70
+2026-03-08 00:02:00 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70 p1: 10건 (selector)
+2026-03-08 00:02:00 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\ub355\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:02:00 [INFO] [시작] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70
+2026-03-08 00:02:04 [INFO] [추출] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:02:04 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70: 'cd13' → fallback
+2026-03-08 00:02:09 [INFO] [추출] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70 p2: 10건 (selector)
+2026-03-08 00:02:09 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70: 'cd13' → fallback
+2026-03-08 00:02:12 [INFO] [추출] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70 p3: 10건 (selector)
+2026-03-08 00:02:12 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70: 'cd13' → fallback
+2026-03-08 00:02:16 [INFO] [추출] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70 p4: 10건 (selector)
+2026-03-08 00:02:16 [WARNING] [알 수 없는 타입] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70: 'cd13' → fallback
+2026-03-08 00:02:20 [INFO] [추출] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70 p5: 10건 (selector)
+2026-03-08 00:02:20 [INFO] [완료] \ucda9\uccad\ub3c4_\ud64d\uc131\uad70: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:02:20 [INFO] [시작] \uacbd\uae30\ub3c4_\ub3d9\ub450\ucc9c\uc2dc
+2026-03-08 00:02:24 [INFO] [추출] \uacbd\uae30\ub3c4_\ub3d9\ub450\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:02:28 [INFO] [추출] \uacbd\uae30\ub3c4_\ub3d9\ub450\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-08 00:02:28 [INFO] [완료] \uacbd\uae30\ub3c4_\ub3d9\ub450\ucc9c\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:02:28 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uce60\uace1\uad70
+2026-03-08 00:02:30 [WARNING] discarding data: None
+2026-03-08 00:02:30 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uce60\uace1\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:02:30 [INFO] [시작] \uc804\ub77c\ub3c4_\uae40\uc81c\uc2dc
+2026-03-08 00:02:36 [INFO] [추출] \uc804\ub77c\ub3c4_\uae40\uc81c\uc2dc p1: 10건 (selector)
+2026-03-08 00:02:36 [INFO] [완료] \uc804\ub77c\ub3c4_\uae40\uc81c\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:02:36 [INFO] [시작] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc
+2026-03-08 00:02:40 [INFO] [추출] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc p1: 10건 (selector)
+2026-03-08 00:02:40 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc: 'cd7' → fallback
+2026-03-08 00:02:41 [INFO] [추출] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc p2: 10건 (selector)
+2026-03-08 00:02:41 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc: 'cd7' → fallback
+2026-03-08 00:02:43 [INFO] [추출] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc p3: 10건 (selector)
+2026-03-08 00:02:43 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc: 'cd7' → fallback
+2026-03-08 00:02:46 [INFO] [추출] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc p4: 10건 (selector)
+2026-03-08 00:02:46 [WARNING] [알 수 없는 타입] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc: 'cd7' → fallback
+2026-03-08 00:02:48 [INFO] [추출] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc p5: 10건 (selector)
+2026-03-08 00:02:48 [INFO] [완료] \uacbd\uae30\ub3c4_\uc2dc\ud765\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:02:48 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uce60\uace1\uad70
+2026-03-08 00:02:48 [WARNING] discarding data: None
+2026-03-08 00:02:48 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uce60\uace1\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:02:48 [INFO] [시작] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70
+2026-03-08 00:02:51 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70 p1: 10건 (selector)
+2026-03-08 00:02:54 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70 p2: 10건 (selector)
+2026-03-08 00:02:56 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70 p3: 10건 (selector)
+2026-03-08 00:02:58 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70 p4: 10건 (selector)
+2026-03-08 00:02:58 [INFO] [완료] \uc804\ub77c\ub3c4_\uace0\ucc3d\uad70: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:02:58 [INFO] [시작] \uacbd\uae30\ub3c4_\uc548\uc0b0\uc2dc
+2026-03-08 00:03:02 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc0b0\uc2dc p1: 15건 (selector)
+2026-03-08 00:03:06 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc0b0\uc2dc p2: 15건 (selector)
+2026-03-08 00:03:09 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc0b0\uc2dc p3: 15건 (selector)
+2026-03-08 00:03:09 [INFO] [완료] \uacbd\uae30\ub3c4_\uc548\uc0b0\uc2dc: 키워드 0건 / 전체 45건 (selector)
+2026-03-08 00:03:09 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc
+2026-03-08 00:03:11 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p1: 10건 (selector)
+2026-03-08 00:03:13 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p2: 10건 (selector)
+2026-03-08 00:03:15 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p3: 10건 (selector)
+2026-03-08 00:03:17 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p4: 10건 (selector)
+2026-03-08 00:03:19 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p5: 10건 (selector)
+2026-03-08 00:03:19 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:03:19 [INFO] [시작] \uc804\ub77c\ub3c4_\ubd80\uc548\uad70
+2026-03-08 00:03:22 [INFO] [추출] \uc804\ub77c\ub3c4_\ubd80\uc548\uad70 p1: 10건 (selector)
+2026-03-08 00:03:22 [INFO] [완료] \uc804\ub77c\ub3c4_\ubd80\uc548\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:03:22 [INFO] [시작] \uacbd\uae30\ub3c4_\uc5ec\uc8fc\uc2dc
+2026-03-08 00:03:33 [INFO] [추출] \uacbd\uae30\ub3c4_\uc5ec\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-08 00:03:41 [INFO] [추출] \uacbd\uae30\ub3c4_\uc5ec\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-08 00:03:48 [INFO] [추출] \uacbd\uae30\ub3c4_\uc5ec\uc8fc\uc2dc p3: 10건 (selector)
+2026-03-08 00:03:48 [INFO] [완료] \uacbd\uae30\ub3c4_\uc5ec\uc8fc\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:03:48 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc
+2026-03-08 00:03:50 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p1: 10건 (selector)
+2026-03-08 00:03:53 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc p2: 10건 (selector)
+2026-03-08 00:03:53 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:03:53 [INFO] [시작] \uc11c\uc6b8\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:06:15 [INFO] [완료] \uc11c\uc6b8\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:06:15 [INFO] [시작] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc
+2026-03-08 00:06:18 [INFO] [추출] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc p1: 10건 (selector)
+2026-03-08 00:06:18 [WARNING] [알 수 없는 타입] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc: 'cd18' → fallback
+2026-03-08 00:06:20 [INFO] [추출] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc p2: 10건 (selector)
+2026-03-08 00:06:20 [WARNING] [알 수 없는 타입] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc: 'cd18' → fallback
+2026-03-08 00:06:22 [INFO] [추출] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc p3: 10건 (selector)
+2026-03-08 00:06:22 [WARNING] [알 수 없는 타입] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc: 'cd18' → fallback
+2026-03-08 00:06:24 [INFO] [추출] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc p4: 10건 (selector)
+2026-03-08 00:06:24 [WARNING] [알 수 없는 타입] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc: 'cd18' → fallback
+2026-03-08 00:06:26 [INFO] [추출] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc p5: 10건 (selector)
+2026-03-08 00:06:26 [INFO] [완료] \uc804\ub77c\ub3c4_\uad11\uc591\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:06:26 [INFO] [시작] \uacbd\uae30\ub3c4_\uc624\uc0b0\uc2dc
+2026-03-08 00:06:29 [INFO] [추출] \uacbd\uae30\ub3c4_\uc624\uc0b0\uc2dc p1: 10건 (selector)
+2026-03-08 00:06:29 [INFO] [완료] \uacbd\uae30\ub3c4_\uc624\uc0b0\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:06:29 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc758\ucc3d\uad6c
+2026-03-08 00:06:31 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc758\ucc3d\uad6c p1: 10건 (selector)
+2026-03-08 00:06:31 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc758\ucc3d\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:06:31 [INFO] [시작] \ubd80\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:06:36 [INFO] [추출] \ubd80\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 17건 (selector)
+2026-03-08 00:06:36 [INFO] [완료] \ubd80\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 17건 (selector)
+2026-03-08 00:06:36 [INFO] [시작] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc
+2026-03-08 00:06:39 [INFO] [추출] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:06:41 [INFO] [추출] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-08 00:06:44 [INFO] [추출] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc p3: 10건 (selector)
+2026-03-08 00:06:46 [INFO] [추출] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc p4: 10건 (selector)
+2026-03-08 00:06:46 [INFO] [완료] \uc804\ub77c\ub3c4_\uc21c\ucc9c\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:06:46 [INFO] [시작] \uacbd\uae30\ub3c4_\ud3ec\ucc9c\uc2dc
+2026-03-08 00:06:49 [INFO] [추출] \uacbd\uae30\ub3c4_\ud3ec\ucc9c\uc2dc p1: 90건 (selector)
+2026-03-08 00:06:49 [INFO] [완료] \uacbd\uae30\ub3c4_\ud3ec\ucc9c\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:06:49 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc131\uc0b0\uad6c
+2026-03-08 00:06:52 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc131\uc0b0\uad6c p1: 10건 (selector)
+2026-03-08 00:06:52 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc131\uc0b0\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:06:52 [INFO] [시작] \ub300\uad6c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:06:57 [INFO] [추출] \ub300\uad6c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 36건 (selector)
+2026-03-08 00:06:57 [INFO] [완료] \ub300\uad6c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 36건 (selector)
+2026-03-08 00:06:57 [INFO] [시작] \uc804\ub77c\ub3c4_\uac15\uc9c4\uad70
+2026-03-08 00:06:59 [INFO] [추출] \uc804\ub77c\ub3c4_\uac15\uc9c4\uad70 p1: 15건 (selector)
+2026-03-08 00:06:59 [INFO] [완료] \uc804\ub77c\ub3c4_\uac15\uc9c4\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:06:59 [INFO] [시작] \uacbd\uae30\ub3c4_\ud558\ub0a8\uc2dc
+2026-03-08 00:07:02 [INFO] [추출] \uacbd\uae30\ub3c4_\ud558\ub0a8\uc2dc p1: 10건 (selector)
+2026-03-08 00:07:05 [INFO] [추출] \uacbd\uae30\ub3c4_\ud558\ub0a8\uc2dc p2: 10건 (selector)
+2026-03-08 00:07:05 [INFO] [완료] \uacbd\uae30\ub3c4_\ud558\ub0a8\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:07:05 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud569\ud3ec\uad6c
+2026-03-08 00:07:07 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud569\ud3ec\uad6c p1: 10건 (selector)
+2026-03-08 00:07:07 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud569\ud3ec\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:07:07 [INFO] [시작] \uc778\ucc9c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:07:09 [INFO] [추출] \uc778\ucc9c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 5건 (selector)
+2026-03-08 00:07:09 [INFO] [완료] \uc778\ucc9c\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 5건 (selector)
+2026-03-08 00:07:09 [INFO] [시작] \uc804\ub77c\ub3c4_\uace1\uc131\uad70
+2026-03-08 00:07:17 [INFO] [추출] \uc804\ub77c\ub3c4_\uace1\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:07:17 [INFO] [완료] \uc804\ub77c\ub3c4_\uace1\uc131\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:07:17 [INFO] [시작] \uacbd\uae30\ub3c4_\ud654\uc131\uc2dc
+2026-03-08 00:07:25 [INFO] [추출] \uacbd\uae30\ub3c4_\ud654\uc131\uc2dc p1: 80건 (selector)
+2026-03-08 00:07:25 [INFO] [완료] \uacbd\uae30\ub3c4_\ud654\uc131\uc2dc: 키워드 0건 / 전체 80건 (selector)
+2026-03-08 00:07:25 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud68c\uc6d0\uad6c
+2026-03-08 00:07:27 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud68c\uc6d0\uad6c p1: 10건 (selector)
+2026-03-08 00:07:27 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\ub9c8\uc0b0\ud68c\uc6d0\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:07:27 [INFO] [시작] \ub300\uc804\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:07:33 [INFO] [추출] \ub300\uc804\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 10건 (selector)
+2026-03-08 00:07:33 [INFO] [완료] \ub300\uc804\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:07:33 [INFO] [시작] \uc804\ub77c\ub3c4_\uad6c\ub840\uad70
+2026-03-08 00:10:11 [INFO] [완료] \uc804\ub77c\ub3c4_\uad6c\ub840\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:10:11 [INFO] [시작] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70
+2026-03-08 00:10:14 [INFO] [추출] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70 p1: 10건 (selector)
+2026-03-08 00:10:16 [INFO] [추출] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70 p2: 10건 (selector)
+2026-03-08 00:10:18 [INFO] [추출] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70 p3: 10건 (selector)
+2026-03-08 00:10:20 [INFO] [추출] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70 p4: 10건 (selector)
+2026-03-08 00:10:22 [INFO] [추출] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70 p5: 10건 (selector)
+2026-03-08 00:10:22 [INFO] [완료] \uacbd\uae30\ub3c4_\uac00\ud3c9\uad70: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:10:22 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc9c4\ud574\uad6c
+2026-03-08 00:10:24 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc9c4\ud574\uad6c p1: 10건 (selector)
+2026-03-08 00:10:24 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ucc3d\uc6d0\uc2dc_\uc9c4\ud574\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:10:24 [INFO] [시작] \uc6b8\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:10:27 [INFO] [추출] \uc6b8\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 11건 (selector)
+2026-03-08 00:10:27 [INFO] [완료] \uc6b8\uc0b0\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 11건 (selector)
+2026-03-08 00:10:27 [INFO] [시작] \uc804\ub77c\ub3c4_\ubb34\uc548\uad70
+2026-03-08 00:10:32 [INFO] [추출] \uc804\ub77c\ub3c4_\ubb34\uc548\uad70 p1: 15건 (selector)
+2026-03-08 00:10:32 [INFO] [완료] \uc804\ub77c\ub3c4_\ubb34\uc548\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:10:32 [INFO] [시작] \uacbd\uae30\ub3c4_\uc591\ud3c9\uad70
+2026-03-08 00:10:35 [INFO] [추출] \uacbd\uae30\ub3c4_\uc591\ud3c9\uad70 p1: 10건 (selector)
+2026-03-08 00:10:37 [INFO] [추출] \uacbd\uae30\ub3c4_\uc591\ud3c9\uad70 p2: 10건 (selector)
+2026-03-08 00:10:39 [INFO] [추출] \uacbd\uae30\ub3c4_\uc591\ud3c9\uad70 p3: 10건 (selector)
+2026-03-08 00:10:39 [INFO] [완료] \uacbd\uae30\ub3c4_\uc591\ud3c9\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:10:39 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uac70\uc81c\uc2dc
+2026-03-08 00:10:45 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uac70\uc81c\uc2dc p1: 90건 (selector)
+2026-03-08 00:10:45 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uac70\uc81c\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:10:45 [INFO] [시작] \uc138\uc885\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8
+2026-03-08 00:10:47 [INFO] [추출] \uc138\uc885\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8 p1: 13건 (selector)
+2026-03-08 00:10:47 [INFO] [완료] \uc138\uc885\uc2dc\uc124\uad00\ub9ac\uacf5\ub2e8: 키워드 0건 / 전체 13건 (selector)
+2026-03-08 00:10:47 [INFO] [시작] \uc804\ub77c\ub3c4_\ubcf4\uc131\uad70
+2026-03-08 00:11:05 [INFO] [완료] \uc804\ub77c\ub3c4_\ubcf4\uc131\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:11:05 [INFO] [시작] \uacbd\uae30\ub3c4_\uc5f0\ucc9c\uad70
+2026-03-08 00:11:07 [INFO] [추출] \uacbd\uae30\ub3c4_\uc5f0\ucc9c\uad70 p1: 50건 (selector)
+2026-03-08 00:11:07 [INFO] [완료] \uacbd\uae30\ub3c4_\uc5f0\ucc9c\uad70: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:11:07 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc
+2026-03-08 00:11:10 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc p1: 10건 (selector)
+2026-03-08 00:11:12 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc p2: 10건 (selector)
+2026-03-08 00:11:14 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc p3: 10건 (selector)
+2026-03-08 00:11:16 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc p4: 10건 (selector)
+2026-03-08 00:11:16 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:11:16 [INFO] [시작] \uc804\ub77c\ub3c4_\uc2e0\uc548\uad70
+2026-03-08 00:11:27 [INFO] [추출] \uc804\ub77c\ub3c4_\uc2e0\uc548\uad70 p1: 15건 (selector)
+2026-03-08 00:11:27 [INFO] [완료] \uc804\ub77c\ub3c4_\uc2e0\uc548\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:11:27 [INFO] [시작] \uc804\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c
+2026-03-08 00:11:29 [INFO] [추출] \uc804\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p1: 22건 (selector)
+2026-03-08 00:11:29 [INFO] [완료] \uc804\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c: 키워드 0건 / 전체 22건 (selector)
+2026-03-08 00:11:29 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc0bc\ucc99\uc2dc
+2026-03-08 00:11:31 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc0bc\ucc99\uc2dc p1: 10건 (selector)
+2026-03-08 00:11:33 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc0bc\ucc99\uc2dc p2: 10건 (selector)
+2026-03-08 00:11:33 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc0bc\ucc99\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:11:33 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc
+2026-03-08 00:11:35 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc p1: 10건 (selector)
+2026-03-08 00:11:35 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uae40\ud574\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:11:35 [INFO] [시작] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c
+2026-03-08 00:11:38 [INFO] [추출] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p1: 5건 (selector)
+2026-03-08 00:11:42 [INFO] [추출] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p2: 5건 (selector)
+2026-03-08 00:11:45 [INFO] [추출] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p3: 5건 (selector)
+2026-03-08 00:11:49 [INFO] [추출] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p4: 5건 (selector)
+2026-03-08 00:11:53 [INFO] [추출] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p5: 5건 (selector)
+2026-03-08 00:11:53 [INFO] [완료] \ucda9\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c: 키워드 0건 / 전체 25건 (selector)
+2026-03-08 00:11:53 [INFO] [시작] \uc804\ub77c\ub3c4_\uc601\uad11\uad70
+2026-03-08 00:11:56 [INFO] [추출] \uc804\ub77c\ub3c4_\uc601\uad11\uad70 p1: 10건 (selector)
+2026-03-08 00:11:59 [INFO] [추출] \uc804\ub77c\ub3c4_\uc601\uad11\uad70 p2: 10건 (selector)
+2026-03-08 00:11:59 [INFO] [완료] \uc804\ub77c\ub3c4_\uc601\uad11\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:11:59 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc6d0\uc8fc\uc2dc
+2026-03-08 00:12:02 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc6d0\uc8fc\uc2dc p1: 40건 (selector)
+2026-03-08 00:12:02 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc6d0\uc8fc\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:12:02 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc
+2026-03-08 00:12:13 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc p1: 10건 (selector)
+2026-03-08 00:12:19 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc p2: 10건 (selector)
+2026-03-08 00:12:25 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc p3: 10건 (selector)
+2026-03-08 00:12:25 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:12:25 [INFO] [시작] \uacbd\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c
+2026-03-08 00:12:27 [INFO] [추출] \uacbd\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p1: 8건 (selector)
+2026-03-08 00:12:27 [INFO] [완료] \uacbd\ub0a8\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c: 키워드 0건 / 전체 8건 (selector)
+2026-03-08 00:12:27 [INFO] [시작] \uc804\ub77c\ub3c4_\uc601\uc554\uad70
+2026-03-08 00:12:38 [INFO] [추출] \uc804\ub77c\ub3c4_\uc601\uc554\uad70 p1: 10건 (selector)
+2026-03-08 00:12:48 [INFO] [추출] \uc804\ub77c\ub3c4_\uc601\uc554\uad70 p2: 10건 (selector)
+2026-03-08 00:12:59 [INFO] [추출] \uc804\ub77c\ub3c4_\uc601\uc554\uad70 p3: 10건 (selector)
+2026-03-08 00:12:59 [INFO] [완료] \uc804\ub77c\ub3c4_\uc601\uc554\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:12:59 [INFO] [시작] \uac15\uc6d0\ub3c4_\ud0dc\ubc31\uc2dc
+2026-03-08 00:13:00 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud0dc\ubc31\uc2dc p1: 10건 (selector)
+2026-03-08 00:13:02 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud0dc\ubc31\uc2dc p2: 10건 (selector)
+2026-03-08 00:13:02 [INFO] [완료] \uac15\uc6d0\ub3c4_\ud0dc\ubc31\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:02 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc
+2026-03-08 00:13:09 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc p1: 10건 (selector)
+2026-03-08 00:13:16 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc p2: 10건 (selector)
+2026-03-08 00:13:16 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ubc00\uc591\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:16 [INFO] [시작] \uc804\ubd81\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c
+2026-03-08 00:13:19 [INFO] [추출] \uc804\ubd81\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p1: 10건 (selector)
+2026-03-08 00:13:21 [INFO] [추출] \uc804\ubd81\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c p2: 10건 (selector)
+2026-03-08 00:13:21 [INFO] [완료] \uc804\ubd81\ub3c4\ub85c\uad00\ub9ac\uc0ac\uc5c5\uc18c: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:21 [INFO] [시작] \uc804\ub77c\ub3c4_\uc644\ub3c4\uad70
+2026-03-08 00:13:26 [INFO] [추출] \uc804\ub77c\ub3c4_\uc644\ub3c4\uad70 p1: 15건 (selector)
+2026-03-08 00:13:26 [INFO] [완료] \uc804\ub77c\ub3c4_\uc644\ub3c4\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:13:26 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc601\uc6d4\uad70
+2026-03-08 00:13:28 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc601\uc6d4\uad70 p1: 10건 (selector)
+2026-03-08 00:13:30 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc601\uc6d4\uad70 p2: 10건 (selector)
+2026-03-08 00:13:30 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc601\uc6d4\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:30 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc0ac\ucc9c\uc2dc
+2026-03-08 00:13:32 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc0ac\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:13:35 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc0ac\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-08 00:13:35 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc0ac\ucc9c\uc2dc: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:35 [INFO] [시작] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:13:39 [INFO] [추출] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:13:41 [INFO] [추출] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:13:43 [INFO] [추출] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-08 00:13:46 [INFO] [추출] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p4: 10건 (selector)
+2026-03-08 00:13:48 [INFO] [추출] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p5: 10건 (selector)
+2026-03-08 00:13:48 [INFO] [완료] \ubd80\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:13:48 [INFO] [시작] \uc804\ub77c\ub3c4_\uc7a5\uc131\uad70
+2026-03-08 00:13:52 [INFO] [추출] \uc804\ub77c\ub3c4_\uc7a5\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:13:56 [INFO] [추출] \uc804\ub77c\ub3c4_\uc7a5\uc131\uad70 p2: 10건 (selector)
+2026-03-08 00:13:56 [INFO] [완료] \uc804\ub77c\ub3c4_\uc7a5\uc131\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:56 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc778\uc81c\uad70
+2026-03-08 00:13:59 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc778\uc81c\uad70 p1: 20건 (selector)
+2026-03-08 00:13:59 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc778\uc81c\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:13:59 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc
+2026-03-08 00:14:03 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p1: 10건 (selector)
+2026-03-08 00:14:03 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 'cd7' → fallback
+2026-03-08 00:14:06 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p2: 10건 (selector)
+2026-03-08 00:14:06 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 'cd7' → fallback
+2026-03-08 00:14:09 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p3: 10건 (selector)
+2026-03-08 00:14:09 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 'cd7' → fallback
+2026-03-08 00:14:38 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p4: 10건 (selector)
+2026-03-08 00:14:38 [WARNING] [알 수 없는 타입] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 'cd7' → fallback
+2026-03-08 00:14:41 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p5: 10건 (selector)
+2026-03-08 00:14:41 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:14:41 [INFO] [시작] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:14:44 [INFO] [추출] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:14:44 [WARNING] [알 수 없는 타입] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 'cd12' → fallback
+2026-03-08 00:14:46 [INFO] [추출] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:14:46 [WARNING] [알 수 없는 타입] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 'cd12' → fallback
+2026-03-08 00:14:48 [INFO] [추출] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-08 00:14:48 [WARNING] [알 수 없는 타입] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 'cd12' → fallback
+2026-03-08 00:14:51 [INFO] [추출] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p4: 10건 (selector)
+2026-03-08 00:14:51 [WARNING] [알 수 없는 타입] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 'cd12' → fallback
+2026-03-08 00:14:53 [INFO] [추출] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p5: 10건 (selector)
+2026-03-08 00:14:53 [INFO] [완료] \ub300\uad6c\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:14:53 [INFO] [시작] \uc804\ub77c\ub3c4_\uc9c4\ub3c4\uad70
+2026-03-08 00:14:56 [INFO] [추출] \uc804\ub77c\ub3c4_\uc9c4\ub3c4\uad70 p1: 10건 (selector)
+2026-03-08 00:14:56 [INFO] [완료] \uc804\ub77c\ub3c4_\uc9c4\ub3c4\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:14:56 [INFO] [시작] \uac15\uc6d0\ub3c4_\ucca0\uc6d0\uad70
+2026-03-08 00:14:58 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucca0\uc6d0\uad70 p1: 10건 (selector)
+2026-03-08 00:15:00 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucca0\uc6d0\uad70 p2: 10건 (selector)
+2026-03-08 00:15:00 [INFO] [완료] \uac15\uc6d0\ub3c4_\ucca0\uc6d0\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:15:00 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc
+2026-03-08 00:15:14 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc p1: 10건 (selector)
+2026-03-08 00:15:14 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc591\uc0b0\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:15:14 [INFO] [시작] \uc778\ucc9c\uad11\uc5ed\uc2dc\uc885\ud569\uac74\uc124\ubcf8\ubd80
+2026-03-08 00:15:17 [INFO] [추출] \uc778\ucc9c\uad11\uc5ed\uc2dc\uc885\ud569\uac74\uc124\ubcf8\ubd80 p1: 15건 (selector)
+2026-03-08 00:15:17 [INFO] [완료] \uc778\ucc9c\uad11\uc5ed\uc2dc\uc885\ud569\uac74\uc124\ubcf8\ubd80: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:15:17 [INFO] [시작] \uc804\ub77c\ub3c4_\ud568\ud3c9\uad70
+2026-03-08 00:15:21 [INFO] [완료] \uc804\ub77c\ub3c4_\ud568\ud3c9\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:15:21 [INFO] [시작] \uac15\uc6d0\ub3c4_\ud3c9\ucc3d\uad70
+2026-03-08 00:15:23 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud3c9\ucc3d\uad70 p1: 15건 (selector)
+2026-03-08 00:15:23 [INFO] [완료] \uac15\uc6d0\ub3c4_\ud3c9\ucc3d\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:15:23 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc9c4\uc8fc\uc2dc
+2026-03-08 00:17:41 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc9c4\uc8fc\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:17:41 [INFO] [시작] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:17:44 [INFO] [추출] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:17:47 [INFO] [추출] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:17:49 [INFO] [추출] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-08 00:17:52 [INFO] [추출] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p4: 10건 (selector)
+2026-03-08 00:18:21 [INFO] [추출] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p5: 10건 (selector)
+2026-03-08 00:18:21 [INFO] [완료] \uc6b8\uc0b0\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:18:21 [INFO] [시작] \uc804\ub77c\ub3c4_\ud568\ud3c9\uad70
+2026-03-08 00:18:23 [INFO] [추출] \uc804\ub77c\ub3c4_\ud568\ud3c9\uad70 p1: 10건 (selector)
+2026-03-08 00:18:23 [INFO] [완료] \uc804\ub77c\ub3c4_\ud568\ud3c9\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:18:23 [INFO] [시작] \uac15\uc6d0\ub3c4_\ud64d\ucc9c\uad70
+2026-03-08 00:18:53 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud64d\ucc9c\uad70 p1: 10건 (selector)
+2026-03-08 00:18:59 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud64d\ucc9c\uad70 p2: 10건 (selector)
+2026-03-08 00:18:59 [INFO] [완료] \uac15\uc6d0\ub3c4_\ud64d\ucc9c\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:18:59 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud1b5\uc601\uc2dc
+2026-03-08 00:19:01 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud1b5\uc601\uc2dc p1: 10건 (selector)
+2026-03-08 00:19:03 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud1b5\uc601\uc2dc p2: 10건 (selector)
+2026-03-08 00:19:05 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud1b5\uc601\uc2dc p3: 10건 (selector)
+2026-03-08 00:19:05 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud1b5\uc601\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:19:05 [INFO] [시작] \uac15\uc6d0\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:19:08 [INFO] [추출] \uac15\uc6d0\uace0\uc2dc\uacf5\uace0 p1: 90건 (selector)
+2026-03-08 00:19:08 [INFO] [완료] \uac15\uc6d0\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:19:08 [INFO] [시작] \uc804\ub77c\ub3c4_\ud574\ub0a8\uad70
+2026-03-08 00:19:11 [INFO] [추출] \uc804\ub77c\ub3c4_\ud574\ub0a8\uad70 p1: 100건 (selector)
+2026-03-08 00:19:11 [INFO] [완료] \uc804\ub77c\ub3c4_\ud574\ub0a8\uad70: 키워드 0건 / 전체 100건 (selector)
+2026-03-08 00:19:11 [INFO] [시작] \uac15\uc6d0\ub3c4_\ud6a1\uc131\uad70
+2026-03-08 00:19:14 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud6a1\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:19:17 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud6a1\uc131\uad70 p2: 10건 (selector)
+2026-03-08 00:19:17 [INFO] [완료] \uac15\uc6d0\ub3c4_\ud6a1\uc131\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:19:17 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\ud574\uc74d
+2026-03-08 00:19:18 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\ud574\uc74d p1: 10건 (selector)
+2026-03-08 00:19:18 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ub0a8\ud574\uad70_\ub0a8\ud574\uc74d: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:19:27 [INFO] [추출] \uc804\ub77c\ub3c4_\uc644\uc8fc\uad70 p1: 10건 (selector)
+2026-03-08 00:19:29 [INFO] [추출] \uc804\ub77c\ub3c4_\uc784\uc2e4\uad70 p1: 10건 (selector)
+2026-03-08 00:19:29 [INFO] [추출] \uacbd\uae30\ub3c4_\uc774\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:19:29 [INFO] [완료] \uacbd\uae30\ub3c4_\uc774\ucc9c\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:19:29 [INFO] [시작] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc
+2026-03-08 00:19:37 [INFO] [추출] \uc804\ub77c\ub3c4_\uc644\uc8fc\uad70 p2: 10건 (selector)
+2026-03-08 00:19:42 [INFO] [추출] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-08 00:19:42 [INFO] [완료] \uc804\ub77c\ub3c4_\uc784\uc2e4\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:19:42 [INFO] [시작] \uc804\ub77c\ub3c4_\uc7a5\uc218\uad70
+2026-03-08 00:19:47 [INFO] [추출] \uc804\ub77c\ub3c4_\uc644\uc8fc\uad70 p3: 10건 (selector)
+2026-03-08 00:19:47 [INFO] [완료] \uc804\ub77c\ub3c4_\uc644\uc8fc\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:19:47 [INFO] [시작] \uacbd\uae30\ub3c4_\ud3c9\ud0dd\uc2dc
+2026-03-08 00:19:52 [INFO] [추출] \uc804\ub77c\ub3c4_\uc7a5\uc218\uad70 p1: 10건 (selector)
+2026-03-08 00:19:52 [INFO] [완료] \uc804\ub77c\ub3c4_\uc7a5\uc218\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:19:52 [INFO] [시작] \uc804\ub77c\ub3c4_\uc9c4\uc548\uad70
+2026-03-08 00:19:54 [INFO] [추출] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-08 00:19:57 [INFO] [완료] \uc804\ub77c\ub3c4_\uc9c4\uc548\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:19:57 [INFO] [시작] \uac15\uc6d0\ub3c4_\uac15\ub989\uc2dc
+2026-03-08 00:19:58 [INFO] [추출] \uacbd\uae30\ub3c4_\ud3c9\ud0dd\uc2dc p1: 10건 (selector)
+2026-03-08 00:20:04 [INFO] [추출] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc p3: 10건 (selector)
+2026-03-08 00:20:07 [INFO] [추출] \uac15\uc6d0\ub3c4_\uac15\ub989\uc2dc p1: 10건 (selector)
+2026-03-08 00:20:09 [INFO] [완료] \uacbd\uae30\ub3c4_\ud3c9\ud0dd\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:20:09 [INFO] [시작] \uc804\ub77c\ub3c4_\ub098\uc8fc\uc2dc
+2026-03-08 00:20:12 [INFO] [추출] \uac15\uc6d0\ub3c4_\uac15\ub989\uc2dc p2: 10건 (selector)
+2026-03-08 00:20:14 [INFO] [추출] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc p4: 10건 (selector)
+2026-03-08 00:20:14 [INFO] [완료] \uacbd\uae30\ub3c4_\ud30c\uc8fc\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:20:14 [INFO] [시작] \uac15\uc6d0\ub3c4_\ub3d9\ud574\uc2dc
+2026-03-08 00:20:16 [INFO] [추출] \uac15\uc6d0\ub3c4_\uac15\ub989\uc2dc p3: 10건 (selector)
+2026-03-08 00:20:16 [INFO] [완료] \uac15\uc6d0\ub3c4_\uac15\ub989\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:20:16 [INFO] [시작] \uc804\ub77c\ub3c4_\ubaa9\ud3ec\uc2dc
+2026-03-08 00:20:24 [INFO] [추출] \uac15\uc6d0\ub3c4_\ub3d9\ud574\uc2dc p1: 90건 (selector)
+2026-03-08 00:20:24 [INFO] [완료] \uac15\uc6d0\ub3c4_\ub3d9\ud574\uc2dc: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:20:24 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc18d\ucd08\uc2dc
+2026-03-08 00:20:28 [INFO] [추출] \uc804\ub77c\ub3c4_\ubaa9\ud3ec\uc2dc p1: 15건 (selector)
+2026-03-08 00:20:34 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc18d\ucd08\uc2dc p1: 15건 (selector)
+2026-03-08 00:20:37 [INFO] [추출] \uc804\ub77c\ub3c4_\ubaa9\ud3ec\uc2dc p2: 15건 (selector)
+2026-03-08 00:20:43 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc18d\ucd08\uc2dc p2: 15건 (selector)
+2026-03-08 00:20:43 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc18d\ucd08\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:20:43 [INFO] [시작] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc
+2026-03-08 00:20:46 [INFO] [추출] \uc804\ub77c\ub3c4_\ubaa9\ud3ec\uc2dc p3: 15건 (selector)
+2026-03-08 00:20:46 [INFO] [완료] \uc804\ub77c\ub3c4_\ubaa9\ud3ec\uc2dc: 키워드 0건 / 전체 45건 (selector)
+2026-03-08 00:20:46 [INFO] [시작] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc
+2026-03-08 00:20:54 [INFO] [추출] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc p1: 15건 (selector)
+2026-03-08 00:20:58 [INFO] [추출] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc p2: 15건 (selector)
+2026-03-08 00:20:59 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:21:02 [INFO] [완료] \uc804\ub77c\ub3c4_\ub098\uc8fc\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:21:02 [INFO] [시작] \uc804\ub77c\ub3c4_\uace0\ud765\uad70
+2026-03-08 00:21:02 [INFO] [추출] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc p3: 15건 (selector)
+2026-03-08 00:21:07 [INFO] [추출] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc p4: 15건 (selector)
+2026-03-08 00:21:07 [INFO] [완료] \uc804\ub77c\ub3c4_\uc5ec\uc218\uc2dc: 키워드 0건 / 전체 60건 (selector)
+2026-03-08 00:21:07 [INFO] [시작] \uac15\uc6d0\ub3c4_\uace0\uc131\uad70
+2026-03-08 00:21:09 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-08 00:21:14 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ud765\uad70 p1: 10건 (selector)
+2026-03-08 00:21:18 [INFO] [추출] \uac15\uc6d0\ub3c4_\uace0\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:21:19 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc p3: 10건 (selector)
+2026-03-08 00:21:23 [INFO] [추출] \uc804\ub77c\ub3c4_\uace0\ud765\uad70 p2: 10건 (selector)
+2026-03-08 00:21:23 [INFO] [완료] \uc804\ub77c\ub3c4_\uace0\ud765\uad70: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:21:23 [INFO] [시작] \uc804\ub77c\ub3c4_\ub2f4\uc591\uad70
+2026-03-08 00:21:29 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc p4: 10건 (selector)
+2026-03-08 00:21:30 [INFO] [완료] \uac15\uc6d0\ub3c4_\uace0\uc131\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:21:30 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc591\uad6c\uad70
+2026-03-08 00:21:35 [INFO] [완료] \uacbd\uae30\ub3c4_\uc758\uc815\ubd80\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:21:35 [INFO] [시작] \uc804\ub77c\ub3c4_\uc7a5\ud765\uad70
+2026-03-08 00:21:39 [INFO] [추출] \uc804\ub77c\ub3c4_\ub2f4\uc591\uad70 p1: 10건 (selector)
+2026-03-08 00:21:39 [INFO] [추출] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc p5: 10건 (selector)
+2026-03-08 00:21:40 [INFO] [완료] \uac15\uc6d0\ub3c4_\ucd98\ucc9c\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:21:40 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc591\uc591\uad70
+2026-03-08 00:21:42 [INFO] [추출] \uc804\ub77c\ub3c4_\uc7a5\ud765\uad70 p1: 15건 (selector)
+2026-03-08 00:21:42 [INFO] [완료] \uc804\ub77c\ub3c4_\uc7a5\ud765\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:21:42 [INFO] [시작] \uc804\ub77c\ub3c4_\ud654\uc21c\uad70
+2026-03-08 00:21:47 [WARNING] discarding data: None
+2026-03-08 00:21:47 [INFO] [완료] \uc804\ub77c\ub3c4_\ud654\uc21c\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:21:47 [INFO] [시작] \uac15\uc6d0\ub3c4_\uc815\uc120\uad70
+2026-03-08 00:21:51 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc591\uc591\uad70 p1: 10건 (selector)
+2026-03-08 00:21:51 [INFO] [추출] \uc804\ub77c\ub3c4_\ub2f4\uc591\uad70 p2: 10건 (selector)
+2026-03-08 00:21:56 [INFO] [추출] \uac15\uc6d0\ub3c4_\uc591\uad6c\uad70 p1: 100건 (selector)
+2026-03-08 00:21:56 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc591\uad6c\uad70: 키워드 0건 / 전체 100건 (selector)
+2026-03-08 00:21:56 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uacbd\uc0b0\uc2dc
+2026-03-08 00:22:00 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uacbd\uc0b0\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:22:00 [INFO] [시작] \uac15\uc6d0\ub3c4_\ud654\ucc9c\uad70
+2026-03-08 00:22:01 [INFO] [추출] \uc804\ub77c\ub3c4_\ub2f4\uc591\uad70 p3: 10건 (selector)
+2026-03-08 00:22:01 [INFO] [완료] \uc804\ub77c\ub3c4_\ub2f4\uc591\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:22:01 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc
+2026-03-08 00:22:03 [WARNING] discarding data: None
+2026-03-08 00:22:03 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc591\uc591\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:22:03 [INFO] [시작] \ucda9\uccad\ub3c4_\uad34\uc0b0\uad70
+2026-03-08 00:22:08 [INFO] [완료] \ucda9\uccad\ub3c4_\uad34\uc0b0\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:22:08 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc
+2026-03-08 00:22:09 [INFO] [완료] \uac15\uc6d0\ub3c4_\uc815\uc120\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:22:09 [INFO] [시작] \uad11\uc8fc\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:22:10 [INFO] [추출] \uac15\uc6d0\ub3c4_\ud654\ucc9c\uad70 p1: 10건 (selector)
+2026-03-08 00:22:10 [INFO] [완료] \uac15\uc6d0\ub3c4_\ud654\ucc9c\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:22:10 [INFO] [시작] \ucda9\uccad\ub3c4_\ub2e8\uc591\uad70
+2026-03-08 00:22:15 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc p1: 10건 (selector)
+2026-03-08 00:22:16 [INFO] [추출] \uad11\uc8fc\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:22:21 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc p1: 10건 (selector)
+2026-03-08 00:22:24 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc p2: 10건 (selector)
+2026-03-08 00:22:24 [INFO] [추출] \uad11\uc8fc\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:22:25 [INFO] [추출] \ucda9\uccad\ub3c4_\ub2e8\uc591\uad70 p1: 10건 (selector)
+2026-03-08 00:22:32 [INFO] [추출] \uad11\uc8fc\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-08 00:22:32 [INFO] [완료] \uad11\uc8fc\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:22:32 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc
+2026-03-08 00:22:32 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc p3: 10건 (selector)
+2026-03-08 00:22:33 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc p2: 10건 (selector)
+2026-03-08 00:22:38 [INFO] [완료] \ucda9\uccad\ub3c4_\ub2e8\uc591\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:22:38 [INFO] [시작] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:22:41 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc p4: 10건 (selector)
+2026-03-08 00:22:44 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc p3: 10건 (selector)
+2026-03-08 00:22:45 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc p1: 40건 (selector)
+2026-03-08 00:22:45 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:22:45 [INFO] [시작] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc_\uc0c1\ub2f9\uad6c
+2026-03-08 00:22:49 [INFO] [regex fallback] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건
+2026-03-08 00:22:49 [INFO] [추출] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p1: 10건 (regex)
+2026-03-08 00:22:49 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc p5: 10건 (selector)
+2026-03-08 00:22:49 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uad6c\ubbf8\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:22:49 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ubd09\ud654\uad70
+2026-03-08 00:22:56 [INFO] [추출] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc p4: 10건 (selector)
+2026-03-08 00:22:56 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud3ec\ud56d\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:22:56 [INFO] [시작] \uc138\uc885\uc18c\uac1c\uacf5\uace0
+2026-03-08 00:22:57 [INFO] [추출] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc_\uc0c1\ub2f9\uad6c p1: 10건 (selector)
+2026-03-08 00:22:58 [INFO] [regex fallback] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건
+2026-03-08 00:22:58 [INFO] [추출] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p2: 10건 (regex)
+2026-03-08 00:23:03 [INFO] [추출] \uc138\uc885\uc18c\uac1c\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:23:06 [INFO] [regex fallback] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건
+2026-03-08 00:23:06 [INFO] [추출] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p3: 10건 (regex)
+2026-03-08 00:23:12 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ubd09\ud654\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:12 [INFO] [시작] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc_\ud765\ub355\uad6c
+2026-03-08 00:23:12 [INFO] [추출] \uc138\uc885\uc18c\uac1c\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:23:12 [INFO] [완료] \uc138\uc885\uc18c\uac1c\uacf5\uace0: 키워드 0건 / 전체 20건 (selector)
+2026-03-08 00:23:12 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc131\uc8fc\uad70
+2026-03-08 00:23:12 [INFO] [완료] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc_\uc0c1\ub2f9\uad6c: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:23:12 [INFO] [시작] \uacbd\uae30\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:23:13 [INFO] [regex fallback] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p4: 10건
+2026-03-08 00:23:13 [INFO] [추출] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p4: 10건 (regex)
+2026-03-08 00:23:16 [INFO] [완료] \ucda9\uccad\ub3c4_\uccad\uc8fc\uc2dc_\ud765\ub355\uad6c: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:16 [INFO] [시작] \ucda9\uccad\ub3c4_\ubcf4\uc740\uad70
+2026-03-08 00:23:17 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc131\uc8fc\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:17 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc131\uc8fc\uad70
+2026-03-08 00:23:21 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc131\uc8fc\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:21 [INFO] [시작] \uacbd\uae30\ub3c4\uac10\uc0ac\uc704\uc6d0\ud68c\uace0\uc2dc\uacf5\uace0
+2026-03-08 00:23:21 [INFO] [regex fallback] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p5: 10건
+2026-03-08 00:23:21 [INFO] [추출] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0 p5: 10건 (regex)
+2026-03-08 00:23:21 [INFO] [완료] \ub300\uc804\uad11\uc5ed\uc2dc\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (regex)
+2026-03-08 00:23:21 [INFO] [시작] \ucda9\uccad\ub3c4_\uc601\ub3d9\uad70
+2026-03-08 00:23:31 [INFO] [추출] \ucda9\uccad\ub3c4_\ubcf4\uc740\uad70 p1: 10건 (selector)
+2026-03-08 00:23:31 [INFO] [완료] \ucda9\uccad\ub3c4_\ubcf4\uc740\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:23:31 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc601\uc591\uad70
+2026-03-08 00:23:33 [INFO] [추출] \uacbd\uae30\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:23:34 [INFO] [추출] \ucda9\uccad\ub3c4_\uc601\ub3d9\uad70 p1: 15건 (selector)
+2026-03-08 00:23:34 [INFO] [완료] \ucda9\uccad\ub3c4_\uc601\ub3d9\uad70: 키워드 0건 / 전체 15건 (selector)
+2026-03-08 00:23:34 [INFO] [시작] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uad8c\uc120\uad6c
+2026-03-08 00:23:35 [INFO] [추출] \uacbd\uae30\ub3c4\uac10\uc0ac\uc704\uc6d0\ud68c\uace0\uc2dc\uacf5\uace0 p1: 10건 (selector)
+2026-03-08 00:23:35 [INFO] [완료] \uacbd\uae30\ub3c4\uac10\uc0ac\uc704\uc6d0\ud68c\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:23:35 [INFO] [시작] \ucda9\uccad\ub3c4_\uc99d\ud3c9\uad70
+2026-03-08 00:23:35 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc601\uc591\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:35 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc608\ucc9c\uad70
+2026-03-08 00:23:37 [INFO] [완료] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uad8c\uc120\uad6c: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:37 [INFO] [시작] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uc7a5\uc548\uad6c
+2026-03-08 00:23:38 [INFO] [완료] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uc7a5\uc548\uad6c: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:38 [INFO] [시작] \ucda9\uccad\ub3c4_\uc9c4\ucc9c\uad70
+2026-03-08 00:23:40 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc608\ucc9c\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:40 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc608\ucc9c\uad70
+2026-03-08 00:23:42 [INFO] [추출] \uacbd\uae30\uace0\uc2dc\uacf5\uace0 p2: 10건 (selector)
+2026-03-08 00:23:44 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc608\ucc9c\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:44 [INFO] [시작] \uacbd\uae30\ub3c4_\uc218\uc6d0_\ud314\ub2ec\uad6c
+2026-03-08 00:23:45 [INFO] [추출] \uacbd\uae30\uace0\uc2dc\uacf5\uace0 p3: 10건 (selector)
+2026-03-08 00:23:45 [INFO] [완료] \uacbd\uae30\ub3c4_\uc218\uc6d0_\ud314\ub2ec\uad6c: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:45 [INFO] [시작] \ucda9\uccad\ub3c4_\ub17c\uc0b0\uc2dc
+2026-03-08 00:23:48 [INFO] [완료] \ucda9\uccad\ub3c4_\uc9c4\ucc9c\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:48 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70
+2026-03-08 00:23:48 [INFO] [추출] \uacbd\uae30\uace0\uc2dc\uacf5\uace0 p4: 10건 (selector)
+2026-03-08 00:23:49 [INFO] [추출] \ucda9\uccad\ub3c4_\uc99d\ud3c9\uad70 p1: 10건 (selector)
+2026-03-08 00:23:51 [INFO] [추출] \uacbd\uae30\uace0\uc2dc\uacf5\uace0 p5: 10건 (selector)
+2026-03-08 00:23:51 [INFO] [완료] \uacbd\uae30\uace0\uc2dc\uacf5\uace0: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:23:51 [INFO] [시작] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uc601\ud1b5\uad6c
+2026-03-08 00:23:52 [INFO] [완료] \uacbd\uae30\ub3c4_\uc218\uc6d0_\uc601\ud1b5\uad6c: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:23:52 [INFO] [시작] \ucda9\uccad\ub3c4_\ub2f9\uc9c4\uc2dc
+2026-03-08 00:23:57 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:24:00 [INFO] [완료] \ucda9\uccad\ub3c4_\uc99d\ud3c9\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:24:00 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70
+2026-03-08 00:24:02 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70 p2: 10건 (selector)
+2026-03-08 00:24:07 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70 p3: 10건 (selector)
+2026-03-08 00:24:07 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:24:07 [INFO] [시작] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\uacf5\ubc95\uc120\uc815\uc704\uc6d0\ud68c
+2026-03-08 00:24:09 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70 p1: 10건 (selector)
+2026-03-08 00:24:09 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc758\uc131\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:24:09 [INFO] [시작] \ucda9\uccad\ub3c4_\uc544\uc0b0\uc2dc
+2026-03-08 00:24:10 [INFO] [완료] \ucda9\uccad\ub3c4_\ub2f9\uc9c4\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:24:10 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uccad\ub3c4\uad70
+2026-03-08 00:24:15 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uccad\ub3c4\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:24:15 [INFO] [시작] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c
+2026-03-08 00:24:18 [INFO] [추출] \ucda9\uccad\ub3c4_\uc544\uc0b0\uc2dc p1: 10건 (selector)
+2026-03-08 00:24:18 [INFO] [완료] \ucda9\uccad\ub3c4_\uc544\uc0b0\uc2dc: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:24:18 [INFO] [시작] \ucda9\uccad\ub3c4_\ucc9c\uc548\uc2dc
+2026-03-08 00:24:19 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\uacf5\ubc95\uc120\uc815\uc704\uc6d0\ud68c p1: 12건 (selector)
+2026-03-08 00:24:19 [INFO] [완료] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\uacf5\ubc95\uc120\uc815\uc704\uc6d0\ud68c: 키워드 11건 / 전체 12건 (selector)
+2026-03-08 00:24:19 [INFO] [시작] \uacbd\uc0c1\ub3c4_\uc0b0\uccad\uad70
+2026-03-08 00:24:22 [INFO] [완료] \ucda9\uccad\ub3c4_\ub17c\uc0b0\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:24:22 [INFO] [시작] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc
+2026-03-08 00:24:23 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c p1: 10건 (selector)
+2026-03-08 00:24:27 [INFO] [추출] \ucda9\uccad\ub3c4_\ucc9c\uc548\uc2dc p1: 10건 (selector)
+2026-03-08 00:24:30 [INFO] [추출] \uacbd\uc0c1\ub3c4_\uc0b0\uccad\uad70 p1: 90건 (selector)
+2026-03-08 00:24:30 [INFO] [완료] \uacbd\uc0c1\ub3c4_\uc0b0\uccad\uad70: 키워드 0건 / 전체 90건 (selector)
+2026-03-08 00:24:30 [INFO] [시작] \ucda9\uccad\ub3c4_\uc11c\ucc9c\uad70
+2026-03-08 00:24:31 [INFO] [추출] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc p1: 10건 (selector)
+2026-03-08 00:24:32 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c p2: 10건 (selector)
+2026-03-08 00:24:37 [INFO] [추출] \ucda9\uccad\ub3c4_\ucc9c\uc548\uc2dc p2: 10건 (selector)
+2026-03-08 00:24:40 [INFO] [추출] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc p2: 10건 (selector)
+2026-03-08 00:24:42 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c p3: 10건 (selector)
+2026-03-08 00:24:42 [INFO] [추출] \ucda9\uccad\ub3c4_\uc11c\ucc9c\uad70 p1: 11건 (selector)
+2026-03-08 00:24:42 [INFO] [완료] \ucda9\uccad\ub3c4_\uc11c\ucc9c\uad70: 키워드 0건 / 전체 11건 (selector)
+2026-03-08 00:24:42 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud568\uc591\uad70
+2026-03-08 00:24:46 [INFO] [추출] \ucda9\uccad\ub3c4_\ucc9c\uc548\uc2dc p3: 10건 (selector)
+2026-03-08 00:24:46 [INFO] [완료] \ucda9\uccad\ub3c4_\ucc9c\uc548\uc2dc: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:24:46 [INFO] [시작] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc
+2026-03-08 00:24:49 [INFO] [추출] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc p3: 10건 (selector)
+2026-03-08 00:24:52 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c p4: 10건 (selector)
+2026-03-08 00:24:55 [INFO] [추출] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc p1: 10건 (selector)
+2026-03-08 00:24:58 [INFO] [추출] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc p4: 10건 (selector)
+2026-03-08 00:24:58 [INFO] [완료] \uacbd\uae30\ub3c4_\uad11\uc8fc\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:24:58 [INFO] [시작] \ucda9\uccad\ub3c4_\uccad\uc591\uad70
+2026-03-08 00:25:03 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud568\uc591\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:25:03 [INFO] [시작] \uacbd\uc0c1\ub3c4_\ud569\ucc9c\uad70
+2026-03-08 00:25:03 [INFO] [추출] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c p5: 10건 (selector)
+2026-03-08 00:25:03 [INFO] [완료] \uacbd\uae30\ub3c4_\uc6a9\uc778\uc2dc\ucc98\uc778\uad6c: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:25:03 [INFO] [시작] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc
+2026-03-08 00:25:04 [INFO] [추출] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc p2: 10건 (selector)
+2026-03-08 00:25:11 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc p1: 10건 (selector)
+2026-03-08 00:25:13 [INFO] [추출] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc p3: 10건 (selector)
+2026-03-08 00:25:19 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc p2: 10건 (selector)
+2026-03-08 00:25:22 [INFO] [추출] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc p4: 10건 (selector)
+2026-03-08 00:25:23 [INFO] [완료] \uacbd\uc0c1\ub3c4_\ud569\ucc9c\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:25:23 [INFO] [시작] \ucda9\uccad\ub3c4_\ud0dc\uc548\uad70
+2026-03-08 00:25:26 [INFO] [완료] \ucda9\uccad\ub3c4_\uccad\uc591\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:25:26 [INFO] [시작] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc218\uc815\uad6c
+2026-03-08 00:25:27 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc p3: 10건 (selector)
+2026-03-08 00:25:30 [INFO] [추출] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc p5: 10건 (selector)
+2026-03-08 00:25:30 [INFO] [완료] \uacbd\uae30\ub3c4_\ubd80\ucc9c\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:25:30 [INFO] [시작] \uc804\ub77c\ub3c4_\uad70\uc0b0\uc2dc
+2026-03-08 00:25:35 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc218\uc815\uad6c p1: 10건 (selector)
+2026-03-08 00:25:35 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc p4: 10건 (selector)
+2026-03-08 00:25:42 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc218\uc815\uad6c p2: 10건 (selector)
+2026-03-08 00:25:43 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc p5: 10건 (selector)
+2026-03-08 00:25:43 [INFO] [완료] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc: 키워드 0건 / 전체 50건 (selector)
+2026-03-08 00:25:43 [INFO] [시작] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc911\uc6d0\uad6c
+2026-03-08 00:25:49 [INFO] [완료] \uc804\ub77c\ub3c4_\uad70\uc0b0\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:25:49 [INFO] [시작] \uc804\ub77c\ub3c4_\uc775\uc0b0\uc2dc
+2026-03-08 00:25:50 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc218\uc815\uad6c p3: 10건 (selector)
+2026-03-08 00:25:50 [INFO] [완료] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc218\uc815\uad6c: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:25:50 [INFO] [시작] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c
+2026-03-08 00:25:51 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc911\uc6d0\uad6c p1: 10건 (selector)
+2026-03-08 00:25:54 [INFO] [완료] \uc804\ub77c\ub3c4_\uc775\uc0b0\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:25:54 [INFO] [시작] \uc804\ub77c\ub3c4_\uc804\uc8fc\uc2dc
+2026-03-08 00:25:58 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c p1: 10건 (selector)
+2026-03-08 00:25:58 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc911\uc6d0\uad6c p2: 10건 (selector)
+2026-03-08 00:26:05 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c p2: 10건 (selector)
+2026-03-08 00:26:06 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc911\uc6d0\uad6c p3: 10건 (selector)
+2026-03-08 00:26:06 [INFO] [완료] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\uc911\uc6d0\uad6c: 키워드 0건 / 전체 30건 (selector)
+2026-03-08 00:26:06 [INFO] [시작] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc
+2026-03-08 00:26:13 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c p3: 10건 (selector)
+2026-03-08 00:26:21 [INFO] [추출] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c p4: 10건 (selector)
+2026-03-08 00:26:21 [INFO] [완료] \uacbd\uae30\ub3c4_\uc131\ub0a8\uc2dc\ubd84\ub2f9\uad6c: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:26:21 [INFO] [시작] \uc804\ub77c\ub3c4_\uc815\uc74d\uc2dc
+2026-03-08 00:26:26 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc p1: 10건 (selector)
+2026-03-08 00:26:39 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc p2: 10건 (selector)
+2026-03-08 00:26:50 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc p3: 10건 (selector)
+2026-03-08 00:26:51 [INFO] [완료] \uc804\ub77c\ub3c4_\uc815\uc74d\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:26:51 [INFO] [시작] \uacbd\uae30\ub3c4_\uc548\uc591\uc2dc
+2026-03-08 00:27:02 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc591\uc2dc p1: 40건 (selector)
+2026-03-08 00:27:02 [INFO] [완료] \uacbd\uae30\ub3c4_\uc548\uc591\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:27:02 [INFO] [시작] \uc804\ub77c\ub3c4_\ubb34\uc8fc\uad70
+2026-03-08 00:27:03 [INFO] [추출] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc p4: 10건 (selector)
+2026-03-08 00:27:03 [INFO] [완료] \uacbd\uae30\ub3c4_\uc548\uc131\uc2dc: 키워드 0건 / 전체 40건 (selector)
+2026-03-08 00:27:03 [INFO] [시작] \uacbd\uae30\ub3c4_\uc758\uc655\uc2dc
+2026-03-08 00:27:07 [INFO] [완료] \uacbd\uae30\ub3c4_\uc758\uc655\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:27:07 [INFO] [시작] \uc804\ub77c\ub3c4_\uc21c\ucc3d\uad70
+2026-03-08 00:27:12 [INFO] [완료] \uc804\ub77c\ub3c4_\uc21c\ucc3d\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:27:13 [INFO] [추출] \uc804\ub77c\ub3c4_\ubb34\uc8fc\uad70 p1: 10건 (selector)
+2026-03-08 00:27:27 [INFO] [완료] \uc804\ub77c\ub3c4_\ubb34\uc8fc\uad70: 키워드 0건 / 전체 10건 (selector)
+2026-03-08 00:27:39 [INFO] [완료] \ucda9\uccad\ub3c4_\ud0dc\uc548\uad70: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:28:08 [INFO] [완료] \uc804\ub77c\ub3c4_\uc804\uc8fc\uc2dc: 키워드 0건 / 전체 0건 (selector)
+2026-03-08 00:28:08 [INFO] ===== 결과: 성공 164 | 실패 49 | 스킵 16 / 전체 229 =====
+2026-03-08 00:28:08 [INFO] 추출 방식: {'skip': 16, 'selector': 212, 'regex': 1}
+2026-03-08 00:28:10 [INFO] [업로드] '✅키워드공고': 12행
+2026-03-08 00:28:15 [INFO] [업로드] '📋전체공고(키워드제외)': 6425행
+2026-03-08 00:28:16 [INFO] [업로드] '크롤링로그': 229행
+2026-03-08 00:28:16 [INFO] ===== 완료: 키워드공고 13건 =====
