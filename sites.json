@@ -1,1834 +1,3666 @@
 [
   {
     "id": "A001",
-    "name": "서울시설관리공단",
+    "name": "\\uc11c\\uc6b8\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.sisul.or.kr/open_content/main/bbs/bbsMsgList.do?bcd=specific&listsz=10&symd=&eymd=&keyfield=title&keyword=",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.left.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A002",
-    "name": "부산시설관리공단",
+    "name": "\\ubd80\\uc0b0\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.bisco.or.kr/news/news01/index.asp",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subjectNews",
+      "date": "td:nth-child(8)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A003",
-    "name": "대구시설관리공단",
+    "name": "\\ub300\\uad6c\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.dpfc.or.kr/sub.php?page_mode=1&Page1=4&Page2=3&Page3=1&Page4=2&mode=list&page_mode=&board_name=notice&search_field=total&search_key=",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(3)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A004",
-    "name": "인천시설관리공단",
+    "name": "\\uc778\\ucc9c\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.insiseol.or.kr/life/urban/notice/notice.jsp",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#detail_con > div.board_list > ul",
+      "title": "a",
+      "date": "li.center"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A005",
-    "name": "대전시설관리공단",
+    "name": "\\ub300\\uc804\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.djsiseol.or.kr/portal/sub060301_list.asp",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.td_left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A006",
-    "name": "울산시설관리공단",
+    "name": "\\uc6b8\\uc0b0\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.uic.or.kr/notify/noti01.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "span a",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A007",
-    "name": "세종시설관리공단",
+    "name": "\\uc138\\uc885\\uc2dc\\uc124\\uad00\\ub9ac\\uacf5\\ub2e8",
     "url": "https://www.sjfmc.or.kr/kor/sub02_01/cop/bbs/BBSMSTR_000000000013/selectBoardList.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.left",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A008",
-    "name": "전남도로관리사업소",
+    "name": "\\uc804\\ub0a8\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://road.jeonnam.go.kr/main/na/ntt/selectNttList.do?mi=9094&bbsId=7",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A009",
-    "name": "충남도로관리사업소",
+    "name": "\\ucda9\\ub0a8\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.chungnam.go.kr/cnportal/province/province/list.do?menuNo=500487&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A010",
-    "name": "충북도로관리사업소",
+    "name": "\\ucda9\\ubd81\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.chungbuk.go.kr/road/selectBbsNttList.do?key=1975&bbsNo=292&searchCnd=SJ&searchKrwd=",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "time"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A011",
-    "name": "경북플랫폼",
+    "name": "\\uacbd\\ubd81\\ud50c\\ub7ab\\ud3fc",
     "url": "https://www.gb.go.kr/Main/open_contents/section/newtech/page.do?mnu_uid=5890&LARGE_CODE=630&MEDIUM_CODE=50&SMALL_CODE=10&&mnu_order=5",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td.b_date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A012",
-    "name": "경북도로관리사업소",
+    "name": "\\uacbd\\ubd81\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.gb.go.kr/Main/open_contents/section/finace/page.do?mnu_uid=2737&LARGE_CODE=330&MEDIUM_CODE=30&SMALL_CODE=20&SMALL_CODE2=30&mnu_order=4",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.b_subject",
+      "date": "td.b_date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A012-1",
-    "name": "경북도로관리사업소",
+    "name": "\\uacbd\\ubd81\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.gb.go.kr/Main/page.do?mnu_uid=6786&LARGE_CODE=720&MEDIUM_CODE=50&SMALL_CODE=10&SMALL_CODE2=10&",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.b_subject",
+      "date": "td.b_date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A013",
-    "name": "경남도로관리사업소",
+    "name": "\\uacbd\\ub0a8\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.gyeongnam.go.kr/street/board/list.gyeong?boardId=BBS_0000020&menuCd=DOM_000000704001000000&contentsSid=239&cpath=%2Fstreet",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A014",
-    "name": "전북도로관리사업소",
+    "name": "\\uc804\\ubd81\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000129&menuCd=DOM_000000102002005000&contentsSid=1379&cpath=&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A015",
-    "name": "강원도로관리사업소",
+    "name": "\\uac15\\uc6d0\\ub3c4\\ub85c\\uad00\\ub9ac\\uc0ac\\uc5c5\\uc18c",
     "url": "https://state.gwd.go.kr/road/announce?pageIndex=1&recordCountPerPage=90",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td.skinTb-date.skinTxa-center"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A016-1",
-    "name": "광주도시관리공사",
+    "name": "\\uad11\\uc8fc\\ub3c4\\uc2dc\\uad00\\ub9ac\\uacf5\\uc0ac",
     "url": "https://www.gumc.or.kr/news/bidding",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "fail"
+    "skip_reason": "fail",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "fail"
   },
   {
     "id": "A016-2",
-    "name": "광주도시관리공사",
+    "name": "\\uad11\\uc8fc\\ub3c4\\uc2dc\\uad00\\ub9ac\\uacf5\\uc0ac",
     "url": "https://www.gumc.or.kr/news/news",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "fail"
+    "skip_reason": "fail",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "fail"
   },
   {
     "id": "A017",
-    "name": "서울특별시건설신기술공법선정위원회",
+    "name": "\\uc11c\\uc6b8\\ud2b9\\ubcc4\\uc2dc\\uac74\\uc124\\uc2e0\\uae30\\uc220\\uacf5\\ubc95\\uc120\\uc815\\uc704\\uc6d0\\ud68c",
     "url": "https://news.seoul.go.kr/citybuild/archives/516614#list/1",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "table",
+      "title": "td.sib-lst-type-basic-subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A018",
-    "name": "부산광역시고시공고",
+    "name": "\\ubd80\\uc0b0\\uad11\\uc5ed\\uc2dc\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.busan.go.kr/nbgosi?curPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.pc_Y.ta_Y.mo_Y.title",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A019",
-    "name": "대구광역시고시공고",
+    "name": "\\ub300\\uad6c\\uad11\\uc5ed\\uc2dc\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.daegu.go.kr/index.do?menu_id=00940170",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "cd12",
+    "div": "V2"
   },
   {
     "id": "A020",
-    "name": "인천광역시종합건설본부",
+    "name": "\\uc778\\ucc9c\\uad11\\uc5ed\\uc2dc\\uc885\\ud569\\uac74\\uc124\\ubcf8\\ubd80",
     "url": "https://www.incheon.go.kr/jonggeon/JO020101",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.board-list-subject.al.sm-view",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A021",
-    "name": "광주광역시고시공고",
+    "name": "\\uad11\\uc8fc\\uad11\\uc5ed\\uc2dc\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://sido.gwangju.go.kr/citynet/jsp/sap/SAPGosiBizProcess.do?command=searchList&flag=gosiGL&svp=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(5) > td > table > tbody",
+      "title": "td:nth-child(2)",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd16",
+    "div": "V2"
   },
   {
     "id": "A022",
-    "name": "대전광역시고시공고",
+    "name": "\\ub300\\uc804\\uad11\\uc5ed\\uc2dc\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.daejeon.go.kr/drh/drhGosiList.do?gosigbn=A&menuSeq=1908",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title.al_left",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd5",
+    "div": "V2"
   },
   {
     "id": "A023",
-    "name": "울산광역시고시공고",
+    "name": "\\uc6b8\\uc0b0\\uad11\\uc5ed\\uc2dc\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.ulsan.go.kr/u/rep/transfer/notice/list.ulsan?mId=001004002000000000&curPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A024",
-    "name": "세종소개공고",
+    "name": "\\uc138\\uc885\\uc18c\\uac1c\\uacf5\\uace0",
     "url": "https://www.sejong.go.kr/prog/publicNotice/kor/sub02_0303/C1/list.do",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.text-left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd3",
+    "div": "V2"
   },
   {
     "id": "A025",
-    "name": "경기고시공고",
+    "name": "\\uacbd\\uae30\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.gg.go.kr/bbs/board.do?bsIdx=469&menuId=1547#page=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject.text-left.N.N.N.N",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A026",
-    "name": "강원고시공고",
+    "name": "\\uac15\\uc6d0\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://state.gwd.go.kr/portal/bulletin/notification?pageIndex=1&recordCountPerPage=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date.skinTxa-center"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A027",
-    "name": "충북고시공고",
+    "name": "\\ucda9\\ubd81\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.chungbuk.go.kr/www/selectGosiPblancList.do?key=422&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject > a",
+      "date": "time"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A028",
-    "name": "충남고시공고",
+    "name": "\\ucda9\\ub0a8\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.chungnam.go.kr/cnportal/province/province/list.do?menuNo=500487&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.td-subj",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A029",
-    "name": "전북고시공고",
+    "name": "\\uc804\\ubd81\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000129&menuCd=DOM_000000102002005000&contentsSid=1379&cpath=&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A030",
-    "name": "전남고시공고",
+    "name": "\\uc804\\ub0a8\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.jeonnam.go.kr/J0203/boardList.do?menuId=jeonnam0203000000&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title.left.petition",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A031",
-    "name": "경북고시공고",
+    "name": "\\uacbd\\ubd81\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.gb.go.kr/Main/page.do?mnu_uid=6789&LARGE_CODE=720&MEDIUM_CODE=50&SMALL_CODE=10&SMALL_CODE2=30&Start=0",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.b_subject",
+      "date": "td.b_date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A032",
-    "name": "경남고시공고",
+    "name": "\\uacbd\\ub0a8\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://www.gyeongnam.go.kr/index.gyeong?menuCd=DOM_000000135003009001&pageLine=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A033",
-    "name": "경기도감사위원회고시공고",
+    "name": "\\uacbd\\uae30\\ub3c4\\uac10\\uc0ac\\uc704\\uc6d0\\ud68c\\uace0\\uc2dc\\uacf5\\uace0",
     "url": "https://newtech.gg.go.kr/main/pblanNow.do",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(7)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A034",
-    "name": "경기도_고양시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uace0\\uc591\\uc2dc",
     "url": "https://eminwon.goyang.go.kr/emwp/gov/mogaha/ntis/web/ofr/action/OfrAction.do?jndinm=OfrNotAncmtEJB&context=NTIS&method=selectListOfrNotAncmt&methodnm=selectListOfrNotAncmtHomepage&homepage_pbs_yn=Y&subCheck=Y&not_ancmt_se_code=01,04,05&title=%EA%B3%A0%EC%8B%9C%EA%B3%B5%EA%B3%A0&initValue=Y&countYn=Y&epcCheck=Y&yyyymmdd=&ofr_pageSize=60",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.text-left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A035",
-    "name": "경기도_수원시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc218\\uc6d0\\uc2dc",
     "url": "https://www.suwon.go.kr/web/saeallOfr/BD_ofrList.do?q_currPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A036",
-    "name": "경기도_수원_권선구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc218\\uc6d0_\\uad8c\\uc120\\uad6c",
     "url": "https://eminwon.suwon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,03,04&cgg_code=3760000&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd14",
+    "div": "V2"
   },
   {
     "id": "A037",
-    "name": "경기도_수원_장안구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc218\\uc6d0_\\uc7a5\\uc548\\uad6c",
     "url": "https://eminwon.suwon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,03,04&cgg_code=3750000&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd14",
+    "div": "V2"
   },
   {
     "id": "A038",
-    "name": "경기도_수원_팔달구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc218\\uc6d0_\\ud314\\ub2ec\\uad6c",
     "url": "http://eminwon.suwon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,03,04&cgg_code=3770000&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd14",
+    "div": "V2"
   },
   {
     "id": "A039",
-    "name": "경기도_수원_영통구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc218\\uc6d0_\\uc601\\ud1b5\\uad6c",
     "url": "https://eminwon.suwon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,03,04&cgg_code=5610000&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd14",
+    "div": "V2"
   },
   {
     "id": "A040",
-    "name": "경기도_용인시공법선정위원회",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc6a9\\uc778\\uc2dc\\uacf5\\ubc95\\uc120\\uc815\\uc704\\uc6d0\\ud68c",
     "url": "https://www.yongin.go.kr/user/bbs/BD_selectBbsList.do?q_bbsCode=1156",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.td_al",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A041",
-    "name": "경기도_용인시처인구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc6a9\\uc778\\uc2dc\\ucc98\\uc778\\uad6c",
     "url": "https://eminwon.yongin.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04&homepage_pbs_yn=Y&subCheck=Y&ofr_pageSize=10&jndinm=OfrNotAncmtEJB&context=NTIS&list_gubun=&epcCheck=Y;",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd6",
+    "div": "V2"
   },
   {
     "id": "A042",
-    "name": "경기도_과천시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uacfc\\ucc9c\\uc2dc",
     "url": "https://www.gccity.go.kr/portal/saeol/gosi/list.do?mId=0301040000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A043",
-    "name": "경기도_광명시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uad11\\uba85\\uc2dc",
     "url": "https://www.gm.go.kr/pt/user/nftcBbs/BD_selectNftcBbsList.do?q_nftcBbsCode=1001&q_rowPerPage=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A044",
-    "name": "경기도_광주시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uad11\\uc8fc\\uc2dc",
     "url": "https://www.gjcity.go.kr/portal/saeol/gosi/list.do?mId=0202010000&token=1688448678130",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A045",
-    "name": "경기도_구리시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uad6c\\ub9ac\\uc2dc",
     "url": "https://www.guri.go.kr/www/selectGosiNttList.do?key=387&searchGosiSe=01,04,06&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td.last"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A046",
-    "name": "경기도_군포시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uad70\\ud3ec\\uc2dc",
     "url": "https://gunpo.go.kr/www/selectEminwonNoticeList.do?key=3907&Not_ancmt_se_code=01&list_gubun=N&ofr_pageSize=10&notAncmtSeCd=01&pageUnit=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A047",
-    "name": "경기도_김포시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uae40\\ud3ec\\uc2dc",
     "url": "https://www.gimpo.go.kr/portal/ntfcPblancList.do?key=1004&cate_cd=1&searchCnd=40900000000&pageUnit=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A048",
-    "name": "경기도_남양주시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ub0a8\\uc591\\uc8fc\\uc2dc",
     "url": "https://www.nyj.go.kr/www/selectEminwonWebList.do?key=2492&cpn=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(2)",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A049",
-    "name": "경기도_동두천시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ub3d9\\ub450\\ucc9c\\uc2dc",
     "url": "https://www.ddc.go.kr/ddc/selectGosiList.do?key=340&not_ancmt_se_code=04&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A050",
-    "name": "경기도_부천시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ubd80\\ucc9c\\uc2dc",
     "url": "https://eminwon.bucheon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd",
+    "div": "V2"
   },
   {
     "id": "A051",
-    "name": "경기도_성남시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc131\\ub0a8\\uc2dc",
     "url": "https://eminwon.seongnam.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05,06,07",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d1",
+    "ct2": "cd1",
+    "div": "V2"
   },
   {
     "id": "A052",
-    "name": "경기도_성남시수정구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc131\\ub0a8\\uc2dc\\uc218\\uc815\\uad6c",
     "url": "http://eminwon.seongnam.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?cgg_code=3790000&not_ancmt_se_code=01,02,03,04,05,06&list_gubun=&nodate_recent_mm=12",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd1",
+    "div": "V2"
   },
   {
     "id": "A053",
-    "name": "경기도_성남시중원구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc131\\ub0a8\\uc2dc\\uc911\\uc6d0\\uad6c",
     "url": "http://eminwon.seongnam.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?cgg_code=3800000&not_ancmt_se_code=01,02,30,04,05,06&recent_mm=12&list_gubun=&nodate_recent_mm=12",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd1",
+    "div": "V2"
   },
   {
     "id": "A054",
-    "name": "경기도_성남시분당구",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc131\\ub0a8\\uc2dc\\ubd84\\ub2f9\\uad6c",
     "url": "http://eminwon.seongnam.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?cgg_code=3810000&list_gubun=&nodate_recent_mm=12&not_ancmt_se_code=&recent_mm=3",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd1",
+    "div": "V2"
   },
   {
     "id": "A055",
-    "name": "경기도_시흥시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc2dc\\ud765\\uc2dc",
     "url": "https://www.siheung.go.kr/main/saeol/gosi/list.do?mId=0401040100",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.tit",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A056",
-    "name": "경기도_안산시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc548\\uc0b0\\uc2dc",
     "url": "https://www.ansan.go.kr/www/common/bbs/selectPageListBbs.do?bbs_code=WWW13&currentPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A059",
-    "name": "경기도_안성시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc548\\uc131\\uc2dc",
     "url": "https://www.anseong.go.kr/portal/saeol/gosiList.do?mId=0501040000&token=1717572030185",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.gosi_tit",
+      "date": "td.gosi_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd26",
+    "div": "V2"
   },
   {
     "id": "A060",
-    "name": "경기도_안양시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc548\\uc591\\uc2dc",
     "url": "https://www.anyang.go.kr/main/emwsWebList.do?key=4101&searchGosiSe=01,03,04&pageUnit=40",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(2)",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A061",
-    "name": "경기도_양주시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc591\\uc8fc\\uc2dc",
     "url": "https://www.yangju.go.kr/www/selectBbsNttList.do?bbsNo=13&key=202",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
+    "skip_reason": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8\\ub41c\\ub4ef"
   },
   {
     "id": "A062",
-    "name": "경기도_여주시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc5ec\\uc8fc\\uc2dc",
     "url": "https://www.yeoju.go.kr/www/selectEminwonList.do?key=413&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3) > a",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A063",
-    "name": "경기도_오산시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc624\\uc0b0\\uc2dc",
     "url": "https://www.osan.go.kr/portal/saeol/gosi/list.do?mId=0302010000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A064",
-    "name": "경기도_의왕시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc758\\uc655\\uc2dc",
     "url": "https://eminwon.uiwang.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,04,06&homepage_pbs_yn=Y&subCheck=Y&ofr_pageSize=10&jndinm=OfrNotAncmtEJB&context=NTIS&list_gubun=A&epcCheck=''",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32)",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A065",
-    "name": "경기도_의정부시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc758\\uc815\\ubd80\\uc2dc",
     "url": "https://www.ui4u.go.kr/portal/saeol/gosiList.do?seCode=01&mId=0301040000",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd2",
+    "div": "V2"
   },
   {
     "id": "A066",
-    "name": "경기도_이천시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc774\\ucc9c\\uc2dc",
     "url": "https://www.icheon.go.kr/portal/saeol/gosi/list.do?seCode=01&mid=0402010000&token=1707785005520",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A067",
-    "name": "경기도_파주시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ud30c\\uc8fc\\uc2dc",
     "url": "https://dong.paju.go.kr/dong/user/board/BD_board.list.do?bbsCd=1022&q_ctgCd=4063",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.cell-subject",
+      "date": "td:nth-child(4) > i"
+    },
+    "crawl_type": "d",
+    "ct2": "cd4",
+    "div": "V2"
   },
   {
     "id": "A068",
-    "name": "경기도_평택시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ud3c9\\ud0dd\\uc2dc",
     "url": "https://www.pyeongtaek.go.kr/pyeongtaek/saeol/gosi/list.do?mid=0401020100",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd26",
+    "div": "V2"
   },
   {
     "id": "A069",
-    "name": "경기도_포천시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ud3ec\\ucc9c\\uc2dc",
     "url": "https://www.pocheon.go.kr/www/selectEminwonList.do?key=12563&notAncmtSeCode=01&pageUnit=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(2)",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A070",
-    "name": "경기도_하남시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ud558\\ub0a8\\uc2dc",
     "url": "https://www.hanam.go.kr/www/selectGosiList.do?key=171&not_ancmt_se_code=01,04&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(3)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A071",
-    "name": "경기도_화성시",
+    "name": "\\uacbd\\uae30\\ub3c4_\\ud654\\uc131\\uc2dc",
     "url": "https://eminwon.hscity.go.kr/emwp/gov/mogaha/ntis/web/ofr/action/OfrAction.do?pageIndex=&jndinm=OfrNotAncmtEJB&context=NTIS&method=selectListOfrNotAncmt&methodnm=selectListOfrNotAncmtHomepage&not_ancmt_mgt_no=&homepage_pbs_yn=Y&subCheck=Y&ofr_pageSize=80&not_ancmt_se_code=01%2C04&not_ancmt_sj=&not_ancmt_cn=&dept_nm=&cgg_code=&not_ancmt_reg_no=&cha_dep_code_nm=&yyyy=2024&Key=B_Subject&temp=",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A072",
-    "name": "경기도_가평군",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uac00\\ud3c9\\uad70",
     "url": "https://www.gp.go.kr/portal/selectGosiList.do?key=2148&not_ancmt_se_code=01&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(3)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A073",
-    "name": "경기도_양평군",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc591\\ud3c9\\uad70",
     "url": "https://www.yp21.go.kr/www/selectBbsNttList.do?bbsNo=5&key=1119&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "time"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A074",
-    "name": "경기도_연천군",
+    "name": "\\uacbd\\uae30\\ub3c4_\\uc5f0\\ucc9c\\uad70",
     "url": "https://www.yeoncheon.go.kr/www/selectGosiList.do?key=3393&not_ancmt_se_code=01&pageUnit=50",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(3)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A075",
-    "name": "강원도_강릉시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uac15\\ub989\\uc2dc",
     "url": "https://www.gn.go.kr/www/selectGosiNttList.do?key=263&searchGosiSe=01,04,06&pageIndex=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td.last"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A076",
-    "name": "강원도_동해시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ub3d9\\ud574\\uc2dc",
     "url": "https://www.dh.go.kr/www/selectBbsNttList.do?bbsNo=87&key=478&recordCountPerPage=90",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A077",
-    "name": "강원도_삼척시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc0bc\\ucc99\\uc2dc",
     "url": "https://www.samcheok.go.kr/media/00084/00095.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#body_content > div.list1f1t3i1 > ul",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A078",
-    "name": "강원도_속초시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc18d\\ucd08\\uc2dc",
     "url": "https://www.sokcho.go.kr/sc/portal/sokchonews/notification",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date.skinTxa-center"
+    },
+    "crawl_type": "d",
+    "ct2": "cd29",
+    "div": "V2"
   },
   {
     "id": "A079",
-    "name": "강원도_원주시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc6d0\\uc8fc\\uc2dc",
     "url": "https://www.wonju.go.kr/www/selectBbsNttList.do?bbsNo=140&key=216&pageUnit=40",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A080",
-    "name": "강원도_춘천시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ucd98\\ucc9c\\uc2dc",
     "url": "https://www.chuncheon.go.kr/cityhall/administrative-info/notice-info/notice-announcement/?pageIndex=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#board",
+      "title": "a",
+      "date": "span.day"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A081",
-    "name": "강원도_태백시",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ud0dc\\ubc31\\uc2dc",
     "url": "https://www.taebaek.go.kr/www/selectBbsNttList.do?bbsNo=25&key=352&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A082",
-    "name": "강원도_고성군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uace0\\uc131\\uad70",
     "url": "https://eminwon.gwgs.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.td_left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd30",
+    "div": "V2"
   },
   {
     "id": "A083",
-    "name": "강원도_양구군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc591\\uad6c\\uad70",
     "url": "https://www.yanggu.go.kr/user_sub?gfnc=www&mu_idx=226&pgsize=100",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tl.title",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A084",
-    "name": "강원도_양양군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc591\\uc591\\uad70",
     "url": "https://eminwon.yangyang.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04,05,06",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd28",
+    "div": "V2"
   },
   {
     "id": "A085",
-    "name": "강원도_영월군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc601\\uc6d4\\uad70",
     "url": "https://www.yw.go.kr/www/selectBbsNttList.do?bbsNo=17&key=273&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A086",
-    "name": "강원도_인제군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc778\\uc81c\\uad70",
     "url": "https://www.inje.go.kr/portal/adm/bulletin/notify",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date.skinTxa-center"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A087",
-    "name": "강원도_정선군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\uc815\\uc120\\uad70",
     "url": "https://eminwon.jeongseon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04,05,06",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd31",
+    "div": "V2"
   },
   {
     "id": "A088",
-    "name": "강원도_철원군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ucca0\\uc6d0\\uad70",
     "url": "https://www.cwg.go.kr/www/selectBbsNttList.do?bbsNo=25&key=1226&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(6)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A089",
-    "name": "강원도_평창군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ud3c9\\ucc3d\\uad70",
     "url": "https://www.pc.go.kr/portal/government/government-notification",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.skinTb-sbj",
+      "date": "td.skinTb-date.skinTxa-center"
+    },
+    "crawl_type": "s",
+    "ct2": "cd29",
+    "div": "V2"
   },
   {
     "id": "A090",
-    "name": "강원도_홍천군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ud64d\\ucc9c\\uad70",
     "url": "https://www.hongcheon.go.kr/www/selectEminwonList.do?key=278&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A091",
-    "name": "강원도_화천군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ud654\\ucc9c\\uad70",
     "url": "http://eminwon.ihc.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,04",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "body > form > table:nth-child(32) > tbody > tr > td > table:nth-child(1) > tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A092",
-    "name": "강원도_횡성군",
+    "name": "\\uac15\\uc6d0\\ub3c4_\\ud6a1\\uc131\\uad70",
     "url": "https://www.hsg.go.kr/www/selectBbsNttList.do?bbsNo=65&key=821&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A093",
-    "name": "충청도_제천시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc81c\\ucc9c\\uc2dc",
     "url": "https://www.jecheon.go.kr/www/selectBbsNttList.do?bbsNo=18&key=5233&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "time"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A094",
-    "name": "충청도_청주시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uccad\\uc8fc\\uc2dc",
     "url": "https://www.cheongju.go.kr/www/selectEminwonNoticeList.do?key=23366&notAncmtSeCd=&searchCnd=all&searchKrwd=&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A095",
-    "name": "충청도_충주시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ucda9\\uc8fc\\uc2dc",
     "url": "https://www.chungju.go.kr/www/selectEminwonList.do?key=510&ofr_pageSize=90&ancmt_se_code=01,02,04&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A096",
-    "name": "충청도_괴산군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uad34\\uc0b0\\uad70",
     "url": "https://eminwon.goesan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01&list_gubun=",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A097",
-    "name": "충청도_단양군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ub2e8\\uc591\\uad70",
     "url": "https://eminwon.danyang.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,03,04,05&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A098",
-    "name": "충청도_청주시_상당구",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uccad\\uc8fc\\uc2dc_\\uc0c1\\ub2f9\\uad6c",
     "url": "https://eminwon.cheongju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04&yyyy=2020",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd8",
+    "div": "V2"
   },
   {
     "id": "A099",
-    "name": "충청도_청주시_서원구",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uccad\\uc8fc\\uc2dc_\\uc11c\\uc6d0\\uad6c",
     "url": "https://eminwon.cheongju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04&yyyy=2020&cha_dep_code_nm=57250210000,57250220000,57250040000,57250270000,57250060000,57250070000,57250280000,57250090000",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "IP\\ucc28\\ub2e8"
+    "skip_reason": "IP\\ucc28\\ub2e8",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "IP\\ucc28\\ub2e8"
   },
   {
     "id": "A100",
-    "name": "충청도_청주시_흥덕구",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uccad\\uc8fc\\uc2dc_\\ud765\\ub355\\uad6c",
     "url": "https://eminwon.cheongju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04,05&cha_dep_code_nm=57300220000,57300210000,57300040000,57300230000,57300060000,57300070000,57300240000,57300090000,57102000000&yyyy=2018",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd8",
+    "div": "V2"
   },
   {
     "id": "A101",
-    "name": "충청도_보은군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ubcf4\\uc740\\uad70",
     "url": "https://www.boeun.go.kr/www/selectBbsNttList.do?bbsNo=66&key=194&pageIndex=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A102",
-    "name": "충청도_영동군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc601\\ub3d9\\uad70",
     "url": "https://www.yd21.go.kr/kr/html/sub02/020103.html",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.reg_date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A103",
-    "name": "충청도_옥천군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc625\\ucc9c\\uad70",
     "url": "https://www.oc.go.kr/www/selectBbsNttList.do?bbsNo=40&key=236&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.p-subject",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A104",
-    "name": "충청도_음성군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc74c\\uc131\\uad70",
     "url": "https://www.eumseong.go.kr/www/selectEminwonList.do?key=80&pageUnit=10&ofr_pageSize=10&amp;not_ancmt_se_code=01,02,03,04,05&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(2)",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A105",
-    "name": "충청도_증평군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc99d\\ud3c9\\uad70",
     "url": "http://eminwon.jp.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,03,04,06&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "form > table:nth-child(23) > tbody > tr > td > table > tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d2",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A106",
-    "name": "충청도_진천군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc9c4\\ucc9c\\uad70",
     "url": "http://eminwon.jincheon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05,06",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.w100.mCont_scroll_ifr > table:nth-child(1) > tbody",
+      "title": "#titleHit",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d2",
+    "ct2": "cd9",
+    "div": "V2"
   },
   {
     "id": "A107",
-    "name": "충청도_계룡시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uacc4\\ub8e1\\uc2dc",
     "url": "https://gyeryong.go.kr/kr/html/sub03/030102.html?GotoPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.text-left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A108",
-    "name": "충청도_공주시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uacf5\\uc8fc\\uc2dc",
     "url": "https://www.gongju.go.kr/prog/saeolGosi/GOSI_01/sub04_03_01/list.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A108-1",
-    "name": "충청도_공주시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uacf5\\uc8fc\\uc2dc",
     "url": "https://www.gongju.go.kr/prog/saeolGosi/GOSI_03/sub04_03_03/list.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A109",
-    "name": "충청도_논산시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ub17c\\uc0b0\\uc2dc",
     "url": "https://eminwon.nonsan21.net/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,05,04,06",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd15",
+    "div": "V2"
   },
   {
     "id": "A110",
-    "name": "충청도_당진시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ub2f9\\uc9c4\\uc2dc",
     "url": "https://eminwon.dangjin.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,03,04,05,06&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d2",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A111",
-    "name": "충청도_보령시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ubcf4\\ub839\\uc2dc",
     "url": "https://www.brcn.go.kr/prog/eminwon/kor/BB/sub04_03_01/list.do?pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.left",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A112",
-    "name": "충청도_서산시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc11c\\uc0b0\\uc2dc",
     "url": "https://www.seosan.go.kr/common/program/eminwonView.jsp?pageIndex=&jndinm=OfrNotAncmtEJB&context=NTIS&method=selectListOfrNotAncmt&methodnm=selectListOfrNotAncmtHomepage&homepage_pbs_yn=Y&subCheck=Y&ofr_pageSize=10&not_ancmt_se_code=01%2C04%2C06&title=%EA%B3%A0%EC%8B%9C%EA%B3%B5%EA%B3%A0&cha_dep_code_nm=&initValue=&countYn=Y&list_gubun=&not_ancmt_sj=&not_ancmt_cn=&dept_nm=&mobile_code=00&Key=B_Subject&not_ancmt_mgt_no=&temp=",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.text_left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "cd19",
+    "div": "V2"
   },
   {
     "id": "A113",
-    "name": "충청도_아산시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc544\\uc0b0\\uc2dc",
     "url": "https://eminwon.asan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04,06,07&ofr_pageSize=10&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A114",
-    "name": "충청도_천안시",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ucc9c\\uc548\\uc2dc",
     "url": "https://eminwon.cheonan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04,05&epcCheck=Y&recent_mm=60",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(31) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A115",
-    "name": "충청도_금산군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uae08\\uc0b0\\uad70",
     "url": "https://www.geumsan.go.kr/kr/html/sub03/030302.html?GotoPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A116",
-    "name": "충청도_부여군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ubd80\\uc5ec\\uad70",
     "url": "https://www.buyeo.go.kr/_prog/_board/?code=news_02&site_dvs_cd=kr&menu_dvs_cd=040205",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A117",
-    "name": "충청도_서천군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc11c\\ucc9c\\uad70",
     "url": "https://eminwon.seocheon.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01&list_gubun=",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(12) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd27",
+    "div": "V2"
   },
   {
     "id": "A118",
-    "name": "충청도_예산군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc608\\uc0b0\\uad70",
     "url": "https://www.yesan.go.kr/prog/saeolGosi/GOSI/kor/sub04_03_01/list.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A118-1",
-    "name": "충청도_예산군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uc608\\uc0b0\\uad70",
     "url": "https://www.yesan.go.kr/prog/saeolGosi/02/kor/sub04_03_03/list.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A119",
-    "name": "충청도_청양군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\uccad\\uc591\\uad70",
     "url": "https://eminwon.cheongyang.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,04,06&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A120",
-    "name": "충청도_태안군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ud0dc\\uc548\\uad70",
     "url": "http://eminwon.taean.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,03,04,05&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A121",
-    "name": "충청도_홍성군",
+    "name": "\\ucda9\\uccad\\ub3c4_\\ud64d\\uc131\\uad70",
     "url": "https://www.hongseong.go.kr/prog/saeolGosi/kor/sub03_0204/GOSI_ALL/list.do",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "cd13",
+    "div": "V2"
   },
   {
     "id": "A122",
-    "name": "전라도_군산시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uad70\\uc0b0\\uc2dc",
     "url": "https://eminwon.gunsan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(24) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A123",
-    "name": "전라도_김제시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uae40\\uc81c\\uc2dc",
     "url": "https://www.gimje.go.kr/board/list.gimje?boardId=BBS_0000044&menuCd=DOM_000000104003000000&contentsSid=196&cpath=&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A124",
-    "name": "전라도_남원시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ub0a8\\uc6d0\\uc2dc",
     "url": "https://www.namwon.go.kr/board/post/list.do?boardUid=ff8080818ea1fec5018ea24137680031&menuUid=ff8080818e3beff0018e4077131b007a&beginDateStr=&endDateStr=&searchType=postTtl&keyword=%EC%A0%9C%EC%95%88&paramString=Us7WVBAxc13kgzv1JU3ayAslPphGSM%2FmlfdB4qtWC4OBeJsElaKmGl7kvQ4Au%2B3O&size=10",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "fail"
+    "skip_reason": "fail",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "fail"
   },
   {
     "id": "A125",
-    "name": "전라도_익산시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc775\\uc0b0\\uc2dc",
     "url": "https://eminwon.iksan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05&cpath=",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(27) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d2",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A126",
-    "name": "전라도_전주시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc804\\uc8fc\\uc2dc",
     "url": "https://eminwon.jeonju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04&epcCheck=Y&recent_mm=60&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tleft",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd20",
+    "div": "V2"
   },
   {
     "id": "A127",
-    "name": "전라도_정읍시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc815\\uc74d\\uc2dc",
     "url": "http://eminwon.jeongeup.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,03,04,05,06,07",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A128",
-    "name": "전라도_고창군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uace0\\ucc3d\\uad70",
     "url": "https://www.gochang.go.kr/board/list.gochang?boardId=BBS_0000180&menuCd=DOM_000000102003007000&contentsSid=2682&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#content",
+      "title": "a > strong",
+      "date": "a > em"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A129",
-    "name": "전라도_무주군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ubb34\\uc8fc\\uad70",
     "url": "https://eminwon.muju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04&subCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list_group > table > tbody",
+      "title": "td.tleft",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd21",
+    "div": "V2"
   },
   {
     "id": "A130",
-    "name": "전라도_부안군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ubd80\\uc548\\uad70",
     "url": "https://www.buan.go.kr/board/list.buan?boardId=BBS_0000054&menuCd=DOM_000000103001003000&contentsSid=84&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A131",
-    "name": "전라도_순창군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc21c\\ucc3d\\uad70",
     "url": "http://eminwon.sunchang.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A132",
-    "name": "전라도_완주군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc644\\uc8fc\\uad70",
     "url": "https://eminwon.wanju.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,04&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tleft",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd22",
+    "div": "V2"
   },
   {
     "id": "A133",
-    "name": "전라도_임실군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc784\\uc2e4\\uad70",
     "url": "https://eminwon.imsil.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05&subcheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(26) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A134",
-    "name": "전라도_장수군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc7a5\\uc218\\uad70",
     "url": "https://eminwon.jangsu.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,04,05,03&yyyy=2017&subCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A135",
-    "name": "전라도_진안군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc9c4\\uc548\\uad70",
     "url": "https://eminwon.jinan.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,05&subcheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(23) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A136",
-    "name": "전라도_광양시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uad11\\uc591\\uc2dc",
     "url": "https://gwangyang.go.kr/saeol/gosi.es?mid=a11005020000&type_code=02,04",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.txt_center",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "cd18",
+    "div": "V2"
   },
   {
     "id": "A137",
-    "name": "전라도_나주시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ub098\\uc8fc\\uc2dc",
     "url": "https://www.naju.go.kr/www/administration/notice/legislation?page=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.align_left",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A138",
-    "name": "전라도_목포시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ubaa9\\ud3ec\\uc2dc",
     "url": "https://www.mokpo.go.kr/www/mokpo_news/notification/public_notice?page=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.align_left > a",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A139",
-    "name": "전라도_순천시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc21c\\ucc9c\\uc2dc",
     "url": "http://www.suncheon.go.kr/kr/news/0004/0005/0001/?x=1&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title_minwon.lefttd",
+      "date": "td.created"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A140",
-    "name": "전라도_여수시",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc5ec\\uc218\\uc2dc",
     "url": "https://www.yeosu.go.kr/www/govt/news/notify?page=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.align_left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A141",
-    "name": "전라도_강진군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uac15\\uc9c4\\uad70",
     "url": "https://www.gangjin.go.kr/www/government/notice/gosi?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.align_left",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A142",
-    "name": "전라도_고흥군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uace0\\ud765\\uad70",
     "url": "https://www.goheung.go.kr/contentsView.do?pageId=www99",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list_body_wrap",
+      "title": "p.subject.siiru-tl",
+      "date": "p.date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd25",
+    "div": "V2"
   },
   {
     "id": "A143",
-    "name": "전라도_곡성군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uace1\\uc131\\uad70",
     "url": "https://www.gokseong.go.kr/board/GosiList.do?menuNo=102001003000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tit",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A144",
-    "name": "전라도_구례군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uad6c\\ub840\\uad70",
     "url": "https://www.gurye.go.kr/board/GosiList.do?not_ancmt_se_code=01,04,06,07&menuNo=115004002001&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A145",
-    "name": "전라도_담양군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ub2f4\\uc591\\uad70",
     "url": "https://www.damyang.go.kr/eminwon/searchList?domainId=DOM_0000001&contentsSid=2&menuCd=DOM_000000190001002001&boardType=special&listType=01",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#dev-listArea",
+      "title": "td.tblBodyItem.tit.left.ellipsis",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd34",
+    "div": "V2"
   },
   {
     "id": "A146",
-    "name": "전라도_무안군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ubb34\\uc548\\uad70",
     "url": "https://www.muan.go.kr/www/openmuan/new/announcement?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "a",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A147",
-    "name": "전라도_보성군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ubcf4\\uc131\\uad70",
     "url": "https://www.boseong.go.kr/www/open_administration/city_news/notification?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A148",
-    "name": "전라도_신안군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc2e0\\uc548\\uad70",
     "url": "https://www.shinan.go.kr/home/www/openinfo/participation_07/participation_07_04/page.wscms?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A149",
-    "name": "전라도_영광군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc601\\uad11\\uad70",
     "url": "https://www.yeonggwang.go.kr/bbs/?b_id=gosigonggo&site=headquarter_new&mn=9059&offset=0",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.txt_l.t_title",
+      "date": "td.t_date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A150",
-    "name": "전라도_영암군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc601\\uc554\\uad70",
     "url": "https://www.yeongam.go.kr/home/www/open_information/yeongam_news/announcement/yeongam.go?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A151",
-    "name": "전라도_완도군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc644\\ub3c4\\uad70",
     "url": "https://www.wando.go.kr/wando/sub.cs?m=318&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.nttSj",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A152",
-    "name": "전라도_장성군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc7a5\\uc131\\uad70",
     "url": "https://www.jangseong.go.kr/home/www/news/jangseong/announcement?page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A153",
-    "name": "전라도_장흥군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc7a5\\ud765\\uad70",
     "url": "https://www.jangheung.go.kr/www/organization/news/notification",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.align_left",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A154",
-    "name": "전라도_진도군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\uc9c4\\ub3c4\\uad70",
     "url": "https://www.jindo.go.kr/home/gosi/general.cs?m=24&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A155",
-    "name": "전라도_함평군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ud568\\ud3c9\\uad70",
     "url": "https://www.hampyeong.go.kr/pg/GosiList.do?pageId=www273",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.board_list_body",
+      "title": "div.subject.subject2",
+      "date": "div.regdate"
+    },
+    "crawl_type": "s",
+    "ct2": "cd24",
+    "div": "V2"
   },
   {
     "id": "A155-1",
-    "name": "전라도_함평군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ud568\\ud3c9\\uad70",
     "url": "https://www.hampyeong.go.kr/boardList.do?boardId=ORGAN&pageId=www274",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.board_list_body",
+      "title": "div.subject",
+      "date": "div.date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd24",
+    "div": "V2"
   },
   {
     "id": "A156",
-    "name": "전라도_해남군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ud574\\ub0a8\\uad70",
     "url": "https://www.haenam.go.kr/planweb/board/list.9is?contentUid=18e3368f5d745106015de961fbbd205e&boardUid=18e3368f644b01470164eeb23d7b30f5&contentUid=18e3368f5d745106015de961fbbd205e&recordCountPerPage=100",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A157",
-    "name": "전라도_화순군",
+    "name": "\\uc804\\ub77c\\ub3c4_\\ud654\\uc21c\\uad70",
     "url": "https://eminwon.hwasun.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,02,03,04,05,06,07&epcCheck=Y",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd10",
+    "div": "V2"
   },
   {
     "id": "A158",
-    "name": "경상도_경산시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uacbd\\uc0b0\\uc2dc",
     "url": "https://www.gbgs.go.kr/open_content/ko/page.do?mnu_uid=2160&pageSize=90",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.aL",
+      "date": "td.con_rgstDateTime"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A159",
-    "name": "경상도_경주시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uacbd\\uc8fc\\uc2dc",
     "url": "https://www.gyeongju.go.kr/open_content/ko/page.do?mnu_uid=423&pageNo=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.aL.title",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A160",
-    "name": "경상도_구미시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uad6c\\ubbf8\\uc2dc",
     "url": "https://www.gumi.go.kr/portal/saeol/gosi/list.do?seCode=01&mid=0401040000",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A161",
-    "name": "경상도_김천시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uae40\\ucc9c\\uc2dc",
     "url": "https://www.gc.go.kr/portal/saeol/gosi/list.do?seCode=01&mId=1202180100",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A162",
-    "name": "경상도_문경시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ubb38\\uacbd\\uc2dc",
     "url": "https://www.gbmg.go.kr/portal/saeol/gosi/list.do?mId=0301060000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.tit",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A163-1",
-    "name": "경상도_상주시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc0c1\\uc8fc\\uc2dc",
     "url": "https://www.sangju.go.kr/page/10297/10606.tc?mn=10297&recordCountPerPage=100",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A163-2",
-    "name": "경상도_상주시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc0c1\\uc8fc\\uc2dc",
     "url": "https://www.sangju.go.kr/dong/page/15910/11235.tc",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.al-l",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A164",
-    "name": "경상도_안동시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc548\\ub3d9\\uc2dc",
     "url": "https://www.andong.go.kr/portal/saeol/gosi/list.do?mId=0401020100",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd11",
+    "div": "V2"
   },
   {
     "id": "A165",
-    "name": "경상도_영주시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\uc8fc\\uc2dc",
     "url": "https://www.yeongju.go.kr/open_content/main/page.do?mnu_uid=10619&boardType=notice&pageSize=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.subject",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A166",
-    "name": "경상도_영천시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\ucc9c\\uc2dc",
     "url": "https://www.yc.go.kr/portal/saeol/gosi/list.do?mId=0301040000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.tit",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A166-1",
-    "name": "경상도_영천시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\ucc9c\\uc2dc",
     "url": "https://www.yc.go.kr/portal/bbs/list.do?ptIdx=568&mId=0301030000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A167-1",
-    "name": "경상도_포항시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud3ec\\ud56d\\uc2dc",
     "url": "https://www.pohang.go.kr/portal/saeol/gosi/list.do?mid=0202010000&token=1702008153483",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A167-2",
-    "name": "경상도_포항시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud3ec\\ud56d\\uc2dc",
     "url": "https://www.pohang.go.kr/portal/board/post/list.do?bcIdx=100&mid=0201010000&token=1749000149392",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A168-1",
-    "name": "경상도_고령군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uace0\\ub839\\uad70",
     "url": "http://www.goryeong.go.kr/kor/boardList.do?IDX=154&BRD_ID=1023&page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.bL_tableTitle",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A168-2",
-    "name": "경상도_고령군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uace0\\ub839\\uad70",
     "url": "http://www.goryeong.go.kr/kor/boardList.do?IDX=152&BRD_ID=1019&page=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.bL_tableTitle",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A169",
-    "name": "경상도_군위군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uad70\\uc704\\uad70",
     "url": "https://www.gunwi.go.kr/ko/page.do?mnu_uid=666&pageNo=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject.taL",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A170",
-    "name": "경상도_봉화군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ubd09\\ud654\\uad70",
     "url": "https://eminwon.bonghwa.go.kr/emwp/jsp/ofr/OfrNotAncmtL.jsp?not_ancmt_se_code=01,04&list_gubun=A",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(32) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A171-1",
-    "name": "경상도_성주군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc131\\uc8fc\\uad70",
     "url": "https://www.sj.go.kr/page.do?mnu_uid=1044&pageNo=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit.txtL",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A171-2",
-    "name": "경상도_성주군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc131\\uc8fc\\uad70",
     "url": "https://sj.go.kr/S1012/page.do?mnu_uid=2189&pageNo=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit.txtL",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A172-1",
-    "name": "경상도_영덕군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\ub355\\uad70",
     "url": "https://www.yd.go.kr/?page_id=763&pageid=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.kboard-list-title",
+      "date": "td.kboard-list-date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A172-2",
-    "name": "경상도_영덕군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\ub355\\uad70",
     "url": "https://www.yd.go.kr/?page_id=752&pageid=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.kboard-list-title",
+      "date": "td.kboard-list-date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A173",
-    "name": "경상도_영양군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc601\\uc591\\uad70",
     "url": "https://www.yyg.go.kr/www/organization/yyg_news/notification?page=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A174-1",
-    "name": "경상도_예천군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc608\\ucc9c\\uad70",
     "url": "https://www.ycg.kr/open.content/ko/administrative/news/announcement/?p=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.td-left.space-letter",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A174-2",
-    "name": "경상도_예천군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc608\\ucc9c\\uad70",
     "url": "https://www.ycg.kr/open.content/ko/administrative/news/notice/?p=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.bb-list-title",
+      "date": "td.bb-list-publish-date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A175",
-    "name": "경상도_울진군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc6b8\\uc9c4\\uad70",
     "url": "https://www.uljin.go.kr/index.uljin?menuCd=DOM_000000103002007000",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP \\ucc28\\ub2e8"
+    "skip_reason": "IP \\ucc28\\ub2e8",
+    "selector": {
+      "table_body": "div.bbs_skin",
+      "title": "a > strong",
+      "date": "em"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP \\ucc28\\ub2e8"
   },
   {
     "id": "A176-1",
-    "name": "경상도_의성군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc758\\uc131\\uad70",
     "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=157&pageNo=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject.taL",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A176-2",
-    "name": "경상도_의성군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc758\\uc131\\uad70",
     "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=156&pageNo=1",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.subject",
+      "date": "td.date"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A177",
-    "name": "경상도_청도군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uccad\\ub3c4\\uad70",
     "url": "https://www.cheongdo.go.kr/portal/saeol/gosi/list.do?mid=0301020000&token=1703813401840",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "d",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A178-1",
-    "name": "경상도_청송군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uccad\\uc1a1\\uad70",
     "url": "https://www.cs.go.kr/news/00002679/00006203.web",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "fail"
+    "skip_reason": "fail",
+    "selector": {
+      "table_body": "div.list1table4",
+      "title": "span.t2 > a",
+      "date": "span.t5"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "fail"
   },
   {
     "id": "A178-2",
-    "name": "경상도_청송군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uccad\\uc1a1\\uad70",
     "url": "https://www.cs.go.kr/news/00002679/00002687.web?upunit=50&cpage=1",
     "dynamic": true,
     "skip": true,
-    "skip_reason": "fail"
+    "skip_reason": "fail",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "span > strong",
+      "date": "span > i"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "fail"
   },
   {
     "id": "A179-1",
-    "name": "경상도_칠곡군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uce60\\uace1\\uad70",
     "url": "https://www.chilgok.go.kr/portal/saeol/gosi/list.do?mId=0201030000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A179-2",
-    "name": "경상도_칠곡군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uce60\\uace1\\uad70",
     "url": "https://www.chilgok.go.kr/portal/bbs/list.do?ptIdx=111&mId=0201010000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A180-1",
-    "name": "경상도_창원시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc",
     "url": "https://www.changwon.go.kr/cwportal/10310/10438/10439.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A180-2",
-    "name": "경상도_창원시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc",
     "url": "https://www.changwon.go.kr/cwportal/10310/10429/10430.web?gcode=1009&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A181",
-    "name": "경상도_창원시_의창구",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc_\\uc758\\ucc3d\\uad6c",
     "url": "https://www.changwon.go.kr/cwportal/gu/11094/11462/11476.web?cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A182",
-    "name": "경상도_창원시_성산구",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc_\\uc131\\uc0b0\\uad6c",
     "url": "https://www.changwon.go.kr/cwportal/gu/11098/11607/11640.web",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A183",
-    "name": "경상도_창원시_마산합포구",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc_\\ub9c8\\uc0b0\\ud569\\ud3ec\\uad6c",
     "url": "https://www.changwon.go.kr/cwportal/gu/11099/11806/11850.web",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A184",
-    "name": "경상도_창원시_마산회원구",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc_\\ub9c8\\uc0b0\\ud68c\\uc6d0\\uad6c",
     "url": "https://www.changwon.go.kr/cwportal/gu/11100/12100/12138.web?cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A185",
-    "name": "경상도_창원시_진해구",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\uc6d0\\uc2dc_\\uc9c4\\ud574\\uad6c",
     "url": "https://www.changwon.go.kr/cwportal/gu/11101/12355/12400.web",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A186",
-    "name": "경상도_거제시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uac70\\uc81c\\uc2dc",
     "url": "https://www.geoje.go.kr/index.geoje?menuCd=DOM_000008902001002001&listRow=90",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.tal.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A187-1",
-    "name": "경상도_김해시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uae40\\ud574\\uc2dc",
     "url": "https://www.gimhae.go.kr/03360/00023/00029.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A187-2",
-    "name": "경상도_김해시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uae40\\ud574\\uc2dc",
     "url": "https://www.gimhae.go.kr/03360/00023/00024.web?gcode=1171&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(1)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A188-1",
-    "name": "경상도_밀양시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ubc00\\uc591\\uc2dc",
     "url": "https://www.miryang.go.kr/web/eMinwonList.do?mnNo=20903000000&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A188-2",
-    "name": "경상도_밀양시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ubc00\\uc591\\uc2dc",
     "url": "https://www.miryang.go.kr/web/bbs/selectNoticeList.do?mnNo=20901000000&owd=&searchCnd=&searchWrd=&searchCateId=&pageIndex=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.board-list-wrap",
+      "title": "strong",
+      "date": "span:nth-child(1)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A189",
-    "name": "경상도_사천시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc0ac\\ucc9c\\uc2dc",
     "url": "https://www.sacheon.go.kr/news/00009/00014.web?cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span > i > span:nth-child(1)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A190-1",
-    "name": "경상도_양산시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc591\\uc0b0\\uc2dc",
     "url": "https://www.yangsan.go.kr/portal/saeol/gosi/list.do?mid=0102010000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.taL.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A190-2",
-    "name": "경상도_양산시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc591\\uc0b0\\uc2dc",
     "url": "https://www.yangsan.go.kr/portal/board/post/list.do?bcIdx=293&mid=0101010000",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.list_tit",
+      "date": "td.list_date"
+    },
+    "crawl_type": "s",
+    "ct2": "cd7",
+    "div": "V2"
   },
   {
     "id": "A191",
-    "name": "경상도_진주시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc9c4\\uc8fc\\uc2dc",
     "url": "https://www.jinju.go.kr/00130/02730/05586.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A192",
-    "name": "경상도_통영시",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud1b5\\uc601\\uc2dc",
     "url": "https://www.tongyeong.go.kr/00852/00853/00858.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A193",
-    "name": "경상도_남해군_남해읍",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\ub0a8\\ud574\\uc74d",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EB%82%A8%ED%95%B4%EC%9D%8D&pageCd=WW0512010103&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A194",
-    "name": "경상도_산청군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc0b0\\uccad\\uad70",
     "url": "https://www.sancheong.go.kr/www/selectBbsNttList.do?bbsNo=118&key=158&pageUnit=90",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A195",
-    "name": "경상도_남해군_이동면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uc774\\ub3d9\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%9D%B4%EB%8F%99%EB%A9%B4&pageCd=WW0512030402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A196",
-    "name": "경상도_의령군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc758\\ub839\\uad70",
     "url": "https://www.uiryeong.go.kr/board/list.uiryeong?boardId=BBS_0000070&menuCd=DOM_000000203003001001&contentsSid=201&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.txt_left",
+      "date": "td:nth-child(4)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A197",
-    "name": "경상도_남해군_상주면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uc0c1\\uc8fc\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%83%81%EC%A3%BC%EB%A9%B4&pageCd=WW0512040402&siteGubun=portal",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP \\ucc28\\ub2e8"
+    "skip_reason": "IP \\ucc28\\ub2e8",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP \\ucc28\\ub2e8"
   },
   {
     "id": "A198",
-    "name": "경상도_창녕군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ucc3d\\ub155\\uad70",
     "url": "https://www.cng.go.kr/01541/01539/01553.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "i > span:nth-child(1)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A199",
-    "name": "경상도_남해군_삼동면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uc0bc\\ub3d9\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%82%BC%EB%8F%99%EB%A9%B4&pageCd=WW0512050402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A200",
-    "name": "경상도_하동군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud558\\ub3d9\\uad70",
     "url": "https://www.hadong.go.kr/media/00012.web?cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "i > span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A201",
-    "name": "경상도_남해군_미조면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\ubbf8\\uc870\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EB%AF%B8%EC%A1%B0%EB%A9%B4&pageCd=WW0512060402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A202",
-    "name": "경상도_함안군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud568\\uc548\\uad70",
     "url": "https://www.haman.go.kr/00960/00962.web?&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "i > span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A203",
-    "name": "경상도_남해군_남면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\ub0a8\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EB%82%A8%EB%A9%B4&pageCd=WW0512070402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A204",
-    "name": "경상도_함양군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud568\\uc591\\uad70",
     "url": "https://eminwon.hygn.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,06,07",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject200",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd17",
+    "div": "V2"
   },
   {
     "id": "A205",
-    "name": "경상도_남해군_서면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uc11c\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%84%9C%EB%A9%B4&pageCd=WW0512080402&siteGubun=portal",
     "dynamic": false,
     "skip": true,
-    "skip_reason": "IP \\ucc28\\ub2e8"
+    "skip_reason": "IP \\ucc28\\ub2e8",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "IP \\ucc28\\ub2e8"
   },
   {
     "id": "A206",
-    "name": "경상도_합천군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ud569\\ucc9c\\uad70",
     "url": "https://eminwon.hc.go.kr/emwp/jsp/ofr/OfrNotAncmtLSub.jsp?not_ancmt_se_code=01,02,03,04,06",
     "dynamic": true,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "table:nth-child(12) > tbody > tr > td > table",
+      "title": "td:nth-child(3)",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "d",
+    "ct2": "cd32",
+    "div": "V2"
   },
   {
     "id": "A207",
-    "name": "경상도_남해군_고현면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uace0\\ud604\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EA%B3%A0%ED%98%84%EB%A9%B4&pageCd=WW0512090402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A208",
-    "name": "경상도_고성군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uace0\\uc131\\uad70",
     "url": "https://www.goseong.go.kr/board/list.goseong?boardId=BBS_0000015&menuCd=DOM_000000103001014000&contentsSid=29&cpath=&startPage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.title",
+      "date": "td:nth-child(5)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A209",
-    "name": "경상도_남해군_설천면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\uc124\\ucc9c\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%84%A4%EC%B2%9C%EB%A9%B4&pageCd=WW0512100402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A210",
-    "name": "경상도_거창군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uac70\\ucc3d\\uad70",
     "url": "https://www.geochang.go.kr/saeol/gosi.do?pageCd=NW0102000000&siteGubun=news&cpage=1",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "#databox",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "V2"
   },
   {
     "id": "A211",
-    "name": "경상도_남해군_창선면",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\ub0a8\\ud574\\uad70_\\ucc3d\\uc120\\uba74",
     "url": "https://www.namhae.go.kr/modules/saeol/gosi.do?dep_nm=%EC%B0%BD%EC%84%A0%EB%A9%B4&pageCd=WW0512110402&siteGubun=portal",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "div.list1f1t3i1",
+      "title": "strong",
+      "date": "span:nth-child(2)"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   },
   {
     "id": "A212",
-    "name": "경상도_울릉군",
+    "name": "\\uacbd\\uc0c1\\ub3c4_\\uc6b8\\ub989\\uad70",
     "url": "https://www.ulleung.go.kr/ko/page.do?pageNo=1&mnu_uid=571",
     "dynamic": false,
     "skip": false,
-    "skip_reason": ""
+    "skip_reason": "",
+    "selector": {
+      "table_body": "tbody",
+      "title": "td.subject.taL",
+      "date": "td.date"
+    },
+    "crawl_type": "s",
+    "ct2": "",
+    "div": "nan"
   }
 ]
