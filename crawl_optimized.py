@@ -61,8 +61,8 @@ def is_self_healing_day() -> bool:
         return False
     return now_kst().weekday() == 0
 
-# Claude API 동시 호출 방지 Lock (rate limit 대응)
-_claude_lock = threading.Lock()
+# Claude API 동시 호출 제한 (rate limit 대응: Tier1 50k TPM 기준 Semaphore(2))
+_claude_lock = threading.Semaphore(2)
 
 # URL 탐색 결과 캐시: 사이트당 1회만 Claude 웹서치 (다중 스레드 중복 방지)
 _url_search_cache: dict = {}
@@ -1482,17 +1482,17 @@ def upload_dashboard(gc, df_log: pd.DataFrame, df_keyword: pd.DataFrame, crawled
         failed   = len(df_log[df_log['status'].str.startswith('실패', na=False)])
         rate     = f"{round((success+healed+zero_sel)/max(total-skipped,1)*100, 1)}%"
 
-        # 키워드별 집계
+        # 키워드별 집계 (int64 → int 변환으로 JSON 직렬화 오류 방지)
         kw_counts = {}
         if not df_keyword.empty and '키워드' in df_keyword.columns:
             for kw in FILTER_KEYWORDS:
-                kw_counts[kw] = df_keyword['키워드'].str.contains(kw, na=False).sum()
+                kw_counts[kw] = int(df_keyword['키워드'].str.contains(kw, na=False).sum())
 
         # 지역별 집계
         region_counts = {}
         if not df_keyword.empty and '출처' in df_keyword.columns:
             df_keyword['_지역'] = df_keyword['출처'].apply(extract_region)
-            region_counts = df_keyword['_지역'].value_counts().to_dict()
+            region_counts = {k: int(v) for k, v in df_keyword['_지역'].value_counts().to_dict().items()}
 
         rows = [
             ["📊 공고 수집 대시보드", "", f"기준: {crawled_time}"],
