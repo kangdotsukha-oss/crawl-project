@@ -861,7 +861,8 @@ def crawl_site(row, gc=None) -> dict:
                 'SITE_NAME': site_name, 'URL': row['URL'],
                 'len_tbody': 0, 'unique_date': 0,
                 'min_date': '', 'max_date': '',
-                'status': f'스킵({div_val})', 'error_msg': '', 'auto_fixed': ''
+                'status': f'스킵({div_val})', 'error_msg': '', 'auto_fixed': '',
+            '최신제목': '', '최신날짜': '',
             }
         }
 
@@ -991,6 +992,14 @@ def crawl_site(row, gc=None) -> dict:
             collected_data.extend(data)
             all_unfiltered.extend(unfiltered)
 
+            # -- 조기 중단: 이 페이지 최신 공고가 2일 이상 지났으면 다음 페이지 불필요 --
+            valid_dates = [d for d in cleaned_dates if re.match(r"20\d{2}-\d{2}-\d{2}", str(d))]
+            if valid_dates:
+                cutoff_2d = (now_kst() - timedelta(days=2)).strftime('%Y-%m-%d')
+                if max(valid_dates) < cutoff_2d:
+                    logger.info(f"[조기 중단] {site_name}: 최신 공고({max(valid_dates)})가 2일 이상 지남")
+                    break
+
             if len(set(cleaned_dates)) <= 2:
                 page_number += 1
                 retries = 0
@@ -1066,6 +1075,19 @@ def crawl_site(row, gc=None) -> dict:
     elif failed:
         final_status = f'실패({error_msg[:30]})'
 
+    # 최신 공고 샘플 (제목, 날짜)
+    latest_title, latest_date = '', ''
+    if collected_data:
+        latest = max(collected_data, key=lambda x: str(x.get('작성일', '')), default=None)
+        if latest:
+            latest_title = str(latest.get('제목', ''))[:80]
+            latest_date  = str(latest.get('작성일', ''))
+    elif all_unfiltered:
+        latest = max(all_unfiltered, key=lambda x: str(x.get('작성일', '')), default=None)
+        if latest:
+            latest_title = str(latest.get('제목', ''))[:80]
+            latest_date  = str(latest.get('작성일', ''))
+
     return {
         'data': collected_data,
         'all_data': all_unfiltered,
@@ -1078,7 +1100,9 @@ def crawl_site(row, gc=None) -> dict:
             'max_date': max(cleaned_dates) if cleaned_dates else "",
             'status': final_status,
             'error_msg': error_msg,
-            'auto_fixed': '✅' if auto_fixed else ''
+            'auto_fixed': '✅' if auto_fixed else '',
+            '최신제목': latest_title,
+            '최신날짜': latest_date,
         }
     }
 
