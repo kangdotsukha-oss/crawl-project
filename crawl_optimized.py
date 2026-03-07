@@ -196,7 +196,7 @@ def get_gspread_client():
 # 사이트 목록 로드
 # ─────────────────────────────────────────────
 def load_consecutive_failures(gc, threshold: int = 5) -> set:
-    """크롤링로그에서 최근 threshold회 연속 실패한 사이트명 반환"""
+    """크롤링로그의 연속실패횟수 컬럼으로 자동스킵 사이트 반환"""
     if gc is None:
         return set()
     try:
@@ -206,14 +206,15 @@ def load_consecutive_failures(gc, threshold: int = 5) -> set:
         if not records:
             return set()
         df_log = pd.DataFrame(records)
+        if '연속실패횟수' not in df_log.columns:
+            return set()
         skip_sites = set()
-        for site_name, group in df_log.groupby('SITE_NAME'):
-            recent = group.sort_values('수집일시', ascending=False).head(threshold)
-            if len(recent) == threshold and all(
-                str(s).startswith('실패') for s in recent['status']
-            ):
+        for _, row in df_log.iterrows():
+            site_name = str(row.get('SITE_NAME', ''))
+            count = int(row.get('연속실패횟수', 0) or 0)
+            if count >= threshold:
                 skip_sites.add(site_name)
-                logger.info(f"[자동스킵 등록] {site_name}: {threshold}회 연속 실패")
+                logger.info(f"[자동스킵 등록] {site_name}: {count}회 연속 실패")
         return skip_sites
     except Exception as e:
         logger.warning(f"[연속실패 확인 오류] {e}")
@@ -1378,7 +1379,7 @@ def upload_to_sheet(gc, df, sheet_name, keyword_tab=False):
 
 
 def upload_log(gc, df, crawled_time: str = ""):
-    """크롤링로그 탭에 이력 누적 (30일치 보존)"""
+    """크롤링로그 탭 덮어쓰기 (사이트당 최신 1행, 연속실패횟수 누적)"""
     if gc is None or df.empty:
         return
     try:
@@ -1386,23 +1387,32 @@ def upload_log(gc, df, crawled_time: str = ""):
         try:
             ws = sh.worksheet("크롤링로그")
         except gspread.exceptions.WorksheetNotFound:
-            ws = sh.add_worksheet(title="크롤링로그", rows="10000", cols="20")
+            ws = sh.add_worksheet(title="크롤링로그", rows="5000", cols="20")
 
         df = df.copy()
         df['수집일시'] = crawled_time
 
-        existing = pd.DataFrame(ws.get_all_records())
-        combined = pd.concat([existing, df], ignore_index=True) if not existing.empty else df.copy()
+        # 기존 연속실패횟수 읽어서 누적
+        prev_failures: dict[str, int] = {}
+        try:
+            existing = pd.DataFrame(ws.get_all_records())
+            if not existing.empty and '연속실패횟수' in existing.columns:
+                for _, row in existing.iterrows():
+                    site = str(row.get('SITE_NAME', ''))
+                    prev_failures[site] = int(row.get('연속실패횟수', 0) or 0)
+        except Exception:
+            pass
 
-        # 30일 초과 이력 제거
-        if '수집일시' in combined.columns:
-            cutoff = (now_kst() - timedelta(days=30)).strftime('%Y-%m-%d')
-            combined = combined[combined['수집일시'].astype(str) >= cutoff]
+        def calc_consecutive(row):
+            prev = prev_failures.get(str(row.get('SITE_NAME', '')), 0)
+            return prev + 1 if str(row.get('status', '')).startswith('실패') else 0
 
-        combined = combined.fillna("").astype(str)
+        df['연속실패횟수'] = df.apply(calc_consecutive, axis=1)
+
+        df = df.fillna("").astype(str)
         ws.clear()
-        ws.update([combined.columns.tolist()] + combined.values.tolist())
-        logger.info(f"[로그 업로드 완료] {len(combined)}행 (누적)")
+        ws.update([df.columns.tolist()] + df.values.tolist())
+        logger.info(f"[로그 업로드 완료] {len(df)}행 (덮어쓰기)")
     except Exception as e:
         logger.error(f"[로그 업로드 오류]: {e}")
 
@@ -1575,17 +1585,17 @@ def main():
 
     df_fin, df_log, df_all = run_crawling_parallel(df, gc)
 
-    # timezone-aware → naive 변환 (pandas datetime64[us]와 비교를 위해)
-    today_naive = today.replace(tzinfo=None)
-    one_day_ago_naive = one_day_ago.replace(tzinfo=None)
+    # 날짜 필터 기준: 날짜만 비교 (크롤링 시작 시각 무관)
+    cutoff_date = (today - timedelta(days=DAYS_RANGE)).date()
+    today_date = today.date()
 
     # 하루치 필터링 + 중복 제거 (키워드 매칭 공고)
     if not df_fin.empty:
         df_fin['작성일'] = pd.to_datetime(df_fin['작성일'], format='%Y-%m-%d', errors='coerce')
-        df_filtered = df_fin[(df_fin['작성일'] >= one_day_ago_naive) & (df_fin['작성일'] <= today_naive)].copy()
+        df_filtered = df_fin[df_fin['작성일'].dt.date >= cutoff_date].copy()
         df_filtered = df_filtered.drop_duplicates(subset=['출처', '제목'], keep='last')
         df_filtered['수집일'] = crawled_time
-        logger.info(f"필터링 후 {len(df_filtered)}개 공고 (키워드 매칭)")
+        logger.info(f"필터링 후 {len(df_filtered)}개 공고 (키워드 매칭, {cutoff_date} 이후)")
     else:
         df_filtered = pd.DataFrame()
         logger.warning("수집 데이터 없음")
@@ -1593,7 +1603,7 @@ def main():
     # 전체공고 (키워드 미해당) 날짜 필터 + 중복 제거
     if not df_all.empty:
         df_all['작성일'] = pd.to_datetime(df_all['작성일'], format='%Y-%m-%d', errors='coerce')
-        df_all_filtered = df_all[(df_all['작성일'] >= one_day_ago_naive) & (df_all['작성일'] <= today_naive)].copy()
+        df_all_filtered = df_all[df_all['작성일'].dt.date >= cutoff_date].copy()
         df_all_filtered = df_all_filtered.drop_duplicates(subset=['출처', '제목'], keep='last')
         df_all_filtered['수집일'] = crawled_time
         logger.info(f"전체공고 (키워드 미해당) {len(df_all_filtered)}개")
