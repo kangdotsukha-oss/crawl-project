@@ -271,11 +271,11 @@ def fetch_static(url: str, ua_idx: int = 0) -> Optional[str]:
 # ─────────────────────────────────────────
 # 동적 수집 (Playwright)
 # ─────────────────────────────────────────
-async def fetch_dynamic(url: str, page, wait_sec: int = 3) -> Optional[str]:
+async def fetch_dynamic(url: str, page, wait_sec: int = 5) -> Optional[str]:
     try:
         await page.goto(url, wait_until='domcontentloaded', timeout=PAGE_TIMEOUT)
         try:
-            await page.wait_for_load_state('networkidle', timeout=5000)
+            await page.wait_for_load_state('networkidle', timeout=8000)
         except Exception:
             pass
         await asyncio.sleep(wait_sec)
@@ -549,7 +549,8 @@ async def crawl_site(site: dict, browser=None) -> dict:
     logger.info(f"[시작] {site_name}")
 
     try:
-        if (dynamic or ct in CLICK_CRAWL_CONFIG) and browser:
+        needs_click = ct in CLICK_CRAWL_CONFIG or ct2 in CLICK_CRAWL_CONFIG
+        if (dynamic or needs_click) and browser:
             context = await browser.new_context(user_agent=UA_LIST[0], locale='ko-KR')
             page = await context.new_page()
 
@@ -596,6 +597,12 @@ async def crawl_site(site: dict, browser=None) -> dict:
 
             # ── 2순위: 셀렉터 실패 시 Claude/regex fallback ──
             if not items:
+                if page_num == 1:
+                    # HTML 샘플 로깅 (디버그용)
+                    soup_dbg = BeautifulSoup(html, 'html.parser')
+                    title_tag = soup_dbg.find('title')
+                    page_title = title_tag.get_text(strip=True)[:60] if title_tag else 'no-title'
+                    logger.debug(f"[셀렉터 0건] {site_name} html={len(html)}b title='{page_title}'")
                 text = preprocess_html(html)
                 if text and len(text) >= 30:
                     items = extract_with_claude(site_name, text)
@@ -718,6 +725,70 @@ def get_gspread():
         logger.error(f"[Google Sheets 연결 실패] {e}")
         return None, None
 
+def upload_keyword_tab(sh, rows: list):
+    """✅키워드공고 탭 - v4 호환 형식 (HYPERLINK, 키워드별 Y/N, 경과일, 확인여부/비고 보존)"""
+    if not sh or not rows:
+        return
+    import pandas as pd
+    tab_name = '✅키워드공고'
+    try:
+        try:
+            ws = sh.worksheet(tab_name)
+        except gspread.WorksheetNotFound:
+            ws = sh.add_worksheet(tab_name, rows=5000, cols=30)
+
+        existing = pd.DataFrame(ws.get_all_records())
+        new_df   = pd.DataFrame(rows, columns=['지역','출처','제목','작성일','URL','키워드','수집일','확인여부','비고'])
+
+        # 기존 확인여부/비고 보존
+        preserved = {}
+        if not existing.empty:
+            for _, row in existing.iterrows():
+                key = (str(row.get('출처','')), str(row.get('제목','')))
+                preserved[key] = {'확인여부': row.get('확인여부',''), '비고': row.get('비고','')}
+
+        # 병합 + 중복 제거
+        if not existing.empty and '출처' in existing.columns and '제목' in existing.columns:
+            combined = pd.concat([existing, new_df], ignore_index=True)
+            combined = combined.drop_duplicates(subset=['출처','제목'], keep='last')
+        else:
+            combined = new_df.copy()
+
+        # 확인여부/비고 복원
+        for idx, row in combined.iterrows():
+            key = (str(row.get('출처','')), str(row.get('제목','')))
+            meta = preserved.get(key, {})
+            if meta.get('확인여부'): combined.at[idx, '확인여부'] = meta['확인여부']
+            if meta.get('비고'):     combined.at[idx, '비고'] = meta['비고']
+
+        # 경과일
+        today_dt = now_kst().date()
+        def days_elapsed(d):
+            try: return (today_dt - pd.to_datetime(d, errors='coerce').date()).days
+            except: return ''
+        combined['경과일'] = combined['작성일'].apply(days_elapsed)
+
+        # 키워드별 Y/N
+        for kw in FILTER_KEYWORDS:
+            combined[kw] = combined['키워드'].apply(lambda v: 'Y' if kw in str(v) else '')
+
+        # 작성일 내림차순 정렬
+        combined['작성일_sort'] = pd.to_datetime(combined['작성일'], errors='coerce')
+        combined = combined.sort_values('작성일_sort', ascending=False).drop(columns=['작성일_sort'])
+
+        # 원문링크 HYPERLINK 수식
+        combined['원문링크'] = combined.apply(
+            lambda r: f'=HYPERLINK("{r["URL"]}","{str(r["제목"])[:30].replace(chr(34),"")}") '
+            if str(r.get('URL','')).startswith('http') else '', axis=1)
+
+        combined = combined.fillna('').astype(str)
+        ws.clear()
+        ws.update([combined.columns.tolist()] + combined.values.tolist(), value_input_option='USER_ENTERED')
+        logger.info(f"[업로드] '{tab_name}': {len(combined)}행")
+    except Exception as e:
+        logger.error(f"[업로드 실패] '{tab_name}': {e}")
+
+
 def upload_tab(sh, tab_name: str, rows: list, headers: list):
     if not sh or not rows:
         return
@@ -741,6 +812,35 @@ def upload_tab(sh, tab_name: str, rows: list, headers: list):
         ws.clear()
         ws.update([combined.columns.tolist()] + combined.values.tolist(), value_input_option='USER_ENTERED')
         logger.info(f"[업로드] '{tab_name}': {len(combined)}행")
+    except Exception as e:
+        logger.error(f"[업로드 실패] '{tab_name}': {e}")
+
+
+def upload_log_cumulative(sh, rows: list):
+    """크롤링로그 탭 - 30일 누적 방식 (v4 호환)"""
+    if not sh:
+        return
+    import pandas as pd
+    tab_name = '크롤링로그'
+    try:
+        try:
+            ws = sh.worksheet(tab_name)
+        except gspread.WorksheetNotFound:
+            ws = sh.add_worksheet(tab_name, rows=10000, cols=20)
+
+        existing = pd.DataFrame(ws.get_all_records())
+        new_df   = pd.DataFrame(rows, columns=['사이트ID','사이트명','상태','수집건수','오류메시지','추출방식','실행시각'])
+
+        combined = pd.concat([existing, new_df], ignore_index=True) if not existing.empty else new_df
+        # 30일치 보존
+        if '실행시각' in combined.columns:
+            combined['_dt'] = pd.to_datetime(combined['실행시각'], errors='coerce')
+            cutoff = pd.Timestamp(now_kst()) - pd.Timedelta(days=30)
+            combined = combined[combined['_dt'] >= cutoff].drop(columns=['_dt'])
+        combined = combined.fillna('').astype(str)
+        ws.clear()
+        ws.update([combined.columns.tolist()] + combined.values.tolist(), value_input_option='USER_ENTERED')
+        logger.info(f"[업로드] '{tab_name}': {len(combined)}행 (누적)")
     except Exception as e:
         logger.error(f"[업로드 실패] '{tab_name}': {e}")
 
@@ -809,17 +909,15 @@ async def main():
                                   item.get('date',''), item.get('url',''), run_at])
 
     _, sh = get_gspread()
-    upload_tab(sh, '✅키워드공고',
-               keyword_rows, ['지역','출처','제목','날짜','URL','키워드','수집일','확인여부','비고'])
+    upload_keyword_tab(sh, keyword_rows)
     upload_tab(sh, '📋전체공고(키워드제외)',
-               all_rows,     ['출처','제목','날짜','URL','수집일'])
-    upload_tab(sh, '크롤링로그',
-               log_rows,     ['사이트ID','사이트명','상태','수집건수','오류메시지','추출방식','실행시각'])
+               all_rows,     ['출처','제목','작성일','URL','수집일'])
+    upload_log_cumulative(sh, log_rows)
 
     import pandas as pd
     if keyword_rows:
         pd.DataFrame(keyword_rows,
-            columns=['지역','출처','제목','날짜','URL','키워드','수집일','확인여부','비고']
+            columns=['지역','출처','제목','작성일','URL','키워드','수집일','확인여부','비고']
         ).to_excel(f'df_list_v5_{today_str}.xlsx', index=False)
     pd.DataFrame(log_rows,
         columns=['사이트ID','사이트명','상태','수집건수','오류메시지','추출방식','실행시각']
