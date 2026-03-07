@@ -623,32 +623,24 @@ def call_claude_api(prompt: str, tools: list = None, max_tokens: int = 1000) -> 
         payload["tools"] = tools
 
     with _claude_lock:  # 한 번에 하나씩만 Claude 호출
-        for attempt in range(3):
-            try:
-                response = requests.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers={
-                        "x-api-key": ANTHROPIC_API_KEY,
-                        "anthropic-version": "2023-06-01",
-                        "content-type": "application/json"
-                    },
-                    json=payload,
-                    timeout=60
-                )
-                if response.status_code == 429:
-                    wait = 10 * (attempt + 1)
-                    logger.warning(f"[Claude API] rate limit → {wait}초 대기 후 재시도 ({attempt+1}/3)")
-                    time.sleep(wait)
-                    continue
-                if response.status_code != 200:
-                    logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
-                    return None
-                time.sleep(2)  # 호출 간격 유지
-                return response.json()
-            except Exception as e:
-                logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
+        try:
+            response = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={
+                    "x-api-key": ANTHROPIC_API_KEY,
+                    "anthropic-version": "2023-06-01",
+                    "content-type": "application/json"
+                },
+                json=payload,
+                timeout=60
+            )
+            if response.status_code != 200:
+                logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
                 return None
-    return None
+            return response.json()
+        except Exception as e:
+            logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
+            return None
 
 
 def parse_claude_json(result: dict, site_name: str) -> dict | None:
@@ -1178,8 +1170,8 @@ def crawl_site(row, gc=None) -> dict:
     zero_selector_used = False
     if not auto_fixed and (failed or not all_titles):
         logger.info(f"[Zero-Selector 시도] {site_name}")
-        # soup이 있으면 재활용, 없으면 재수집
-        html_for_zero = str(soup) if soup is not None else fetch_html_for_analysis(row)
+        # soup이 있으면 재활용, HTML 수집 자체가 실패한 경우 Zero-Selector 스킵
+        html_for_zero = str(soup) if soup is not None else None
         if html_for_zero:
             zs_titles, zs_dates, zs_data, zs_unfiltered, zs_err = zero_selector_extract(site_name, html_for_zero, row)
             if not zs_err and zs_titles:
