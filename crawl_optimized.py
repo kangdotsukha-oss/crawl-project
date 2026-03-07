@@ -35,6 +35,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from google.oauth2.service_account import Credentials
+import threading
 
 # .env 파일 지원 (Oracle/NAS 로컬 실행 시)
 try:
@@ -49,6 +50,9 @@ KST = timezone(timedelta(hours=9))
 def now_kst() -> datetime:
     """현재 KST 시각 반환"""
     return datetime.now(KST)
+
+# Claude API 동시 호출 방지 Lock (rate limit 대응)
+_claude_lock = threading.Lock()
 
 # ─────────────────────────────────────────────
 # 로깅 설정
@@ -220,41 +224,12 @@ def is_firewall_blocked(html: str, status_code: int = 200) -> bool:
 
 
 # ─────────────────────────────────────────────
-# SSL 유연 세션 (구버전 TLS 서버 대응)
-# ─────────────────────────────────────────────
-import ssl
-import urllib3
-from requests.adapters import HTTPAdapter
-
-class SSLFlexAdapter(HTTPAdapter):
-    """SSLEOFError 등 구버전 TLS 서버 대응용 어댑터"""
-    def init_poolmanager(self, *args, **kwargs):
-        ctx = ssl.create_default_context()
-        ctx.set_ciphers("DEFAULT@SECLEVEL=1")
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
-        # OP_LEGACY_SERVER_CONNECT는 OpenSSL 3.x 이상에서만 지원
-        if hasattr(ssl, 'OP_LEGACY_SERVER_CONNECT'):
-            ctx.options |= ssl.OP_LEGACY_SERVER_CONNECT
-        kwargs['ssl_context'] = ctx
-        return super().init_poolmanager(*args, **kwargs)
-
-def get_session() -> requests.Session:
-    s = requests.Session()
-    adapter = SSLFlexAdapter()
-    s.mount("https://", adapter)
-    s.mount("http://", adapter)
-    return s
-
-
-# ─────────────────────────────────────────────
 # 크롤링 함수들
 # ─────────────────────────────────────────────
 def static_crawl(row, headers_override=None):
     h = headers_override or HEADERS
     try:
-        session = get_session()
-        res = session.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+        res = requests.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
         res.raise_for_status()
         res.encoding = 'utf-8'
         if is_firewall_blocked(res.text, res.status_code):
@@ -265,6 +240,36 @@ def static_crawl(row, headers_override=None):
         code = e.response.status_code if e.response else 0
         logger.error(f"[정적 크롤링 HTTP오류] {row['SITE_NAME']}: {code}")
         return None, f'http_{code}'
+    except requests.exceptions.SSLError:
+        # SSL 오류 시에만 유연한 세션으로 재시도
+        logger.warning(f"[SSL 오류 → 폴백] {row['SITE_NAME']}")
+        try:
+            import ssl
+            from requests.adapters import HTTPAdapter
+            ctx = ssl.create_default_context()
+            ctx.set_ciphers("DEFAULT@SECLEVEL=1")
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            if hasattr(ssl, 'OP_LEGACY_SERVER_CONNECT'):
+                ctx.options |= ssl.OP_LEGACY_SERVER_CONNECT
+
+            class _SSLAdapter(HTTPAdapter):
+                def init_poolmanager(self, *args, **kwargs):
+                    kwargs['ssl_context'] = ctx
+                    return super().init_poolmanager(*args, **kwargs)
+
+            s = requests.Session()
+            s.mount("https://", _SSLAdapter())
+            res = s.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+            res.raise_for_status()
+            res.encoding = 'utf-8'
+            if is_firewall_blocked(res.text, res.status_code):
+                return None, 'firewall'
+            logger.info(f"[SSL 폴백 성공] {row['SITE_NAME']}")
+            return BeautifulSoup(res.text, 'html.parser'), 'ok'
+        except Exception as e2:
+            logger.error(f"[정적 크롤링 오류] {row['SITE_NAME']}: {e2}")
+            return None, 'error'
     except Exception as e:
         logger.error(f"[정적 크롤링 오류] {row['SITE_NAME']}: {e}")
         return None, 'error'
@@ -560,24 +565,33 @@ def call_claude_api(prompt: str, tools: list = None, max_tokens: int = 1000) -> 
     if tools:
         payload["tools"] = tools
 
-    try:
-        response = requests.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={
-                "x-api-key": ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json"
-            },
-            json=payload,
-            timeout=60
-        )
-        if response.status_code != 200:
-            logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
-            return None
-        return response.json()
-    except Exception as e:
-        logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
-        return None
+    with _claude_lock:  # 한 번에 하나씩만 Claude 호출
+        for attempt in range(3):
+            try:
+                response = requests.post(
+                    "https://api.anthropic.com/v1/messages",
+                    headers={
+                        "x-api-key": ANTHROPIC_API_KEY,
+                        "anthropic-version": "2023-06-01",
+                        "content-type": "application/json"
+                    },
+                    json=payload,
+                    timeout=60
+                )
+                if response.status_code == 429:
+                    wait = 10 * (attempt + 1)
+                    logger.warning(f"[Claude API] rate limit → {wait}초 대기 후 재시도 ({attempt+1}/3)")
+                    time.sleep(wait)
+                    continue
+                if response.status_code != 200:
+                    logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
+                    return None
+                time.sleep(2)  # 호출 간격 유지
+                return response.json()
+            except Exception as e:
+                logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
+                return None
+    return None
 
 
 def parse_claude_json(result: dict, site_name: str) -> dict | None:
@@ -723,8 +737,7 @@ def try_bypass_firewall(row) -> tuple:
         }
         try:
             time.sleep(2 + i)  # 점진적 대기
-            session = get_session()
-            res = session.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
+            res = requests.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
             if not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[방화벽 우회 성공-정적] {site_name} UA#{i+1}")
                 return BeautifulSoup(res.text, 'html.parser'), 'ok'
