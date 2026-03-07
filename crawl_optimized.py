@@ -1142,10 +1142,14 @@ def main():
 
     df_fin, df_log, df_all = run_crawling_parallel(df, gc, max_workers=5)
 
+    # timezone-aware → naive 변환 (pandas datetime64[us]와 비교를 위해)
+    today_naive = today.replace(tzinfo=None)
+    one_day_ago_naive = one_day_ago.replace(tzinfo=None)
+
     # 하루치 필터링 + 중복 제거 (키워드 매칭 공고)
     if not df_fin.empty:
         df_fin['작성일'] = pd.to_datetime(df_fin['작성일'], format='%Y-%m-%d', errors='coerce')
-        df_filtered = df_fin[(df_fin['작성일'] >= one_day_ago) & (df_fin['작성일'] <= today)].copy()
+        df_filtered = df_fin[(df_fin['작성일'] >= one_day_ago_naive) & (df_fin['작성일'] <= today_naive)].copy()
         df_filtered = df_filtered.drop_duplicates(subset=['출처', '제목'], keep='last')
         df_filtered['수집일'] = crawled_time
         logger.info(f"필터링 후 {len(df_filtered)}개 공고 (키워드 매칭)")
@@ -1156,7 +1160,7 @@ def main():
     # 전체공고 (키워드 미해당) 날짜 필터 + 중복 제거
     if not df_all.empty:
         df_all['작성일'] = pd.to_datetime(df_all['작성일'], format='%Y-%m-%d', errors='coerce')
-        df_all_filtered = df_all[(df_all['작성일'] >= one_day_ago) & (df_all['작성일'] <= today)].copy()
+        df_all_filtered = df_all[(df_all['작성일'] >= one_day_ago_naive) & (df_all['작성일'] <= today_naive)].copy()
         df_all_filtered = df_all_filtered.drop_duplicates(subset=['출처', '제목'], keep='last')
         df_all_filtered['수집일'] = crawled_time
         logger.info(f"전체공고 (키워드 미해당) {len(df_all_filtered)}개")
