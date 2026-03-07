@@ -669,10 +669,14 @@ def call_claude_api(prompt: str, tools: list = None, max_tokens: int = 1000) -> 
                 json=payload,
                 timeout=60
             )
+            if response.status_code == 429:
+                logger.warning("[Claude API] 429 rate limit → 10초 대기")
+                time.sleep(10)  # 429 시 대기 후 반환 (연쇄 방지)
+                return None
             if response.status_code != 200:
                 logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
                 return None
-            time.sleep(3)  # 연속 호출 rate limit 방지
+            time.sleep(3)  # 성공 후 연속 호출 방지
             return response.json()
         except Exception as e:
             logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
