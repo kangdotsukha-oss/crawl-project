@@ -1,0 +1,1131 @@
+"""
+공공기관 고시/공고 자동 크롤러 (v4) - 자가치유(Self-Healing) 버전
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[v3 → v4 변경사항]
+1. ct2 빈문자열 버그 수정 (구글시트 빈셀 "" 처리)
+2. div 빈문자열 방어 처리
+3. element not interactable → scrollIntoView + JS 클릭 폴백
+4. HTML 불완전 수집 개선 (Selenium 8초 대기 + body 검증)
+5. Claude에게 보내는 HTML script/style 제거 후 20000자
+6. 크롤링 로그에 error_msg 컬럼 추가
+
+[신규 자가치유 기능]
+7. 셀렉터 자동수정 후 즉시 재크롤링 시도
+8. 성공 시 구글시트 사이트목록 자동 업데이트
+9. URL 오류(404/400/방화벽) 감지 시 Claude 웹서치로 새 URL 탐색
+10. 웹방화벽 차단 감지 → IP 우회용 User-Agent 로테이션 + 헤더 다양화 시도
+11. 자동복구 실패한 사이트만 이메일 알림 (선택적)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"""
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+import re
+import logging
+import time
+import gspread
+import os
+import json
+import smtplib
+from email.mime.text import MIMEText
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from tqdm import tqdm
+from datetime import datetime, timedelta
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from google.oauth2.service_account import Credentials
+
+# ─────────────────────────────────────────────
+# 로깅 설정
+# ─────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("crawl.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# ─────────────────────────────────────────────
+# 상수 설정
+# ─────────────────────────────────────────────
+MAX_RETRIES = 2
+MAX_PAGES = 9
+FILTER_KEYWORDS = ['특허', '제안', '심의', '공법', '실시설계', '보수보강']
+DAYS_RANGE = 1
+
+# 기본 헤더
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
+}
+
+# 웹방화벽 우회용 User-Agent 로테이션 목록
+UA_ROTATION = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+]
+
+# 웹방화벽 차단 감지 키워드
+FIREWALL_KEYWORDS = [
+    '웹방화벽', 'Web Firewall', 'WAPPLES', 'security policy', '보안정책',
+    'Access Denied', '접근이 차단', '차단되었습니다', 'Blocked', 'Forbidden',
+    '보안 위반', 'security violation', 'CloudFlare', 'Incapsula'
+]
+
+GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID", "")
+GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+
+# 이메일 알림 설정 (선택사항 - GitHub Secrets에 등록)
+EMAIL_SENDER = os.environ.get("EMAIL_SENDER", "")      # 발신 Gmail 주소
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")  # Gmail 앱 비밀번호
+EMAIL_RECEIVER = os.environ.get("EMAIL_RECEIVER", "")  # 수신 주소
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+# ─────────────────────────────────────────────
+# 유틸: 빈값 판별 (구글시트 "" / 엑셀 NaN 모두 처리)
+# ─────────────────────────────────────────────
+def is_empty(v) -> bool:
+    if v is None or v == "":
+        return True
+    if isinstance(v, float) and np.isnan(v):
+        return True
+    return False
+
+
+# ─────────────────────────────────────────────
+# Google Sheets 연결
+# ─────────────────────────────────────────────
+def get_gspread_client():
+    if not GOOGLE_CREDENTIALS_JSON:
+        logger.warning("[Google Sheets] 환경변수 미설정")
+        return None
+    try:
+        scopes = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+        creds_dict = json.loads(GOOGLE_CREDENTIALS_JSON)
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        return gspread.authorize(creds)
+    except Exception as e:
+        logger.error(f"[Google Sheets 연결 오류] {e}")
+        return None
+
+
+# ─────────────────────────────────────────────
+# 사이트 목록 로드
+# ─────────────────────────────────────────────
+def load_sites(gc) -> pd.DataFrame:
+    if gc:
+        try:
+            sh = gc.open_by_key(GOOGLE_SHEET_ID)
+            ws = sh.worksheet("사이트목록")
+            df = pd.DataFrame(ws.get_all_records())
+            logger.info(f"[사이트목록] 구글시트에서 {len(df)}개 로드")
+            return df
+        except Exception as e:
+            logger.error(f"[사이트목록 로드 실패] {e} → 로컬 엑셀 사용")
+    return pd.read_excel('./crawl_test.xlsx')
+
+
+# ─────────────────────────────────────────────
+# 구글시트 사이트목록 자동 업데이트
+# ─────────────────────────────────────────────
+def update_site_in_sheet(gc, site_no: str, updates: dict, original_url: str = None):
+    """
+    사이트목록 탭에서 SITE_NO + URL이 일치하는 행을 찾아 업데이트
+    중복 SITE_NO(A108, A118, A155, A166 등)는 URL로 구분
+    """
+    if gc is None:
+        return False
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        ws = sh.worksheet("사이트목록")
+        records = ws.get_all_records()
+        headers = ws.row_values(1)
+
+        for i, record in enumerate(records, start=2):
+            if str(record.get('SITE_NO', '')) != str(site_no):
+                continue
+            # URL도 일치해야 업데이트 (중복 SITE_NO 구분용)
+            if original_url and str(record.get('URL', '')) != str(original_url):
+                continue
+            for col_name, new_val in updates.items():
+                if col_name in headers:
+                    col_idx = headers.index(col_name) + 1
+                    ws.update_cell(i, col_idx, new_val)
+            logger.info(f"[사이트목록 자동업데이트] {site_no}: {list(updates.keys())}")
+            return True
+
+        logger.warning(f"[사이트목록 업데이트 실패] SITE_NO={site_no} 찾을 수 없음")
+        return False
+    except Exception as e:
+        logger.error(f"[사이트목록 업데이트 오류] {e}")
+        return False
+
+
+# ─────────────────────────────────────────────
+# Selenium 드라이버
+# ─────────────────────────────────────────────
+def get_driver(timeout: int = 15, ua: str = None):
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+    if ua:
+        options.add_argument(f"--user-agent={ua}")
+    driver = webdriver.Chrome(options=options)
+    driver.set_page_load_timeout(timeout)
+    return driver
+
+
+# ─────────────────────────────────────────────
+# 웹방화벽 차단 감지
+# ─────────────────────────────────────────────
+def is_firewall_blocked(html: str, status_code: int = 200) -> bool:
+    if status_code in (403, 406, 429):
+        return True
+    if not html:
+        return False
+    for kw in FIREWALL_KEYWORDS:
+        if kw in html:
+            return True
+    return False
+
+
+# ─────────────────────────────────────────────
+# 크롤링 함수들
+# ─────────────────────────────────────────────
+def static_crawl(row, headers_override=None):
+    h = headers_override or HEADERS
+    try:
+        res = requests.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+        res.raise_for_status()
+        res.encoding = 'utf-8'
+        if is_firewall_blocked(res.text, res.status_code):
+            logger.warning(f"[방화벽 차단 감지] {row['SITE_NAME']}")
+            return None, 'firewall'
+        return BeautifulSoup(res.text, 'html.parser'), 'ok'
+    except requests.exceptions.HTTPError as e:
+        code = e.response.status_code if e.response else 0
+        logger.error(f"[정적 크롤링 HTTP오류] {row['SITE_NAME']}: {code}")
+        return None, f'http_{code}'
+    except Exception as e:
+        logger.error(f"[정적 크롤링 오류] {row['SITE_NAME']}: {e}")
+        return None, 'error'
+
+
+def dynamic_crawl(row, wait=10, ua=None):
+    driver = get_driver(ua=ua)
+    try:
+        try:
+            driver.get(row['URL'])
+        except TimeoutException:
+            logger.warning(f"[로딩 타임아웃] {row['SITE_NAME']}")
+        time.sleep(wait)
+        html = driver.page_source
+        if is_firewall_blocked(html):
+            return None, 'firewall'
+        return BeautifulSoup(html, 'html.parser'), 'ok'
+    finally:
+        driver.quit()
+
+
+def dynamic_crawl_1(row):
+    driver = get_driver()
+    try:
+        driver.get(row['URL'])
+        time.sleep(10)
+        driver.find_element(By.ID, 'ofr_pageSize').click()
+        driver.find_element(By.XPATH, '//*[@id="ofr_pageSize"]/option[1]').click()
+        time.sleep(3)
+        return BeautifulSoup(driver.page_source, 'html.parser'), 'ok'
+    finally:
+        driver.quit()
+
+
+def dynamic_crawl_2(row):
+    driver = get_driver()
+    try:
+        driver.get(row['URL'])
+        time.sleep(10)
+        driver.find_element(By.CSS_SELECTOR, row['click_button']).click()
+        time.sleep(3)
+        return BeautifulSoup(driver.page_source, 'html.parser'), 'ok'
+    finally:
+        driver.quit()
+
+
+def post_crawl(row):
+    data = {
+        'epcCheck': '', 'pageIndex': '', 'jndinm': 'OfrNotAncmtEJB',
+        'context': 'NTIS', 'method': 'selectListOfrNotAncmt',
+        'methodnm': 'selectListOfrNotAncmtHomepage', 'not_ancmt_mgt_no': '',
+        'homepage_pbs_yn': 'Y', 'subCheck': 'N', 'ofr_pageSize': '10',
+        'not_ancmt_se_code': '01,04,06', 'title': '고시공고',
+        'cha_dep_code_nm': '', 'initValue': '', 'countYn': 'Y',
+        'list_gubun': 'A', 'not_ancmt_sj': '', 'not_ancmt_cn': '',
+        'dept_nm': '', 'cgg_code': '', 'yyyy': '', 'yyyymmdd': '',
+        'recent_mm': '', 'last_mm': '', 'nodate_recent_mm': '',
+        'nodate_last_mm': '', 'not_ancmt_reg_no': '', 'Key': 'B_Subject', 'temp': ''
+    }
+    res = requests.post(row['URL'], data=data).content
+    return BeautifulSoup(res.decode('utf-8-sig'), 'html.parser'), 'ok'
+
+
+# ─────────────────────────────────────────────
+# 통합 클릭 크롤링
+# ─────────────────────────────────────────────
+CLICK_CRAWL_CONFIG = {
+    'cd':  {'type': 'css',   'selector': "body > form > div.default_board > div.paging > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 5},
+    'cd1': {'type': 'css',   'selector': "#form1 > div.pgeAbs.mt30 > p > span:nth-child({page_number}) > a", 'wait': 5},
+    'cd2': {'type': 'xpath', 'selector': "/html/body/div[2]/div[2]/div/section[2]/div[1]/form/div[2]/a[{page_number+2}]", 'wait': 5},
+    'cd3': {'type': 'css',   'selector': "#txt > div.text-center > div > ul > li:nth-child({page_number+2}) > a", 'wait': 5},
+    'cd4': {'type': 'css',   'selector': "#dataForm > div.pagination.mt-md-4 > a:nth-child({page_number})", 'wait': 5},
+    'cd5': {'type': 'css',   'selector': "#cont-body > div.paging > div > div > a:nth-child({page_number+2})", 'wait': 5},
+    'cd6': {'type': 'css',   'selector': "#contentDiv > form > table.MAT10 > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 5},
+    'cd7': {'type': 'css',   'selector': "#list > div.bod_page > a:nth-child({page_number+2})", 'wait': 5},
+    'cd8': {'type': 'css',   'selector': "#board > div:nth-child(4) > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 5},
+    'cd9': {'type': 'css',   'selector': "body > form > div.sb_w > div:nth-child(3) > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 9},
+    'cd10': {'type': 'xpath','selector': "/html/body/form/table[3]/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr/td[4]/span[{(page_number-1)*2+1}]/a", 'wait': 7},
+    'cd11': {'type': 'xpath','selector': "//*[@id='list']/div[2]/div/a[{page_number+2}]", 'wait': 7},
+    'cd12': {'type': 'css',  'selector': "#sidoGosiAPIVO > div.pagination > div.normal_pagination > a:nth-child({page_number+2})", 'wait': 7},
+    'cd13': {'type': 'css',  'selector': "#txt > div > div.text-center > ul > li:nth-child({page_number+2}) > a", 'wait': 7},
+    'cd14': {'type': 'css',  'selector': "body > form > div > div > div.p-pagination > div > span.p-page__link-group > a:nth-child({page_number})", 'wait': 7},
+    'cd15': {'type': 'css',  'selector': "body > form > div > div.paging > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 7},
+    'cd16': {'type': 'css',  'selector': "body > form > table > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(7) > td > table > tbody > tr > td:nth-child({page_number+4}) > a", 'wait': 7},
+    'cd17': {'type': 'css',  'selector': "body > form > div.board > div > div > table > tbody > tr > td:nth-child(2) > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1})", 'wait': 7},
+    'cd18': {'type': 'css',  'selector': "#contents > div > div.p-wrap.bbs.bbs_list > div.p-pagination > div.p-page_link-group > a:nth-child({page_number})", 'wait': 7},
+    'cd19': {'type': 'css',  'selector': "#contents > form > table:nth-child(23) > tbody > tr:nth-child(1) > td > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 7},
+    'cd20': {'type': 'css',  'selector': "body > form > div.pagination > a:nth-child({page_number})", 'wait': 7},
+    'cd21': {'type': 'css',  'selector': "body > div.pagination > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 7},
+    'cd22': {'type': 'css',  'selector': "body > div.pagination > a:nth-child({page_number})", 'wait': 7},
+    'cd23': {'type': 'xpath','selector': "/html/body/div[4]/section/div/div/div[2]/div/div/div[3]/div/ul/ul/li[{page_number+2}]", 'wait': 7},
+    'cd24': {'type': 'css',  'selector': "#content_area > div.container > div > div.content > div.board_list > div.paging > ul > li:nth-child({page_number}) > a", 'wait': 7},
+    'cd25': {'type': 'css',  'selector': "#eminwonWrap > div.pagination > ul > li:nth-child({page_number}) > a", 'wait': 7},
+    'cd26': {'type': 'css',  'selector': "#listForm > div.box_page > a:nth-child({page_number+2})", 'wait': 7},
+    'cd27': {'type': 'xpath','selector': "/html/body/form/table[2]/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr/td[4]/span[{(page_number-1)*2+1}]/a", 'wait': 7},
+    'cd28': {'type': 'css',  'selector': "#A-Contents > div.pager > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span:nth-child({(page_number-1)*2+1}) > a", 'wait': 7},
+    'cd29': {'type': 'css',  'selector': "#contentsArea > div.pager > a:nth-child({page_number+3})", 'wait': 7},
+    'cd30': {'type': 'xpath','selector': "/html/body/form/div/table/tbody/tr/td/table/tbody/tr/td/table/tbody/tr/td[4]/span[{(page_number-1)*2+1}]", 'wait': 7},
+    'cd31': {'type': 'css',  'selector': "body > form > section > div.pager > a:nth-child({page_number+2})", 'wait': 7},
+    'cd32': {'type': 'xpath','selector': "/html/body/div/main/div/div/div[2]/div[2]/div[3]/a[{page_number+2}]", 'wait': 7},
+    'cd33': {'type': 'css',  'selector': "body > form > table:nth-child(12) > tbody > tr > td > table:nth-child(3) > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td:nth-child(4) > span[{(page_number-1)*2+1}]/a", 'wait': 7},
+    'cd34': {'type': 'css',  'selector': "#paging-tag > ul > li:nth-child({page_number+2})", 'wait': 7},
+}
+
+
+def click_dynamic_crawl(row, page_number):
+    ct = row['crawl_type']
+    config = CLICK_CRAWL_CONFIG.get(ct)
+    if not config:
+        raise ValueError(f"알 수 없는 crawl_type: {ct}")
+    selector = eval(f'f"{config["selector"]}"')
+    wait_time = config.get('wait', 5)
+    driver = get_driver()
+    try:
+        driver.get(row['URL'])
+        time.sleep(wait_time)
+        if page_number > 1:
+            by = By.CSS_SELECTOR if config['type'] == 'css' else By.XPATH
+            try:
+                btn = driver.find_element(by, selector)
+                # 1) scrollIntoView 후 일반 클릭
+                driver.execute_script("arguments[0].scrollIntoView(true);", btn)
+                time.sleep(0.5)
+                try:
+                    btn.click()
+                except (ElementClickInterceptedException, Exception):
+                    # 2) JS 강제 클릭 (element click intercepted 대응)
+                    driver.execute_script("arguments[0].click();", btn)
+                time.sleep(wait_time)
+            except NoSuchElementException:
+                logger.warning(f"[버튼 없음] {row['SITE_NAME']} 페이지 {page_number}")
+                driver.quit()
+                return None, 'no_button'  # 버튼 없음 → 페이지 순회 중단 신호
+        html = driver.page_source
+        if is_firewall_blocked(html):
+            return None, 'firewall'
+        return BeautifulSoup(html, 'html.parser'), 'ok'
+    finally:
+        driver.quit()
+
+
+# ─────────────────────────────────────────────
+# URL 페이지 업데이트
+# ─────────────────────────────────────────────
+URL_PATTERNS = {
+    "pageIndex=": lambda url, p: re.sub(r"pageIndex=\d+", f"pageIndex={p}", url),
+    "page=":      lambda url, p: re.sub(r"page=\d+", f"page={p}", url),
+    "Page=":      lambda url, p: re.sub(r"Page=\d+", f"Page={p}", url),
+    "&cpn=":      lambda url, p: re.sub(r"&cpn=\d+", f"&cpn={p}", url),
+    "pageNo=":    lambda url, p: re.sub(r"pageNo=\d+", f"pageNo={p}", url),
+    "offset=":    lambda url, p: re.sub(r"offset=\d+", f"offset={(p-1)*15}", url),
+    "?p=":        lambda url, p: re.sub(r"\?p=\d+", f"?p={p}", url),
+    "Page2=":     lambda url, p: re.sub(r"Page2=\d+", f"Page2={p}", url),
+    "Start=":     lambda url, p: re.sub(r"Start=\d+", f"Start={(p-1)*10}", url),
+    "pageid=":    lambda url, p: re.sub(r"pageid=\d+", f"pageid={p}", url),
+}
+
+
+def update_url_for_next_page(url, page_number, div):
+    if page_number == 1:
+        return url
+    if (div or '') != 'V2':
+        return None
+    for pattern, updater in URL_PATTERNS.items():
+        if pattern in url:
+            return updater(url, page_number)
+    return url
+
+
+def update_crawl_type(url, crawl_type, page_number, ct2):
+    if page_number == 1:
+        return crawl_type
+    if not is_empty(ct2):
+        return ct2
+    return crawl_type
+
+
+# ─────────────────────────────────────────────
+# 날짜 처리
+# ─────────────────────────────────────────────
+def fix_date_format(date_str):
+    if not date_str or not isinstance(date_str, str):
+        return date_str
+    date_str = date_str.strip()
+    if len(date_str) == 8 and date_str.isdigit():
+        return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+    if len(date_str) == 18:
+        return f"{date_str[:4]}-{date_str[5:7]}-{date_str[8:10]}"
+    date_str = date_str.split('~')[0].strip()
+    parts = date_str.split('-')
+    if parts and len(parts[0]) == 2:
+        return '20' + date_str
+    return date_str
+
+
+def extract_date_from_text(text):
+    if '공고부서 :' in text:
+        return text.split('공고부서 :')[-2].split('등록일 :')[-1].strip()
+    elif '게재일 :' in text:
+        return text.split('게재일 :')[1].strip()
+    return text.replace('.', '-').replace('/', '-').replace('등록일 :', '').strip()
+
+
+# ─────────────────────────────────────────────
+# HTML 수집 (분석용)
+# ─────────────────────────────────────────────
+def fetch_html_for_analysis(row, url_override=None) -> str | None:
+    """분석용 HTML 수집 - Selenium 우선(동적 대응), 실패 시 정적"""
+    site_name = row['SITE_NAME']
+    url = url_override or row['URL']
+
+    # 1) Selenium 8초 대기 (동적 페이지 완전 로드)
+    for ua in [None, UA_ROTATION[1]]:  # 기본 UA, Mac UA 순으로 시도
+        try:
+            driver = get_driver(timeout=20, ua=ua)
+            try:
+                driver.get(url)
+            except TimeoutException:
+                pass
+            time.sleep(8)
+            html = driver.page_source
+            driver.quit()
+
+            soup_check = BeautifulSoup(html, 'html.parser')
+            body = soup_check.find('body')
+            body_text = body.get_text(strip=True) if body else ''
+            if len(body_text) > 200 and not is_firewall_blocked(html):
+                logger.info(f"[HTML수집-동적] {site_name}: {len(html)}bytes")
+                return html
+        except Exception as e:
+            logger.warning(f"[HTML수집-동적 실패] {site_name}: {e}")
+
+    # 2) 정적 요청
+    for ua in UA_ROTATION[:3]:
+        try:
+            h = {**HEADERS, "User-Agent": ua}
+            res = requests.get(url, headers=h, timeout=(20, 20), verify=False)
+            res.encoding = 'utf-8'
+            if len(res.text) > 1000 and not is_firewall_blocked(res.text, res.status_code):
+                logger.info(f"[HTML수집-정적] {site_name}: {len(res.text)}bytes")
+                return res.text
+        except Exception:
+            pass
+
+    logger.error(f"[HTML수집 전체 실패] {site_name}")
+    return None
+
+
+# ─────────────────────────────────────────────
+# Claude API 호출 공통 함수
+# ─────────────────────────────────────────────
+def call_claude_api(prompt: str, tools: list = None, max_tokens: int = 1000) -> dict | None:
+    if not ANTHROPIC_API_KEY:
+        logger.warning("[Claude API] API 키 미설정")
+        return None
+
+    payload = {
+        "model": "claude-haiku-4-5-20251001",
+        "max_tokens": max_tokens,
+        "messages": [{"role": "user", "content": prompt}]
+    }
+    if tools:
+        payload["tools"] = tools
+
+    try:
+        response = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json"
+            },
+            json=payload,
+            timeout=60
+        )
+        if response.status_code != 200:
+            logger.error(f"[Claude API] HTTP {response.status_code}: {response.text[:200]}")
+            return None
+        return response.json()
+    except Exception as e:
+        logger.error(f"[Claude API 오류] {type(e).__name__}: {e}")
+        return None
+
+
+def parse_claude_json(result: dict, site_name: str) -> dict | None:
+    """Claude 응답에서 JSON 파싱"""
+    if not result:
+        return None
+    content_list = result.get('content', [])
+    if not content_list:
+        return None
+
+    # tool_use 블록 처리 (웹서치 결과)
+    for block in content_list:
+        if block.get('type') == 'text':
+            text = block.get('text', '').strip()
+            text = re.sub(r'```json\s*', '', text)
+            text = re.sub(r'```\s*', '', text)
+            text = text.strip()
+            if text.startswith('{'):
+                try:
+                    return json.loads(text)
+                except json.JSONDecodeError as e:
+                    logger.error(f"[Claude JSON파싱오류] {site_name}: {e}")
+    return None
+
+
+# ─────────────────────────────────────────────
+# 셀렉터 자동 분석 (Claude)
+# ─────────────────────────────────────────────
+def analyze_with_claude(site_name: str, url: str, html: str) -> dict | None:
+    """HTML에서 CSS 셀렉터 자동 분석"""
+    # script/style 제거 후 body만 추출
+    try:
+        soup_trim = BeautifulSoup(html, 'html.parser')
+        for tag in soup_trim(['script', 'style', 'link', 'meta']):
+            tag.decompose()
+        body = soup_trim.find('body')
+        html_trimmed = str(body)[:20000] if body else html[:20000]
+    except Exception:
+        html_trimmed = html[:20000]
+
+    prompt = f"""아래는 공공기관 고시/공고 목록 페이지의 HTML입니다.
+사이트명: {site_name}
+URL: {url}
+
+HTML:
+{html_trimmed}
+
+이 HTML에서 공고 목록을 크롤링하기 위한 CSS 셀렉터를 찾아주세요.
+반드시 아래 JSON 형식으로만 응답하세요. 다른 설명 없이 JSON만 출력하세요:
+
+{{
+  "table_body": "공고 목록 테이블/컨테이너의 CSS 셀렉터",
+  "title": "제목 요소의 CSS 셀렉터 (table_body 기준 상대경로)",
+  "date": "날짜 요소의 CSS 셀렉터 (table_body 기준 상대경로)",
+  "reason": "분석 근거 한 줄 설명"
+}}"""
+
+    result = call_claude_api(prompt, max_tokens=500)
+    parsed = parse_claude_json(result, site_name)
+    if parsed:
+        logger.info(f"[Claude 셀렉터 분석 완료] {site_name}")
+    return parsed
+
+
+# ─────────────────────────────────────────────
+# URL 자동 탐색 (Claude 웹서치)
+# ─────────────────────────────────────────────
+def search_new_url_with_claude(site_name: str, old_url: str) -> str | None:
+    """
+    Claude 웹서치 툴을 이용해 지자체 고시공고 페이지 새 URL 탐색
+    """
+    # 도메인 추출 (같은 도메인 내 URL 변경인 경우 힌트로 사용)
+    domain_match = re.match(r'(https?://[^/]+)', old_url)
+    domain_hint = domain_match.group(1) if domain_match else ''
+
+    prompt = f"""한국 공공기관 고시공고 목록 페이지의 현재 URL을 찾아주세요.
+
+기관명: {site_name}
+기존 URL (현재 접근 불가): {old_url}
+도메인 힌트: {domain_hint}
+
+웹서치로 현재 접근 가능한 고시공고 목록 페이지 URL을 찾아주세요.
+반드시 아래 JSON 형식으로만 응답하세요:
+
+{{
+  "new_url": "찾은 URL (없으면 null)",
+  "reason": "찾은 근거"
+}}"""
+
+    web_search_tool = [{
+        "type": "web_search_20250305",
+        "name": "web_search"
+    }]
+
+    result = call_claude_api(prompt, tools=web_search_tool, max_tokens=1000)
+    if not result:
+        return None
+
+    # tool_use → text 순으로 응답 파싱
+    content_list = result.get('content', [])
+    for block in content_list:
+        if block.get('type') == 'text':
+            text = block.get('text', '').strip()
+            text = re.sub(r'```json\s*', '', text)
+            text = re.sub(r'```\s*', '', text).strip()
+            if '{' in text:
+                try:
+                    idx_start = text.index('{')
+                    idx_end = text.rindex('}') + 1
+                    parsed = json.loads(text[idx_start:idx_end])
+                    new_url = parsed.get('new_url')
+                    if new_url and new_url != 'null' and new_url.startswith('http'):
+                        logger.info(f"[URL탐색 성공] {site_name}: {new_url}")
+                        return new_url
+                except Exception:
+                    pass
+
+    logger.warning(f"[URL탐색 실패] {site_name}: 새 URL 찾지 못함")
+    return None
+
+
+# ─────────────────────────────────────────────
+# 웹방화벽 우회 시도
+# ─────────────────────────────────────────────
+def try_bypass_firewall(row) -> tuple:
+    """
+    다양한 User-Agent와 헤더 조합으로 웹방화벽 우회 시도
+    성공 시 (soup, 'ok'), 실패 시 (None, 'firewall_blocked')
+    """
+    site_name = row['SITE_NAME']
+    logger.info(f"[방화벽 우회 시도] {site_name}")
+
+    # 1) User-Agent 로테이션으로 정적 요청 시도
+    for i, ua in enumerate(UA_ROTATION):
+        headers = {
+            "User-Agent": ua,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "ko-KR,ko;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
+            "Referer": re.match(r'(https?://[^/]+)', row['URL']).group(1) if re.match(r'(https?://[^/]+)', row['URL']) else '',
+        }
+        try:
+            time.sleep(2 + i)  # 점진적 대기
+            res = requests.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
+            if not is_firewall_blocked(res.text, res.status_code):
+                logger.info(f"[방화벽 우회 성공-정적] {site_name} UA#{i+1}")
+                return BeautifulSoup(res.text, 'html.parser'), 'ok'
+        except Exception:
+            pass
+
+    # 2) Selenium UA 로테이션
+    for i, ua in enumerate(UA_ROTATION[1:3]):
+        try:
+            driver = get_driver(timeout=20, ua=ua)
+            try:
+                driver.get(row['URL'])
+            except TimeoutException:
+                pass
+            time.sleep(10)
+            html = driver.page_source
+            driver.quit()
+            if not is_firewall_blocked(html):
+                logger.info(f"[방화벽 우회 성공-동적] {site_name} UA#{i+2}")
+                return BeautifulSoup(html, 'html.parser'), 'ok'
+        except Exception:
+            pass
+
+    logger.warning(f"[방화벽 우회 실패] {site_name}: 모든 시도 실패 (IP 차단으로 판단)")
+    return None, 'firewall_blocked'
+
+
+# ─────────────────────────────────────────────
+# 자동수정대기 탭 저장
+# ─────────────────────────────────────────────
+def save_to_pending(gc, row, suggested: dict, status: str = '자동적용'):
+    if gc is None:
+        return
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        try:
+            ws = sh.worksheet("자동수정대기")
+        except gspread.exceptions.WorksheetNotFound:
+            ws = sh.add_worksheet(title="자동수정대기", rows="500", cols="20")
+            ws.append_row([
+                "SITE_NO", "SITE_NAME", "URL", "crawl_type", "div", "ct2",
+                "기존_table_body", "기존_title", "기존_date",
+                "제안_table_body", "제안_title", "제안_date",
+                "분석근거", "분석일시", "적용여부"
+            ])
+
+        ws.append_row([
+            str(row.get('SITE_NO', '')),
+            str(row.get('SITE_NAME', '')),
+            str(row.get('URL', '')),
+            str(row.get('crawl_type', '')),
+            str(row.get('div', '')),
+            str(row.get('ct2', '')),
+            str(row.get('table_body', '')),
+            str(row.get('title', '')),
+            str(row.get('date', '')),
+            suggested.get('table_body', ''),
+            suggested.get('title', ''),
+            suggested.get('date', ''),
+            suggested.get('reason', ''),
+            datetime.today().strftime('%Y-%m-%d %H:%M:%S'),
+            status
+        ])
+    except Exception as e:
+        logger.error(f"[자동수정대기 저장 오류] {e}")
+
+
+# ─────────────────────────────────────────────
+# 파싱 공통 함수
+# ─────────────────────────────────────────────
+def parse_soup(soup, row, site_name) -> tuple:
+    """
+    soup에서 공고 목록 파싱
+    반환: (titles_list, dates_list, collected_data_list, error_msg)
+    """
+    all_titles, cleaned_dates, collected_data = [], [], []
+    try:
+        tb = (soup.select(row['table_body'])[1]
+              if site_name == '대전광역시고시공고'
+              else soup.select_one(row['table_body']))
+        if not tb:
+            return [], [], [], f"테이블 없음: {row['table_body']}"
+
+        titles = tb.select(row['title'])
+        dates = tb.select(row['date'])
+        if site_name == '충청도_서천군':
+            dates = [d for d in dates if '등록일' not in d.get_text(strip=True)]
+
+        for title, date in zip(titles, dates):
+            clean_title = title.get_text(strip=True).replace("\r","").replace("\n","").replace("\t","").strip()
+            extracted_date = fix_date_format(extract_date_from_text(date.get_text(separator=" ", strip=True)))
+            all_titles.append(clean_title)
+            cleaned_dates.append(extracted_date)
+            if any(kw in clean_title for kw in FILTER_KEYWORDS):
+                collected_data.append({
+                    "SITE_NO": row['SITE_NO'],
+                    "출처": site_name,
+                    "URL": row['URL'],
+                    "제목": clean_title,
+                    "작성일": extracted_date
+                })
+        return all_titles, cleaned_dates, collected_data, ""
+    except Exception as e:
+        return [], [], [], f"파싱 오류: {str(e)[:80]}"
+
+
+# ─────────────────────────────────────────────
+# 단일 사이트 크롤링 (자가치유 포함)
+# ─────────────────────────────────────────────
+def crawl_site(row, gc=None) -> dict:
+    site_name = row['SITE_NAME']
+    all_titles, cleaned_dates, collected_data = [], [], []
+    page_number, retries = 1, 0
+    failed = False
+    error_msg = ""
+    auto_fixed = False  # 자동복구 성공 여부
+
+    logger.info(f"[시작] {site_name}")
+
+    while page_number <= MAX_PAGES:
+        try:
+            div = row.get('div', '') or ''
+            updated_url = update_url_for_next_page(row['URL'], page_number, div)
+            if updated_url is None:
+                break
+            row = row.copy()
+            row['URL'] = updated_url
+            row['crawl_type'] = update_crawl_type(
+                row['URL'], row['crawl_type'], page_number, row.get('ct2', '')
+            )
+
+            soup, status, success = None, 'ok', False
+            url_searched = False  # URL 탐색은 사이트당 1회만
+
+            while retries < MAX_RETRIES and not success:
+                try:
+                    ct = row['crawl_type']
+                    if ct == 's':
+                        soup, status = static_crawl(row)
+                    elif ct == 'd':
+                        soup, status = dynamic_crawl(row)
+                    elif ct == 'd1':
+                        soup, status = dynamic_crawl_1(row)
+                    elif ct == 'd2':
+                        soup, status = dynamic_crawl_2(row)
+                    elif ct == 'p':
+                        soup, status = post_crawl(row)
+                    elif ct in CLICK_CRAWL_CONFIG:
+                        soup, status = click_dynamic_crawl(row, page_number)
+                    else:
+                        error_msg = f"알 수 없는 타입: {ct}"
+                        logger.error(f"[알 수 없는 타입] {site_name}: {ct}")
+                        failed = True
+                        break
+
+                    # ── 버튼 없음 → 더 이상 다음 페이지 없음, 정상 종료 ──
+                    if status == 'no_button':
+                        logger.info(f"[페이지 끝] {site_name}: 페이지 {page_number}에 버튼 없음, 순회 종료")
+                        break
+
+                    # ── 웹방화벽 감지 → 우회 시도 ──
+                    if status == 'firewall':
+                        soup, status = try_bypass_firewall(row)
+                        if status == 'firewall_blocked':
+                            error_msg = "웹방화벽 차단 (IP차단, 우회 실패)"
+                            failed = True
+                            break
+
+                    # ── HTTP 오류 (404/400/연결실패) → URL 탐색 시도 (1회만) ──
+                    if soup is None and (status.startswith('http_') or status == 'error') and not url_searched:
+                        url_searched = True
+                        error_code = status.split('_')[1] if '_' in status else '?'
+                        logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
+                        new_url = search_new_url_with_claude(site_name, row['URL'])
+                        if new_url:
+                            row = row.copy()
+                            row['URL'] = new_url
+                            soup, status = static_crawl(row)
+                            if soup is None:
+                                soup, status = dynamic_crawl(row)
+                            if soup:
+                                if gc:
+                                    update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=row['URL'])
+                                auto_fixed = True
+                                logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
+                            else:
+                                # 새 URL도 안 되면 포기 (무한루프 방지)
+                                error_msg = f"URL 복구 후에도 접근 불가 (IP차단 추정)"
+                                logger.warning(f"[URL 복구 후 실패] {site_name}")
+                                failed = True
+                                break
+                        else:
+                            error_msg = f"HTTP {error_code}: 새 URL 탐색 실패"
+                            failed = True
+                            break
+
+                    if soup:
+                        success = True
+                    else:
+                        retries += 1
+                        time.sleep(2)
+
+                except TimeoutException:
+                    retries += 1
+                    error_msg = f"타임아웃 (재시도 {retries}/{MAX_RETRIES})"
+                    logger.warning(f"[타임아웃] {site_name} 재시도 {retries}/{MAX_RETRIES}")
+                    time.sleep(2)
+                except Exception as e:
+                    retries += 1
+                    error_msg = str(e)[:100]
+                    logger.error(f"[크롤링 오류] {site_name}: {e}")
+                    time.sleep(2)
+
+            if failed or not success or soup is None:
+                # no_button은 페이지 끝 = 정상 종료 (실패 아님)
+                if status == 'no_button':
+                    break
+                if not failed:
+                    error_msg = error_msg or "최종 실패 (재시도 소진)"
+                    logger.error(f"[최종 실패] {site_name}")
+                    failed = True
+                break
+
+            # ── 파싱 ──
+            titles, dates, data, parse_err = parse_soup(soup, row, site_name)
+
+            if parse_err:
+                error_msg = parse_err
+                failed = True
+                break
+
+            all_titles.extend(titles)
+            cleaned_dates.extend(dates)
+            collected_data.extend(data)
+
+            if len(set(cleaned_dates)) <= 2:
+                page_number += 1
+                retries = 0
+                time.sleep(1)
+            else:
+                break
+
+        except Exception as e:
+            error_msg = f"전체 오류: {str(e)[:80]}"
+            logger.error(f"[전체 오류] {site_name}: {e}")
+            failed = True
+            break
+
+    # ──────────────────────────────────────────
+    # 자가치유: 셀렉터 자동수정 + 즉시 재크롤링
+    # ──────────────────────────────────────────
+    if failed and not auto_fixed and gc is not None:
+        logger.info(f"[자가치유 시작] {site_name}")
+        html = fetch_html_for_analysis(row)
+        if html:
+            suggested = analyze_with_claude(site_name, row['URL'], html)
+            if suggested and suggested.get('table_body') not in (None, '', 'null', 'Unable to determine'):
+
+                # 새 셀렉터로 즉시 재크롤링 시도
+                logger.info(f"[새 셀렉터로 재시도] {site_name}")
+                new_row = row.copy()
+                new_row['table_body'] = suggested['table_body']
+                new_row['title'] = suggested['title']
+                new_row['date'] = suggested['date']
+
+                try:
+                    ct = new_row['crawl_type']
+                    if ct == 's':
+                        retry_soup, _ = static_crawl(new_row)
+                    elif ct == 'd':
+                        retry_soup, _ = dynamic_crawl(new_row)
+                    elif ct in CLICK_CRAWL_CONFIG:
+                        retry_soup, _ = click_dynamic_crawl(new_row, 1)
+                    else:
+                        retry_soup = None
+
+                    if retry_soup:
+                        titles, dates, data, parse_err = parse_soup(retry_soup, new_row, site_name)
+                        if not parse_err and titles:
+                            # 재크롤링 성공!
+                            all_titles.extend(titles)
+                            cleaned_dates.extend(dates)
+                            collected_data.extend(data)
+                            failed = False
+                            auto_fixed = True
+                            error_msg = ""
+                            logger.info(f"[자가치유 성공] {site_name}: {len(titles)}개 공고 수집")
+
+                            # 구글시트 사이트목록 자동 업데이트
+                            update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {
+                                'table_body': suggested['table_body'],
+                                'title': suggested['title'],
+                                'date': suggested['date'],
+                            }, original_url=row.get('URL', ''))
+                            # 자동수정대기에도 기록 (적용됨 표시)
+                            save_to_pending(gc, row, suggested, status='자동적용완료')
+                        else:
+                            logger.warning(f"[자가치유 실패-파싱] {site_name}: {parse_err}")
+                            save_to_pending(gc, row, suggested, status='미적용')
+                    else:
+                        logger.warning(f"[자가치유 실패-수집] {site_name}")
+                        save_to_pending(gc, row, suggested, status='미적용')
+
+                except Exception as e:
+                    logger.error(f"[자가치유 오류] {site_name}: {e}")
+                    save_to_pending(gc, row, suggested, status='미적용')
+            else:
+                logger.warning(f"[자가치유 불가] {site_name}: Claude가 셀렉터 찾지 못함")
+
+    final_status = '성공'
+    if failed and auto_fixed:
+        final_status = '자가치유성공'
+    elif failed:
+        final_status = f'실패({error_msg[:30]})'
+
+    return {
+        'data': collected_data,
+        'log': {
+            'SITE_NAME': site_name,
+            'URL': row['URL'],
+            'len_tbody': len(all_titles),
+            'unique_date': len(set(cleaned_dates)),
+            'min_date': min(cleaned_dates) if cleaned_dates else "",
+            'max_date': max(cleaned_dates) if cleaned_dates else "",
+            'status': final_status,
+            'error_msg': error_msg,
+            'auto_fixed': '✅' if auto_fixed else ''
+        }
+    }
+
+
+# ─────────────────────────────────────────────
+# 병렬 크롤링
+# ─────────────────────────────────────────────
+def run_crawling_parallel(df, gc, max_workers=5):
+    all_data, all_logs = [], []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(crawl_site, row, gc): idx for idx, row in df.iterrows()}
+        for future in tqdm(as_completed(futures), total=len(futures), desc="크롤링 진행"):
+            try:
+                result = future.result()
+                all_data.extend(result['data'])
+                all_logs.append(result['log'])
+            except Exception as e:
+                logger.error(f"[병렬 오류] {e}")
+    return pd.DataFrame(all_data), pd.DataFrame(all_logs)
+
+
+# ─────────────────────────────────────────────
+# Google Sheets 업로드
+# ─────────────────────────────────────────────
+def upload_to_sheet(gc, df, sheet_name):
+    if gc is None or df.empty:
+        return
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        try:
+            ws = sh.worksheet(sheet_name)
+        except gspread.exceptions.WorksheetNotFound:
+            ws = sh.add_worksheet(title=sheet_name, rows="5000", cols="20")
+
+        existing = pd.DataFrame(ws.get_all_records())
+        combined = pd.concat([existing, df], ignore_index=True) if not existing.empty else df.copy()
+        if '출처' in combined.columns and '제목' in combined.columns:
+            combined = combined.drop_duplicates(subset=['출처', '제목'], keep='last')
+        combined = combined.fillna("").astype(str)
+        ws.clear()
+        ws.update([combined.columns.tolist()] + combined.values.tolist())
+        logger.info(f"[업로드 완료] '{sheet_name}' {len(combined)}행")
+    except Exception as e:
+        logger.error(f"[업로드 오류] {sheet_name}: {e}")
+
+
+def upload_log(gc, df):
+    if gc is None or df.empty:
+        return
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        try:
+            ws = sh.worksheet("크롤링로그")
+        except gspread.exceptions.WorksheetNotFound:
+            ws = sh.add_worksheet(title="크롤링로그", rows="1000", cols="20")
+        df = df.fillna("").astype(str)
+        ws.clear()
+        ws.update([df.columns.tolist()] + df.values.tolist())
+        logger.info(f"[로그 업로드 완료] {len(df)}행")
+    except Exception as e:
+        logger.error(f"[로그 업로드 오류]: {e}")
+
+
+# ─────────────────────────────────────────────
+# 이메일 알림 (자동복구 불가 사이트만)
+# ─────────────────────────────────────────────
+def send_failure_email(df_log: pd.DataFrame):
+    """자동복구도 실패한 사이트 목록을 이메일로 전송"""
+    if not all([EMAIL_SENDER, EMAIL_PASSWORD, EMAIL_RECEIVER]):
+        return  # 이메일 설정 없으면 스킵
+
+    failed = df_log[df_log['status'].str.startswith('실패', na=False)]
+    if failed.empty:
+        return
+
+    body_lines = [f"[크롤링 자동복구 실패 알림] {datetime.today().strftime('%Y-%m-%d')}\n"]
+    body_lines.append(f"총 {len(failed)}개 사이트 수동 확인 필요:\n")
+    for _, row in failed.iterrows():
+        body_lines.append(f"  - {row['SITE_NAME']}: {row['error_msg']}")
+
+    body = "\n".join(body_lines)
+    try:
+        msg = MIMEText(body, 'plain', 'utf-8')
+        msg['Subject'] = f"[크롤러] {len(failed)}개 사이트 수동 확인 필요 ({datetime.today().strftime('%m/%d')})"
+        msg['From'] = EMAIL_SENDER
+        msg['To'] = EMAIL_RECEIVER
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+        logger.info(f"[이메일 알림 발송] 실패 {len(failed)}개 사이트")
+    except Exception as e:
+        logger.error(f"[이메일 발송 오류] {e}")
+
+
+# ─────────────────────────────────────────────
+# 메인
+# ─────────────────────────────────────────────
+def main():
+    today = datetime.today()
+    crawled_time = today.strftime('%Y-%m-%d %H:%M:%S')
+    today_str = today.strftime('%Y%m%d')
+    one_day_ago = today - timedelta(days=DAYS_RANGE)
+
+    logger.info(f"===== 크롤링 시작 (v4 자가치유): {crawled_time} =====")
+
+    gc = get_gspread_client()
+    df = load_sites(gc)
+    logger.info(f"총 {len(df)}개 사이트")
+
+    df_fin, df_log = run_crawling_parallel(df, gc, max_workers=5)
+
+    # 하루치 필터링 + 중복 제거
+    if not df_fin.empty:
+        df_fin['작성일'] = pd.to_datetime(df_fin['작성일'], format='%Y-%m-%d', errors='coerce')
+        df_filtered = df_fin[(df_fin['작성일'] >= one_day_ago) & (df_fin['작성일'] <= today)].copy()
+        df_filtered = df_filtered.drop_duplicates(subset=['출처', '제목'], keep='last')
+        df_filtered['수집일'] = crawled_time
+        logger.info(f"필터링 후 {len(df_filtered)}개 공고")
+    else:
+        df_filtered = pd.DataFrame()
+        logger.warning("수집 데이터 없음")
+
+    # 결과 요약 로그
+    if not df_log.empty:
+        total = len(df_log)
+        success = len(df_log[df_log['status'] == '성공'])
+        healed = len(df_log[df_log['status'] == '자가치유성공'])
+        failed = len(df_log[df_log['status'].str.startswith('실패', na=False)])
+        logger.info(f"===== 결과: 성공 {success} | 자가치유 {healed} | 실패 {failed} / 전체 {total} =====")
+
+    # 로컬 백업
+    df_log.to_excel(f'./df_log_{today_str}.xlsx', index=False)
+    if not df_filtered.empty:
+        df_filtered.to_excel(f'./df_list_{today_str}.xlsx', index=False)
+
+    # 구글시트 업로드
+    upload_to_sheet(gc, df_filtered, "공고목록")
+    upload_log(gc, df_log)
+
+    # 이메일 알림 (실패 사이트만)
+    send_failure_email(df_log)
+
+    logger.info(f"===== 크롤링 완료: {datetime.today().strftime('%Y-%m-%d %H:%M:%S')} =====")
+
+
+if __name__ == "__main__":
+    main()
