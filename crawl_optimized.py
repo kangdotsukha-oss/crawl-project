@@ -220,12 +220,39 @@ def is_firewall_blocked(html: str, status_code: int = 200) -> bool:
 
 
 # ─────────────────────────────────────────────
+# SSL 유연 세션 (구버전 TLS 서버 대응)
+# ─────────────────────────────────────────────
+import ssl
+import urllib3
+from requests.adapters import HTTPAdapter
+
+class SSLFlexAdapter(HTTPAdapter):
+    """SSLEOFError 등 구버전 TLS 서버 대응용 어댑터"""
+    def init_poolmanager(self, *args, **kwargs):
+        ctx = ssl.create_default_context()
+        ctx.set_ciphers("DEFAULT@SECLEVEL=1")
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        ctx.options |= ssl.OP_LEGACY_SERVER_CONNECT
+        kwargs['ssl_context'] = ctx
+        return super().init_poolmanager(*args, **kwargs)
+
+def get_session() -> requests.Session:
+    s = requests.Session()
+    adapter = SSLFlexAdapter()
+    s.mount("https://", adapter)
+    s.mount("http://", adapter)
+    return s
+
+
+# ─────────────────────────────────────────────
 # 크롤링 함수들
 # ─────────────────────────────────────────────
 def static_crawl(row, headers_override=None):
     h = headers_override or HEADERS
     try:
-        res = requests.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
+        session = get_session()
+        res = session.get(row['URL'], headers=h, timeout=(50, 50), verify=False)
         res.raise_for_status()
         res.encoding = 'utf-8'
         if is_firewall_blocked(res.text, res.status_code):
@@ -418,24 +445,55 @@ def update_crawl_type(url, crawl_type, page_number, ct2):
 # ─────────────────────────────────────────────
 def fix_date_format(date_str):
     if not date_str or not isinstance(date_str, str):
-        return date_str
+        return ""
     date_str = date_str.strip()
+
+    # 8자리 숫자 → YYYY-MM-DD
     if len(date_str) == 8 and date_str.isdigit():
         return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+
+    # 18자리 특수 포맷
     if len(date_str) == 18:
         return f"{date_str[:4]}-{date_str[5:7]}-{date_str[8:10]}"
+
+    # ~ 범위에서 앞부분만 사용
     date_str = date_str.split('~')[0].strip()
+
+    # 요일 제거: (Mon), (Sat) 등
+    date_str = re.sub(r'\([A-Za-z]{3}\)', '', date_str).strip()
+
+    # 끝 특수문자 제거: -, ., 공백 등
+    date_str = date_str.rstrip('-. ')
+
+    # YYYY-MM-DD 패턴만 추출 (garbage 방어)
+    m = re.search(r'(20\d{2}[-./]\d{1,2}[-./]\d{1,2})', date_str)
+    if m:
+        date_str = m.group(1).replace('.', '-').replace('/', '-')
+        return date_str
+
+    # YY-MM-DD → 20YY-MM-DD
     parts = date_str.split('-')
     if parts and len(parts[0]) == 2:
         return '20' + date_str
+
+    # 숫자만 있거나 날짜처럼 안 보이면 빈값 반환
+    if not re.search(r'20\d{2}', date_str):
+        return ""
+
     return date_str
 
 
 def extract_date_from_text(text):
+    if not text or not isinstance(text, str):
+        return ""
     if '공고부서 :' in text:
         return text.split('공고부서 :')[-2].split('등록일 :')[-1].strip()
     elif '게재일 :' in text:
         return text.split('게재일 :')[1].strip()
+    # 날짜 패턴 직접 추출 (텍스트가 길거나 잡동사니 섞인 경우 대비)
+    m = re.search(r'(20\d{2}[-./]\d{1,2}[-./]\d{1,2})', text)
+    if m:
+        return m.group(1).replace('.', '-').replace('/', '-')
     return text.replace('.', '-').replace('/', '-').replace('등록일 :', '').strip()
 
 
@@ -663,7 +721,8 @@ def try_bypass_firewall(row) -> tuple:
         }
         try:
             time.sleep(2 + i)  # 점진적 대기
-            res = requests.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
+            session = get_session()
+            res = session.get(row['URL'], headers=headers, timeout=(30, 30), verify=False)
             if not is_firewall_blocked(res.text, res.status_code):
                 logger.info(f"[방화벽 우회 성공-정적] {site_name} UA#{i+1}")
                 return BeautifulSoup(res.text, 'html.parser'), 'ok'
