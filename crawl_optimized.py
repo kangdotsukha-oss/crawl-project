@@ -85,7 +85,6 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────
 # 상수 설정
 # ─────────────────────────────────────────────
-MAX_RETRIES = 2
 MAX_PAGES = 5
 FILTER_KEYWORDS = ['특허', '제안', '심의', '공법', '실시설계', '보수보강']
 DAYS_RANGE = 1
@@ -947,7 +946,7 @@ def parse_soup(soup, row, site_name) -> tuple:
 def crawl_site(row, gc=None) -> dict:
     site_name = row['SITE_NAME']
     all_titles, cleaned_dates, collected_data, all_unfiltered = [], [], [], []
-    page_number, retries = 1, 0
+    page_number = 1
     failed = False
     error_msg = ""
     auto_fixed = False  # 자동복구 성공 여부
@@ -1097,7 +1096,6 @@ def crawl_site(row, gc=None) -> dict:
 
             if len(set(cleaned_dates)) <= 2:
                 page_number += 1
-                retries = 0
                 time.sleep(1)
             else:
                 break
@@ -1113,7 +1111,8 @@ def crawl_site(row, gc=None) -> dict:
     # ──────────────────────────────────────────
     if failed and not auto_fixed and gc is not None and SELF_HEALING_ENABLED:
         logger.info(f"[자가치유 시작] {site_name}")
-        html = fetch_html_for_analysis(row)
+        # soup이 있으면 재활용 (CSS 파싱 실패), 없으면 재수집 (HTML 수집 실패)
+        html = str(soup) if soup is not None else fetch_html_for_analysis(row)
         if html:
             suggested = analyze_with_claude(site_name, row['URL'], html)
             if suggested and suggested.get('table_body') not in (None, '', 'null', 'Unable to determine'):
