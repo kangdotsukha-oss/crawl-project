@@ -2513,3 +2513,522 @@ urllib3.exceptions.HeaderParsingError: [MissingHeaderBodySeparatorDefect()], unp
 2026-03-07 09:14:03,267 [INFO] [업로드 완료] '공고목록' 3행
 2026-03-07 09:14:03,994 [INFO] [로그 업로드 완료] 229행
 2026-03-07 09:14:03,994 [INFO] ===== 크롤링 완료: 2026-03-07 09:14:03 =====
+2026-03-07 21:25:54,447 [INFO] ===== 크롤링 시작 (v4 자가치유): 2026-03-07 21:25:54 KST =====
+2026-03-07 21:25:55,325 [INFO] [사이트목록] 구글시트에서 229개 로드
+2026-03-07 21:25:55,325 [INFO] 총 229개 사이트
+2026-03-07 21:25:55,328 [INFO] [시작] 서울시설관리공단
+2026-03-07 21:25:55,330 [INFO] [시작] 부산시설관리공단
+2026-03-07 21:25:55,332 [INFO] [시작] 대구시설관리공단
+2026-03-07 21:25:55,332 [INFO] [시작] 인천시설관리공단
+2026-03-07 21:25:55,333 [INFO] [시작] 대전시설관리공단
+2026-03-07 21:25:55,336 [INFO] [시작] 울산시설관리공단
+2026-03-07 21:25:55,337 [INFO] [시작] 세종시설관리공단
+2026-03-07 21:25:55,341 [INFO] [시작] 전남도로관리사업소
+2026-03-07 21:25:55,343 [INFO] [시작] 충남도로관리사업소
+2026-03-07 21:25:55,343 [INFO] [스킵] 충북도로관리사업소: div='IP차단된듯'
+2026-03-07 21:25:55,345 [INFO] [스킵] 경북플랫폼: div='IP차단된듯'
+2026-03-07 21:25:55,345 [INFO] [스킵] 경북도로관리사업소: div='IP차단된듯'
+2026-03-07 21:25:55,346 [INFO] [스킵] 경북도로관리사업소: div='IP차단된듯'
+2026-03-07 21:25:55,346 [INFO] [시작] 경남도로관리사업소
+2026-03-07 21:25:55,346 [INFO] [시작] 전북도로관리사업소
+2026-03-07 21:25:55,347 [INFO] [스킵] 강원도로관리사업소: div='IP차단된듯'
+2026-03-07 21:25:55,350 [INFO] [시작] 부산광역시고시공고
+2026-03-07 21:25:55,350 [INFO] [시작] 대구광역시고시공고
+2026-03-07 21:25:55,351 [INFO] [시작] 인천광역시종합건설본부
+2026-03-07 21:25:55,356 [INFO] [시작] 울산광역시고시공고
+2026-03-07 21:25:57,037 [INFO] [시작] 강원고시공고
+2026-03-07 21:25:57,073 [INFO] [시작] 충북고시공고
+2026-03-07 21:25:57,241 [INFO] [시작] 충남고시공고
+2026-03-07 21:25:57,441 [INFO] [시작] 전북고시공고
+2026-03-07 21:25:57,532 [INFO] [시작] 전남고시공고
+2026-03-07 21:25:57,579 [INFO] [시작] 경북고시공고
+2026-03-07 21:25:57,603 [INFO] [시작] 경남고시공고
+2026-03-07 21:26:00,181 [INFO] [시작] 경기도_고양시
+2026-03-07 21:26:00,182 [ERROR] [정적 크롤링 오류] 대구시설관리공단: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-03-07 21:26:00,184 [WARNING] [HTTP ?] 대구시설관리공단 → URL 탐색 시도
+2026-03-07 21:26:00,249 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:00,250 [INFO] [자가치유 시작] 대구시설관리공단
+2026-03-07 21:26:00,531 [INFO] [시작] 경기도_수원시
+2026-03-07 21:26:01,655 [INFO] [시작] 경기도_과천시
+2026-03-07 21:26:01,849 [INFO] [시작] 경기도_광명시
+2026-03-07 21:26:02,036 [INFO] [시작] 경기도_구리시
+2026-03-07 21:26:02,087 [INFO] [시작] 경기도_군포시
+2026-03-07 21:26:02,391 [INFO] [시작] 경기도_김포시
+2026-03-07 21:26:03,950 [INFO] [시작] 경기도_남양주시
+2026-03-07 21:26:05,239 [INFO] [시작] 경기도_동두천시
+2026-03-07 21:26:05,378 [INFO] [시작] 경기도_시흥시
+2026-03-07 21:26:05,490 [INFO] [시작] 경기도_안산시
+2026-03-07 21:26:06,964 [WARNING] [SSL 오류 → 폴백] 부산광역시고시공고
+2026-03-07 21:26:07,830 [ERROR] [정적 크롤링 오류] 부산광역시고시공고: HTTPSConnectionPool(host='www.busan.go.kr', port=443): Max retries exceeded with url: /nbgosi?curPage=4 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))
+2026-03-07 21:26:07,830 [WARNING] [HTTP ?] 부산광역시고시공고 → URL 탐색 시도
+2026-03-07 21:26:07,838 [INFO] [스킵] 경기도_양주시: div='IP차단된듯'
+2026-03-07 21:26:07,838 [INFO] [시작] 경기도_여주시
+2026-03-07 21:26:08,201 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:08,225 [INFO] [자가치유 시작] 부산광역시고시공고
+2026-03-07 21:26:08,354 [INFO] [시작] 경기도_오산시
+2026-03-07 21:26:09,045 [INFO] [시작] 경기도_포천시
+2026-03-07 21:26:11,553 [INFO] [시작] 경기도_하남시
+2026-03-07 21:26:12,178 [INFO] [시작] 경기도_화성시
+2026-03-07 21:26:16,370 [INFO] [시작] 경기도_가평군
+2026-03-07 21:26:17,826 [ERROR] [정적 크롤링 오류] 울산광역시고시공고: HTTPSConnectionPool(host='www.ulsan.go.kr', port=443): Max retries exceeded with url: /u/rep/transfer/notice/list.ulsan?mId=001004002000000000&curPage=4 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.ulsan.go.kr', port=443) at 0x7f0dc08239d0>, 'Connection to www.ulsan.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:26:17,826 [WARNING] [HTTP ?] 울산광역시고시공고 → URL 탐색 시도
+2026-03-07 21:26:18,224 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:18,241 [INFO] [자가치유 시작] 울산광역시고시공고
+2026-03-07 21:26:19,112 [INFO] [시작] 경기도_양평군
+2026-03-07 21:26:20,879 [INFO] [시작] 경기도_연천군
+2026-03-07 21:26:21,531 [INFO] [시작] 강원도_삼척시
+2026-03-07 21:26:21,816 [INFO] [시작] 강원도_원주시
+2026-03-07 21:26:22,586 [ERROR] [정적 크롤링 오류] 경기도_수원시: HTTPSConnectionPool(host='www.suwon.go.kr', port=443): Max retries exceeded with url: /web/saeallOfr/BD_ofrList.do?q_currPage=3 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.suwon.go.kr', port=443) at 0x7f0dc0f2e7d0>, 'Connection to www.suwon.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:26:22,589 [WARNING] [HTTP ?] 경기도_수원시 → URL 탐색 시도
+2026-03-07 21:26:22,600 [INFO] [시작] 강원도_태백시
+2026-03-07 21:26:22,672 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:22,673 [INFO] [자가치유 시작] 경기도_수원시
+2026-03-07 21:26:24,043 [INFO] [시작] 강원도_영월군
+2026-03-07 21:26:24,490 [INFO] [HTML수집-동적] 부산광역시고시공고: 96682bytes
+2026-03-07 21:26:24,776 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:24,785 [WARNING] [자가치유 불가] 부산광역시고시공고: Claude가 셀렉터 찾지 못함
+2026-03-07 21:26:24,787 [INFO] [시작] 강원도_인제군
+2026-03-07 21:26:25,247 [INFO] [시작] 강원도_철원군
+2026-03-07 21:26:25,606 [INFO] [시작] 강원도_평창군
+2026-03-07 21:26:26,825 [INFO] [시작] 강원도_홍천군
+2026-03-07 21:26:26,977 [INFO] [시작] 강원도_횡성군
+2026-03-07 21:26:27,207 [INFO] [시작] 충청도_제천시
+2026-03-07 21:26:27,223 [INFO] [시작] 충청도_청주시
+2026-03-07 21:26:29,358 [INFO] [시작] 충청도_충주시
+2026-03-07 21:26:29,792 [ERROR] [정적 크롤링 오류] 경기도_포천시: HTTPSConnectionPool(host='www.pocheon.go.kr', port=443): Max retries exceeded with url: /www/selectEminwonList.do?key=12563&notAncmtSeCode=01 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.pocheon.go.kr', port=443) at 0x7f0df09d3550>, 'Connection to www.pocheon.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:26:29,793 [WARNING] [HTTP ?] 경기도_포천시 → URL 탐색 시도
+2026-03-07 21:26:29,939 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:29,946 [INFO] [자가치유 시작] 경기도_포천시
+2026-03-07 21:26:31,479 [INFO] [시작] 충청도_옥천군
+2026-03-07 21:26:33,100 [INFO] [시작] 충청도_음성군
+2026-03-07 21:26:33,145 [INFO] [시작] 충청도_계룡시
+2026-03-07 21:26:33,218 [INFO] [시작] 충청도_공주시
+2026-03-07 21:26:33,660 [INFO] [시작] 충청도_공주시
+2026-03-07 21:26:34,882 [INFO] [HTML수집-동적] 울산광역시고시공고: 138378bytes
+2026-03-07 21:26:35,517 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:35,518 [WARNING] [자가치유 불가] 울산광역시고시공고: Claude가 셀렉터 찾지 못함
+2026-03-07 21:26:35,519 [INFO] [시작] 충청도_보령시
+2026-03-07 21:26:37,306 [INFO] [시작] 충청도_서산시
+2026-03-07 21:26:38,304 [INFO] [시작] 충청도_금산군
+2026-03-07 21:26:39,284 [INFO] [시작] 충청도_부여군
+2026-03-07 21:26:39,379 [INFO] [HTML수집-동적] 경기도_수원시: 406320bytes
+2026-03-07 21:26:39,974 [INFO] [시작] 충청도_예산군
+2026-03-07 21:26:40,091 [INFO] [시작] 충청도_예산군
+2026-03-07 21:26:40,151 [WARNING] Failed to parse headers (url=https://www.geumsan.go.kr:443/kr/html/sub03/030302.html?GotoPage=1): [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=g403la1ouot345062hhefu90f7; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/connection.py", line 574, in getresponse
+    assert_header_parsing(httplib_response.msg)
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/util/response.py", line 88, in assert_header_parsing
+    raise HeaderParsingError(defects=defects, unparsed_data=unparsed_data)
+urllib3.exceptions.HeaderParsingError: [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=g403la1ouot345062hhefu90f7; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+2026-03-07 21:26:40,156 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:40,158 [WARNING] [자가치유 불가] 경기도_수원시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:26:40,160 [INFO] [시작] 충청도_홍성군
+2026-03-07 21:26:40,815 [INFO] [시작] 전라도_김제시
+2026-03-07 21:26:40,935 [ERROR] [정적 크롤링 오류] 경기도_가평군: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-03-07 21:26:40,936 [WARNING] [HTTP ?] 경기도_가평군 → URL 탐색 시도
+2026-03-07 21:26:41,022 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:41,023 [INFO] [자가치유 시작] 경기도_가평군
+2026-03-07 21:26:41,755 [INFO] [스킵] 전라도_남원시: div='fail'
+2026-03-07 21:26:41,755 [INFO] [시작] 전라도_고창군
+2026-03-07 21:26:42,443 [ERROR] [HTML수집 전체 실패] 대구시설관리공단
+2026-03-07 21:26:42,444 [INFO] [시작] 전라도_부안군
+2026-03-07 21:26:42,530 [INFO] [시작] 전라도_광양시
+2026-03-07 21:26:44,286 [INFO] [시작] 전라도_순천시
+2026-03-07 21:26:45,489 [INFO] [시작] 전라도_강진군
+2026-03-07 21:26:45,610 [INFO] [시작] 전라도_곡성군
+2026-03-07 21:26:46,974 [INFO] [시작] 전라도_구례군
+2026-03-07 21:26:48,066 [INFO] [시작] 전라도_무안군
+2026-03-07 21:26:48,324 [INFO] [시작] 전라도_보성군
+2026-03-07 21:26:51,740 [INFO] [HTML수집-동적] 경기도_포천시: 115058bytes
+2026-03-07 21:26:52,179 [INFO] [시작] 전라도_신안군
+2026-03-07 21:26:52,304 [INFO] [시작] 전라도_영광군
+2026-03-07 21:26:53,288 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:26:53,388 [WARNING] [자가치유 불가] 경기도_포천시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:26:53,429 [INFO] [시작] 전라도_영암군
+2026-03-07 21:26:55,119 [INFO] [시작] 전라도_완도군
+2026-03-07 21:26:55,434 [INFO] [시작] 전라도_장성군
+2026-03-07 21:26:55,750 [INFO] [시작] 전라도_진도군
+2026-03-07 21:26:58,538 [INFO] [시작] 전라도_함평군
+2026-03-07 21:26:58,539 [INFO] [시작] 전라도_함평군
+2026-03-07 21:26:59,645 [INFO] [시작] 전라도_해남군
+2026-03-07 21:26:59,998 [INFO] [시작] 경상도_경주시
+2026-03-07 21:27:00,182 [INFO] [시작] 경상도_김천시
+2026-03-07 21:27:00,443 [INFO] [시작] 경상도_문경시
+2026-03-07 21:27:01,920 [INFO] [시작] 경상도_상주시
+2026-03-07 21:27:02,369 [INFO] [시작] 경상도_상주시
+2026-03-07 21:27:03,460 [INFO] [시작] 경상도_안동시
+2026-03-07 21:27:03,878 [INFO] [시작] 경상도_영주시
+2026-03-07 21:27:04,883 [INFO] [자가치유 시작] 경상도_영주시
+2026-03-07 21:27:04,956 [ERROR] [정적 크롤링 오류] 전라도_순천시: HTTPConnectionPool(host='www.suncheon.go.kr', port=80): Max retries exceeded with url: /kr/news/0004/0005/0001/?x=1&pageIndex=3 (Caused by ConnectTimeoutError(<HTTPConnection(host='www.suncheon.go.kr', port=80) at 0x7f0de091bfd0>, 'Connection to www.suncheon.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:27:04,956 [WARNING] [HTTP ?] 전라도_순천시 → URL 탐색 시도
+2026-03-07 21:27:05,191 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:05,199 [INFO] [자가치유 시작] 전라도_순천시
+2026-03-07 21:27:06,312 [INFO] [시작] 경상도_영천시
+2026-03-07 21:27:07,438 [ERROR] [정적 크롤링 HTTP오류] 경상도_영천시: 0
+2026-03-07 21:27:07,440 [WARNING] [HTTP 0] 경상도_영천시 → URL 탐색 시도
+2026-03-07 21:27:07,523 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:07,525 [INFO] [자가치유 시작] 경상도_영천시
+2026-03-07 21:27:08,290 [INFO] [시작] 경상도_영천시
+2026-03-07 21:27:09,087 [INFO] [시작] 경상도_고령군
+2026-03-07 21:27:09,462 [ERROR] [정적 크롤링 HTTP오류] 경상도_영천시: 0
+2026-03-07 21:27:09,463 [INFO] [URL탐색 캐시 사용] 경상도_영천시: None
+2026-03-07 21:27:09,464 [INFO] [자가치유 시작] 경상도_영천시
+2026-03-07 21:27:10,294 [ERROR] [정적 크롤링 HTTP오류] 경상도_고령군: 0
+2026-03-07 21:27:10,295 [WARNING] [HTTP 0] 경상도_고령군 → URL 탐색 시도
+2026-03-07 21:27:10,374 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:10,377 [INFO] [자가치유 시작] 경상도_고령군
+2026-03-07 21:27:10,857 [ERROR] [정적 크롤링 오류] 경상도_문경시: HTTPSConnectionPool(host='www.gbmg.go.kr', port=443): Max retries exceeded with url: /portal/saeol/gosi/list.do?mId=0301060000 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.gbmg.go.kr', port=443) at 0x7f0de0581e90>, 'Connection to www.gbmg.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:27:10,857 [WARNING] [HTTP ?] 경상도_문경시 → URL 탐색 시도
+2026-03-07 21:27:11,072 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:11,081 [INFO] [자가치유 시작] 경상도_문경시
+2026-03-07 21:27:12,899 [INFO] [HTML수집-동적] 경상도_영주시: 425bytes
+2026-03-07 21:27:12,936 [INFO] [HTML수집-동적] 경기도_가평군: 243975bytes
+2026-03-07 21:27:13,047 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:13,059 [WARNING] [자가치유 불가] 경상도_영주시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:13,065 [INFO] [시작] 경상도_고령군
+2026-03-07 21:27:13,216 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:13,217 [WARNING] [자가치유 불가] 경기도_가평군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:13,218 [INFO] [시작] 경상도_군위군
+2026-03-07 21:27:13,998 [ERROR] [정적 크롤링 오류] 경상도_안동시: HTTPSConnectionPool(host='www.andong.go.kr', port=443): Read timed out. (read timeout=10)
+2026-03-07 21:27:13,998 [WARNING] [HTTP ?] 경상도_안동시 → URL 탐색 시도
+2026-03-07 21:27:14,014 [INFO] [시작] 경상도_영덕군
+2026-03-07 21:27:14,090 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:14,091 [INFO] [자가치유 시작] 경상도_안동시
+2026-03-07 21:27:14,196 [ERROR] [정적 크롤링 HTTP오류] 경상도_고령군: 0
+2026-03-07 21:27:14,198 [INFO] [URL탐색 캐시 사용] 경상도_고령군: None
+2026-03-07 21:27:14,200 [INFO] [자가치유 시작] 경상도_고령군
+2026-03-07 21:27:15,093 [INFO] [HTML수집-동적] 경상도_영천시: 452bytes
+2026-03-07 21:27:15,294 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:15,301 [WARNING] [자가치유 불가] 경상도_영천시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:15,302 [INFO] [시작] 경상도_영덕군
+2026-03-07 21:27:15,753 [INFO] [스킵] 경상도_울진군: div='IP 차단'
+2026-03-07 21:27:15,753 [INFO] [시작] 경상도_칠곡군
+2026-03-07 21:27:16,038 [INFO] [시작] 경상도_칠곡군
+2026-03-07 21:27:17,119 [INFO] [HTML수집-동적] 경상도_영천시: 445bytes
+2026-03-07 21:27:17,270 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:17,272 [WARNING] [자가치유 불가] 경상도_영천시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:17,277 [INFO] [시작] 경상도_창원시
+2026-03-07 21:27:18,306 [INFO] [HTML수집-동적] 경상도_고령군: 449bytes
+2026-03-07 21:27:18,376 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:18,380 [WARNING] [자가치유 불가] 경상도_고령군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:18,380 [INFO] [시작] 경상도_창원시
+2026-03-07 21:27:18,802 [INFO] [자가치유 시작] 경상도_칠곡군
+2026-03-07 21:27:18,829 [INFO] [자가치유 시작] 경상도_칠곡군
+2026-03-07 21:27:19,179 [INFO] [시작] 경상도_창원시_의창구
+2026-03-07 21:27:20,714 [INFO] [시작] 경상도_창원시_성산구
+2026-03-07 21:27:22,455 [INFO] [시작] 경상도_창원시_마산합포구
+2026-03-07 21:27:22,463 [INFO] [HTML수집-동적] 경상도_고령군: 449bytes
+2026-03-07 21:27:22,514 [INFO] [HTML수집-동적] 전라도_순천시: 201786bytes
+2026-03-07 21:27:22,643 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:22,645 [WARNING] [자가치유 불가] 경상도_고령군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:22,651 [INFO] [시작] 경상도_창원시_마산회원구
+2026-03-07 21:27:22,795 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:22,796 [WARNING] [자가치유 불가] 전라도_순천시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:22,796 [INFO] [시작] 경상도_창원시_진해구
+2026-03-07 21:27:23,349 [INFO] [시작] 경상도_거제시
+2026-03-07 21:27:24,939 [INFO] [시작] 경상도_김해시
+2026-03-07 21:27:25,012 [INFO] [시작] 경상도_김해시
+2026-03-07 21:27:25,030 [INFO] [시작] 경상도_밀양시
+2026-03-07 21:27:25,109 [INFO] [시작] 경상도_밀양시
+2026-03-07 21:27:27,143 [INFO] [HTML수집-동적] 경상도_칠곡군: 425bytes
+2026-03-07 21:27:27,171 [INFO] [HTML수집-동적] 경상도_칠곡군: 418bytes
+2026-03-07 21:27:27,302 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:27,303 [WARNING] [자가치유 불가] 경상도_칠곡군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:27,304 [INFO] [시작] 경상도_사천시
+2026-03-07 21:27:27,370 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:27,370 [WARNING] [자가치유 불가] 경상도_칠곡군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:27,371 [INFO] [시작] 경상도_양산시
+2026-03-07 21:27:31,062 [ERROR] [정적 크롤링 오류] 경상도_김천시: HTTPSConnectionPool(host='www.gc.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-07 21:27:31,062 [WARNING] [HTTP ?] 경상도_김천시 → URL 탐색 시도
+2026-03-07 21:27:31,127 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:31,128 [INFO] [자가치유 시작] 경상도_김천시
+2026-03-07 21:27:31,698 [INFO] [시작] 경상도_양산시
+2026-03-07 21:27:32,169 [INFO] [시작] 경상도_진주시
+2026-03-07 21:27:33,537 [INFO] [시작] 경상도_통영시
+2026-03-07 21:27:33,813 [INFO] [시작] 경상도_남해군_남해읍
+2026-03-07 21:27:34,799 [INFO] [시작] 경상도_남해군_이동면
+2026-03-07 21:27:34,848 [INFO] [시작] 경상도_의령군
+2026-03-07 21:27:35,076 [INFO] [HTML수집-동적] 경상도_안동시: 795143bytes
+2026-03-07 21:27:35,342 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:35,342 [ERROR] [정적 크롤링 오류] 경상도_경주시: HTTPSConnectionPool(host='www.gyeongju.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-07 21:27:35,348 [WARNING] [HTTP ?] 경상도_경주시 → URL 탐색 시도
+2026-03-07 21:27:35,360 [WARNING] [자가치유 불가] 경상도_안동시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:35,361 [INFO] [스킵] 경상도_남해군_상주면: div='IP 차단'
+2026-03-07 21:27:35,368 [INFO] [시작] 경상도_창녕군
+2026-03-07 21:27:35,675 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:35,685 [INFO] [자가치유 시작] 경상도_경주시
+2026-03-07 21:27:36,459 [INFO] [시작] 경상도_남해군_삼동면
+2026-03-07 21:27:36,495 [INFO] [시작] 경상도_하동군
+2026-03-07 21:27:36,962 [INFO] [시작] 경상도_남해군_미조면
+2026-03-07 21:27:37,367 [INFO] [시작] 경상도_함안군
+2026-03-07 21:27:38,074 [INFO] [시작] 경상도_남해군_남면
+2026-03-07 21:27:38,602 [INFO] [스킵] 경상도_남해군_서면: div='IP 차단'
+2026-03-07 21:27:38,616 [INFO] [시작] 경상도_남해군_고현면
+2026-03-07 21:27:38,677 [INFO] [HTML수집-동적] 경상도_김천시: 420bytes
+2026-03-07 21:27:38,997 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:39,028 [WARNING] [자가치유 불가] 경상도_김천시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:39,051 [INFO] [시작] 경상도_고성군
+2026-03-07 21:27:39,315 [INFO] [시작] 경상도_남해군_설천면
+2026-03-07 21:27:39,356 [INFO] [시작] 경상도_거창군
+2026-03-07 21:27:40,113 [INFO] [시작] 경상도_남해군_창선면
+2026-03-07 21:27:40,288 [ERROR] [정적 크롤링 HTTP오류] 경상도_고성군: 0
+2026-03-07 21:27:40,289 [WARNING] [HTTP 0] 경상도_고성군 → URL 탐색 시도
+2026-03-07 21:27:40,362 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:40,363 [INFO] [자가치유 시작] 경상도_고성군
+2026-03-07 21:27:41,238 [INFO] [시작] 경상도_울릉군
+2026-03-07 21:27:42,335 [INFO] [자가치유 시작] 경상도_울릉군
+2026-03-07 21:27:42,486 [ERROR] [정적 크롤링 오류] 경상도_진주시: HTTPSConnectionPool(host='www.jinju.go.kr', port=443): Max retries exceeded with url: /00130/02730/05586.web?&cpage=1 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jinju.go.kr', port=443) at 0x7f0de09d5750>, 'Connection to www.jinju.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:27:42,488 [WARNING] [HTTP ?] 경상도_진주시 → URL 탐색 시도
+2026-03-07 21:27:42,676 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:42,679 [INFO] [자가치유 시작] 경상도_진주시
+2026-03-07 21:27:45,778 [ERROR] [정적 크롤링 오류] 경상도_창녕군: HTTPSConnectionPool(host='www.cng.go.kr', port=443): Max retries exceeded with url: /01541/01539/01553.web?&cpage=1 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.cng.go.kr', port=443) at 0x7f0dc08842d0>, 'Connection to www.cng.go.kr timed out. (connect timeout=10)'))
+2026-03-07 21:27:45,778 [WARNING] [HTTP ?] 경상도_창녕군 → URL 탐색 시도
+2026-03-07 21:27:46,010 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:46,015 [INFO] [자가치유 시작] 경상도_창녕군
+2026-03-07 21:27:46,457 [ERROR] [정적 크롤링 오류] 경상도_영덕군: HTTPSConnectionPool(host='www.yd.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-07 21:27:46,459 [WARNING] [HTTP ?] 경상도_영덕군 → URL 탐색 시도
+2026-03-07 21:27:46,665 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:46,668 [INFO] [자가치유 시작] 경상도_영덕군
+2026-03-07 21:27:50,273 [INFO] [HTML수집-동적] 경상도_경주시: 179747bytes
+2026-03-07 21:27:50,737 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:50,739 [WARNING] [자가치유 불가] 경상도_경주시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:54,072 [INFO] [HTML수집-동적] 경상도_문경시: 349046bytes
+2026-03-07 21:27:54,352 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:54,354 [WARNING] [자가치유 불가] 경상도_문경시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:27:55,908 [ERROR] [정적 크롤링 오류] 경상도_밀양시: HTTPSConnectionPool(host='www.miryang.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-07 21:27:55,908 [WARNING] [HTTP ?] 경상도_밀양시 → URL 탐색 시도
+2026-03-07 21:27:56,065 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:27:56,070 [INFO] [자가치유 시작] 경상도_밀양시
+2026-03-07 21:27:59,118 [ERROR] [HTML수집 전체 실패] 경상도_고성군
+2026-03-07 21:28:00,180 [ERROR] [HTML수집 전체 실패] 경상도_울릉군
+2026-03-07 21:28:08,209 [INFO] [HTML수집-동적] 경상도_영덕군: 189791bytes
+2026-03-07 21:28:08,370 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:28:08,371 [WARNING] [자가치유 불가] 경상도_영덕군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:28:41,579 [INFO] [HTML수집-동적] 경상도_밀양시: 140735bytes
+2026-03-07 21:28:41,818 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:28:41,819 [WARNING] [자가치유 불가] 경상도_밀양시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:29:06,946 [ERROR] [HTML수집 전체 실패] 경상도_진주시
+2026-03-07 21:29:11,064 [ERROR] [HTML수집 전체 실패] 경상도_창녕군
+2026-03-07 21:29:11,068 [INFO] [스킵] 광주도시관리공사: div='fail'
+2026-03-07 21:29:11,068 [INFO] [스킵] 광주도시관리공사: div='fail'
+2026-03-07 21:29:11,069 [INFO] [스킵] 서울특별시건설신기술공법선정위원회: div='IP차단된듯'
+2026-03-07 21:29:11,069 [INFO] [시작] 광주광역시고시공고
+2026-03-07 21:29:11,069 [INFO] [시작] 대전광역시고시공고
+2026-03-07 21:29:11,069 [INFO] [시작] 세종소개공고
+2026-03-07 21:29:11,073 [INFO] [시작] 경기도_수원_장안구
+2026-03-07 21:29:11,071 [INFO] [시작] 경기도감사위원회고시공고
+2026-03-07 21:29:11,070 [INFO] [시작] 경기고시공고
+2026-03-07 21:29:11,071 [INFO] [시작] 경기도_수원_권선구
+2026-03-07 21:29:26,813 [INFO] [시작] 경기도_수원_팔달구
+2026-03-07 21:29:28,420 [WARNING] [로딩 타임아웃] 경기도감사위원회고시공고
+2026-03-07 21:29:28,679 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-07 21:29:35,527 [INFO] [자가치유 시작] 경기도감사위원회고시공고
+2026-03-07 21:29:43,766 [WARNING] [로딩 타임아웃] 경기도_수원_팔달구
+2026-03-07 21:29:44,395 [WARNING] [타임아웃] 경기도_수원_장안구 재시도 1/2
+2026-03-07 21:29:45,457 [WARNING] [타임아웃] 경기도_수원_권선구 재시도 1/2
+2026-03-07 21:29:53,135 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-07 21:30:00,542 [INFO] [HTML수집-동적] 경기도감사위원회고시공고: 40163bytes
+2026-03-07 21:30:00,844 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:30:00,845 [WARNING] [자가치유 불가] 경기도감사위원회고시공고: Claude가 셀렉터 찾지 못함
+2026-03-07 21:30:00,846 [INFO] [시작] 경기도_수원_영통구
+2026-03-07 21:30:02,551 [WARNING] [타임아웃] 경기도_수원_장안구 재시도 2/2
+2026-03-07 21:30:03,558 [WARNING] [타임아웃] 경기도_수원_권선구 재시도 2/2
+2026-03-07 21:30:04,551 [ERROR] [최종 실패] 경기도_수원_장안구
+2026-03-07 21:30:04,552 [INFO] [자가치유 시작] 경기도_수원_장안구
+2026-03-07 21:30:05,488 [INFO] [시작] 경기도_용인시공법선정위원회
+2026-03-07 21:30:05,561 [ERROR] [최종 실패] 경기도_수원_권선구
+2026-03-07 21:30:05,561 [INFO] [자가치유 시작] 경기도_수원_권선구
+2026-03-07 21:30:13,411 [INFO] [시작] 경기도_용인시처인구
+2026-03-07 21:30:17,020 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-07 21:30:23,223 [INFO] [시작] 경기도_광주시
+2026-03-07 21:30:24,365 [WARNING] [버튼 없음] 경기도_수원_팔달구 페이지 3
+2026-03-07 21:30:24,500 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=36339): Failed to establish a new connection: [Errno 111] Connection refused")': /session/2188c91337285f59ab47d5732d8537d5
+2026-03-07 21:30:24,526 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=36339): Failed to establish a new connection: [Errno 111] Connection refused")': /session/2188c91337285f59ab47d5732d8537d5
+2026-03-07 21:30:24,534 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=36339): Failed to establish a new connection: [Errno 111] Connection refused")': /session/2188c91337285f59ab47d5732d8537d5
+2026-03-07 21:30:24,535 [INFO] [페이지 끝] 경기도_수원_팔달구: 페이지 3에 버튼 없음, 순회 종료
+2026-03-07 21:30:24,542 [INFO] [시작] 경기도_부천시
+2026-03-07 21:30:29,140 [ERROR] [크롤링 오류] 경기도_용인시처인구: Message: unknown error: net::ERR_CONNECTION_CLOSED
+  (Session info: chrome=145.0.7632.116)
+Stacktrace:
+#0 0x563290325b6a <unknown>
+#1 0x56328fd38a32 <unknown>
+#2 0x56328fd2f7ba <unknown>
+#3 0x56328fd20481 <unknown>
+#4 0x56328fd2227c <unknown>
+#5 0x56328fd20979 <unknown>
+#6 0x56328fd20065 <unknown>
+#7 0x56328fd1fc16 <unknown>
+#8 0x56328fd1d731 <unknown>
+#9 0x56328fd1df80 <unknown>
+#10 0x56328fd3c41d <unknown>
+#11 0x56328fdd6feb <unknown>
+#12 0x56328fdd6369 <unknown>
+#13 0x56328fd7fc0f <unknown>
+#14 0x56328fd809d1 <unknown>
+#15 0x5632902ea6b9 <unknown>
+#16 0x5632902ed5c1 <unknown>
+#17 0x5632902d6e29 <unknown>
+#18 0x5632902ee17e <unknown>
+#19 0x5632902bd4b0 <unknown>
+#20 0x563290312578 <unknown>
+#21 0x56329031274b <unknown>
+#22 0x5632903241a3 <unknown>
+#23 0x7f075829caa4 <unknown>
+#24 0x7f0758329c6c <unknown>
+
+2026-03-07 21:30:32,809 [INFO] [HTML수집-동적] 경기도_수원_권선구: 17475bytes
+2026-03-07 21:30:32,922 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:30:32,923 [WARNING] [자가치유 불가] 경기도_수원_권선구: Claude가 셀렉터 찾지 못함
+2026-03-07 21:30:32,924 [INFO] [시작] 경기도_성남시
+2026-03-07 21:30:41,603 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-07 21:30:43,564 [INFO] [HTML수집-동적] 경기도_수원_장안구: 17463bytes
+2026-03-07 21:30:43,740 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:30:43,743 [WARNING] [자가치유 불가] 경기도_수원_장안구: Claude가 셀렉터 찾지 못함
+2026-03-07 21:30:43,749 [INFO] [시작] 경기도_성남시수정구
+2026-03-07 21:30:53,327 [INFO] [시작] 경기도_성남시중원구
+2026-03-07 21:31:01,594 [WARNING] [버튼 없음] 경기도_부천시 페이지 3
+2026-03-07 21:31:01,706 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39047): Failed to establish a new connection: [Errno 111] Connection refused")': /session/442fc373fc3865ea76274610341187ea
+2026-03-07 21:31:01,710 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39047): Failed to establish a new connection: [Errno 111] Connection refused")': /session/442fc373fc3865ea76274610341187ea
+2026-03-07 21:31:01,722 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39047): Failed to establish a new connection: [Errno 111] Connection refused")': /session/442fc373fc3865ea76274610341187ea
+2026-03-07 21:31:01,723 [INFO] [페이지 끝] 경기도_부천시: 페이지 3에 버튼 없음, 순회 종료
+2026-03-07 21:31:01,723 [INFO] [시작] 경기도_성남시분당구
+2026-03-07 21:31:05,578 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-07 21:31:13,493 [WARNING] [타임아웃] 경기도_광주시 재시도 1/2
+2026-03-07 21:31:14,041 [INFO] [시작] 경기도_안성시
+2026-03-07 21:31:29,532 [WARNING] [로딩 타임아웃] 경기도_안성시
+2026-03-07 21:31:29,988 [INFO] [시작] 경기도_안양시
+2026-03-07 21:31:31,205 [WARNING] [타임아웃] 경기도_광주시 재시도 2/2
+2026-03-07 21:31:33,205 [ERROR] [최종 실패] 경기도_광주시
+2026-03-07 21:31:33,205 [INFO] [자가치유 시작] 경기도_광주시
+2026-03-07 21:31:44,850 [INFO] [시작] 경기도_의왕시
+2026-03-07 21:31:45,122 [INFO] [시작] 경기도_의정부시
+2026-03-07 21:31:53,970 [INFO] [시작] 경기도_이천시
+2026-03-07 21:31:56,315 [INFO] [시작] 경기도_파주시
+2026-03-07 21:32:03,853 [INFO] [시작] 경기도_평택시
+2026-03-07 21:32:05,266 [WARNING] [로딩 타임아웃] 경기도_의왕시
+2026-03-07 21:32:10,790 [INFO] [시작] 강원도_강릉시
+2026-03-07 21:32:12,410 [INFO] [자가치유 시작] 경기도_의왕시
+2026-03-07 21:32:14,061 [INFO] [HTML수집-동적] 경기도_광주시: 269245bytes
+2026-03-07 21:32:14,832 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:32:14,833 [WARNING] [자가치유 불가] 경기도_광주시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:32:14,834 [INFO] [시작] 강원도_동해시
+2026-03-07 21:32:25,172 [INFO] [시작] 강원도_속초시
+2026-03-07 21:32:26,490 [WARNING] [타임아웃] 경기도_안성시 재시도 1/2
+2026-03-07 21:32:31,756 [INFO] [시작] 강원도_춘천시
+2026-03-07 21:32:37,181 [INFO] [HTML수집-동적] 경기도_의왕시: 23696bytes
+2026-03-07 21:32:37,521 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:32:37,555 [WARNING] [자가치유 불가] 경기도_의왕시: Claude가 셀렉터 찾지 못함
+2026-03-07 21:32:37,556 [INFO] [시작] 강원도_고성군
+2026-03-07 21:32:39,318 [WARNING] [버튼 없음] 경기도_평택시 페이지 2
+2026-03-07 21:32:39,765 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54591): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9fd4f84b32eccce0895c6d7878b89b52
+2026-03-07 21:32:39,766 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54591): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9fd4f84b32eccce0895c6d7878b89b52
+2026-03-07 21:32:39,773 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54591): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9fd4f84b32eccce0895c6d7878b89b52
+2026-03-07 21:32:39,774 [INFO] [페이지 끝] 경기도_평택시: 페이지 2에 버튼 없음, 순회 종료
+2026-03-07 21:32:39,774 [INFO] [시작] 강원도_양구군
+2026-03-07 21:32:48,170 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-07 21:32:57,297 [WARNING] [로딩 타임아웃] 강원도_양구군
+2026-03-07 21:32:58,200 [INFO] [시작] 강원도_양양군
+2026-03-07 21:33:04,402 [INFO] [자가치유 시작] 강원도_양구군
+2026-03-07 21:33:08,232 [INFO] [시작] 강원도_정선군
+2026-03-07 21:33:13,708 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-07 21:33:16,583 [WARNING] [타임아웃] 경기도_안성시 재시도 1/2
+2026-03-07 21:33:23,783 [WARNING] [로딩 타임아웃] 강원도_정선군
+2026-03-07 21:33:25,102 [INFO] [시작] 강원도_화천군
+2026-03-07 21:33:28,981 [INFO] [HTML수집-동적] 강원도_양구군: 211733bytes
+2026-03-07 21:33:29,156 [INFO] [시작] 충청도_괴산군
+2026-03-07 21:33:29,455 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:33:29,458 [WARNING] [자가치유 불가] 강원도_양구군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:33:29,465 [INFO] [시작] 충청도_단양군
+2026-03-07 21:33:32,011 [INFO] [시작] 충청도_청주시_상당구
+2026-03-07 21:33:37,606 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-07 21:33:43,036 [INFO] [스킵] 충청도_청주시_서원구: div='IP차단'
+2026-03-07 21:33:43,039 [INFO] [시작] 충청도_청주시_흥덕구
+2026-03-07 21:33:46,175 [WARNING] [로딩 타임아웃] 충청도_괴산군
+2026-03-07 21:33:50,250 [INFO] [시작] 충청도_보은군
+2026-03-07 21:33:53,283 [INFO] [자가치유 시작] 충청도_괴산군
+2026-03-07 21:33:53,934 [INFO] [시작] 충청도_영동군
+2026-03-07 21:34:02,085 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-07 21:34:03,695 [INFO] [시작] 충청도_증평군
+2026-03-07 21:34:04,676 [INFO] [HTML수집-동적] 충청도_괴산군: 20604bytes
+2026-03-07 21:34:04,848 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:34:04,852 [WARNING] [자가치유 불가] 충청도_괴산군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:34:04,855 [INFO] [시작] 충청도_진천군
+2026-03-07 21:34:09,344 [INFO] [시작] 충청도_논산시
+2026-03-07 21:34:11,190 [INFO] [시작] 충청도_당진시
+2026-03-07 21:34:25,998 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-07 21:34:33,562 [INFO] [시작] 충청도_아산시
+2026-03-07 21:34:42,339 [INFO] [시작] 충청도_천안시
+2026-03-07 21:34:53,593 [INFO] [시작] 충청도_서천군
+2026-03-07 21:34:55,326 [INFO] [시작] 충청도_청양군
+2026-03-07 21:35:04,278 [INFO] [자가치유 시작] 충청도_청양군
+2026-03-07 21:35:15,359 [INFO] [시작] 충청도_태안군
+2026-03-07 21:35:20,333 [INFO] [HTML수집-동적] 충청도_청양군: 23757bytes
+2026-03-07 21:35:20,439 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:35:20,440 [WARNING] [자가치유 불가] 충청도_청양군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:35:20,441 [INFO] [시작] 전라도_군산시
+2026-03-07 21:35:22,428 [INFO] [시작] 전라도_익산시
+2026-03-07 21:35:30,982 [WARNING] [로딩 타임아웃] 충청도_태안군
+2026-03-07 21:35:39,219 [INFO] [시작] 전라도_전주시
+2026-03-07 21:35:41,833 [INFO] [시작] 전라도_정읍시
+2026-03-07 21:35:49,157 [INFO] [시작] 전라도_무주군
+2026-03-07 21:35:51,358 [INFO] [시작] 전라도_순창군
+2026-03-07 21:35:55,047 [WARNING] [로딩 타임아웃] 전라도_전주시
+2026-03-07 21:35:56,587 [WARNING] [버튼 없음] 충청도_태안군 페이지 2
+2026-03-07 21:35:56,722 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48605): Failed to establish a new connection: [Errno 111] Connection refused")': /session/27298c4f62f7942fc7e94f35306e9005
+2026-03-07 21:35:56,728 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48605): Failed to establish a new connection: [Errno 111] Connection refused")': /session/27298c4f62f7942fc7e94f35306e9005
+2026-03-07 21:35:56,734 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48605): Failed to establish a new connection: [Errno 111] Connection refused")': /session/27298c4f62f7942fc7e94f35306e9005
+2026-03-07 21:35:56,739 [INFO] [페이지 끝] 충청도_태안군: 페이지 2에 버튼 없음, 순회 종료
+2026-03-07 21:35:56,741 [INFO] [시작] 전라도_완주군
+2026-03-07 21:36:02,320 [INFO] [자가치유 시작] 전라도_전주시
+2026-03-07 21:36:08,028 [INFO] [시작] 전라도_임실군
+2026-03-07 21:36:17,363 [INFO] [시작] 전라도_장수군
+2026-03-07 21:36:18,461 [WARNING] [타임아웃] 전라도_무주군 재시도 1/2
+2026-03-07 21:36:36,646 [INFO] [시작] 전라도_진안군
+2026-03-07 21:36:45,176 [INFO] [자가치유 시작] 전라도_진안군
+2026-03-07 21:36:53,815 [INFO] [시작] 전라도_나주시
+2026-03-07 21:36:54,532 [INFO] [시작] 전라도_목포시
+2026-03-07 21:37:02,549 [ERROR] [HTML수집 전체 실패] 전라도_진안군
+2026-03-07 21:37:02,551 [INFO] [시작] 전라도_여수시
+2026-03-07 21:37:09,430 [WARNING] [로딩 타임아웃] 전라도_나주시
+2026-03-07 21:37:16,662 [INFO] [시작] 전라도_고흥군
+2026-03-07 21:37:27,111 [ERROR] [HTML수집 전체 실패] 전라도_전주시
+2026-03-07 21:37:27,112 [INFO] [시작] 전라도_담양군
+2026-03-07 21:37:29,908 [INFO] [시작] 전라도_장흥군
+2026-03-07 21:37:35,144 [INFO] [시작] 전라도_화순군
+2026-03-07 21:37:36,009 [INFO] [시작] 경상도_경산시
+2026-03-07 21:37:37,208 [INFO] [시작] 경상도_구미시
+2026-03-07 21:37:41,285 [INFO] [시작] 경상도_포항시
+2026-03-07 21:37:48,638 [INFO] [시작] 경상도_포항시
+2026-03-07 21:37:52,899 [INFO] [시작] 경상도_봉화군
+2026-03-07 21:38:03,306 [INFO] [시작] 경상도_성주군
+2026-03-07 21:38:07,672 [INFO] [시작] 경상도_성주군
+2026-03-07 21:38:13,351 [INFO] [시작] 경상도_영양군
+2026-03-07 21:38:24,628 [WARNING] [로딩 타임아웃] 경상도_봉화군
+2026-03-07 21:38:25,048 [INFO] [시작] 경상도_예천군
+2026-03-07 21:38:52,554 [INFO] [시작] 경상도_예천군
+2026-03-07 21:38:54,733 [INFO] [시작] 경상도_의성군
+2026-03-07 21:39:00,766 [INFO] [시작] 경상도_의성군
+2026-03-07 21:39:11,319 [INFO] [시작] 경상도_청도군
+2026-03-07 21:39:14,323 [INFO] [스킵] 경상도_청송군: div='fail'
+2026-03-07 21:39:14,326 [INFO] [스킵] 경상도_청송군: div='fail'
+2026-03-07 21:39:14,327 [INFO] [시작] 경상도_산청군
+2026-03-07 21:39:16,169 [INFO] [시작] 경상도_함양군
+2026-03-07 21:39:23,787 [INFO] [시작] 경상도_합천군
+2026-03-07 21:39:26,789 [WARNING] [버튼 없음] 경상도_청도군 페이지 2
+2026-03-07 21:39:26,852 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=37993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/98443b0ed5a9111b8278b62408d06465
+2026-03-07 21:39:26,853 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=37993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/98443b0ed5a9111b8278b62408d06465
+2026-03-07 21:39:26,853 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=37993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/98443b0ed5a9111b8278b62408d06465
+2026-03-07 21:39:26,854 [INFO] [페이지 끝] 경상도_청도군: 페이지 2에 버튼 없음, 순회 종료
+2026-03-07 21:39:47,673 [INFO] [자가치유 시작] 경상도_합천군
+2026-03-07 21:39:56,797 [INFO] [HTML수집-동적] 경상도_합천군: 15304bytes
+2026-03-07 21:39:56,876 [ERROR] [Claude API] HTTP 400: {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_i
+2026-03-07 21:39:56,877 [WARNING] [자가치유 불가] 경상도_합천군: Claude가 셀렉터 찾지 못함
+2026-03-07 21:40:13,275 [INFO] 필터링 후 1개 공고 (키워드 매칭)
+2026-03-07 21:40:13,278 [INFO] 전체공고 (키워드 미해당) 43개
+2026-03-07 21:40:13,279 [INFO] ===== 결과: 성공 178 | 자가치유 0 | 실패 35 / 전체 229 =====
+2026-03-07 21:40:14,649 [INFO] [업로드 완료] '✅키워드공고' 1행
+2026-03-07 21:40:15,704 [INFO] [업로드 완료] '📋전체공고(키워드제외)' 43행
+2026-03-07 21:40:16,850 [INFO] [로그 업로드 완료] 458행 (누적)
+2026-03-07 21:40:17,470 [ERROR] [대시보드 업로드 오류] Object of type int64 is not JSON serializable
+2026-03-07 21:40:17,470 [INFO] ===== 크롤링 완료: 2026-03-07 21:40:17 KST =====
