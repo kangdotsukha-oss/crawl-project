@@ -60,6 +60,9 @@ _claude_lock = threading.Lock()
 _url_search_cache: dict = {}
 _url_search_cache_lock = threading.Lock()
 
+# 연속 5회 실패 사이트 자동 스킵 목록
+_auto_skip_sites: set = set()
+
 # ─────────────────────────────────────────────
 # 로깅 설정 (KST 기준)
 # ─────────────────────────────────────────────
@@ -171,6 +174,31 @@ def get_gspread_client():
 # ─────────────────────────────────────────────
 # 사이트 목록 로드
 # ─────────────────────────────────────────────
+def load_consecutive_failures(gc, threshold: int = 5) -> set:
+    """크롤링로그에서 최근 threshold회 연속 실패한 사이트명 반환"""
+    if gc is None:
+        return set()
+    try:
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        ws = sh.worksheet("크롤링로그")
+        records = ws.get_all_records()
+        if not records:
+            return set()
+        df_log = pd.DataFrame(records)
+        skip_sites = set()
+        for site_name, group in df_log.groupby('SITE_NAME'):
+            recent = group.sort_values('수집일시', ascending=False).head(threshold)
+            if len(recent) == threshold and all(
+                str(s).startswith('실패') for s in recent['status']
+            ):
+                skip_sites.add(site_name)
+                logger.info(f"[자동스킵 등록] {site_name}: {threshold}회 연속 실패")
+        return skip_sites
+    except Exception as e:
+        logger.warning(f"[연속실패 확인 오류] {e}")
+        return set()
+
+
 def load_sites(gc) -> pd.DataFrame:
     if gc:
         try:
@@ -734,6 +762,13 @@ def zero_selector_extract(site_name: str, html: str, row: dict) -> tuple:
     except Exception as e:
         return [], [], [], [], f"결과 파싱 오류: {e}"
 
+    # 품질 검증: 날짜 없는 항목 70% 초과 or 평균 제목 길이 5자 미만 → 신뢰 불가
+    if items:
+        no_date_ratio = sum(1 for i in items if not i.get('date')) / len(items)
+        avg_title_len = sum(len(str(i.get('title', ''))) for i in items) / len(items)
+        if no_date_ratio > 0.7 or avg_title_len < 5:
+            return [], [], [], [], f"품질 검증 실패 (날짜없음 {no_date_ratio:.0%}, 평균제목 {avg_title_len:.1f}자)"
+
     titles, dates, collected, unfiltered = [], [], [], []
     url = row.get('URL', '')
     site_no = row.get('SITE_NO', '')
@@ -923,6 +958,19 @@ def crawl_site(row, gc=None) -> dict:
     failed = False
     error_msg = ""
     auto_fixed = False  # 자동복구 성공 여부
+
+    # 연속 실패 자동 스킵
+    if site_name in _auto_skip_sites:
+        logger.info(f"[자동스킵] {site_name}: 연속 5회 실패")
+        return {
+            'data': [], 'all_data': [],
+            'log': {
+                'SITE_NAME': site_name, 'URL': row['URL'],
+                'len_tbody': 0, 'unique_date': 0, 'min_date': '', 'max_date': '',
+                'status': '자동스킵(연속실패)', 'error_msg': '연속 5회 실패 자동 스킵',
+                'auto_fixed': '', '최신제목': '', '최신날짜': '',
+            }
+        }
 
     # IP 차단 / fail 사이트 즉시 스킵
     div_val = str(row.get('div', '') or '')
@@ -1129,7 +1177,8 @@ def crawl_site(row, gc=None) -> dict:
     zero_selector_used = False
     if not auto_fixed and (failed or not all_titles):
         logger.info(f"[Zero-Selector 시도] {site_name}")
-        html_for_zero = fetch_html_for_analysis(row)
+        # soup이 있으면 재활용, 없으면 재수집
+        html_for_zero = str(soup) if soup is not None else fetch_html_for_analysis(row)
         if html_for_zero:
             zs_titles, zs_dates, zs_data, zs_unfiltered, zs_err = zero_selector_extract(site_name, html_for_zero, row)
             if not zs_err and zs_titles:
@@ -1382,11 +1431,12 @@ def upload_dashboard(gc, df_log: pd.DataFrame, df_keyword: pd.DataFrame, crawled
 
         # 크롤링 현황
         total   = len(df_log)
-        success = len(df_log[df_log['status'] == '성공'])
-        healed  = len(df_log[df_log['status'] == '자가치유성공'])
-        skipped = len(df_log[df_log['status'].str.startswith('스킵', na=False)])
-        failed  = len(df_log[df_log['status'].str.startswith('실패', na=False)])
-        rate    = f"{round((success+healed)/max(total-skipped,1)*100, 1)}%"
+        success  = len(df_log[df_log['status'] == '성공'])
+        healed   = len(df_log[df_log['status'] == '자가치유성공'])
+        zero_sel = len(df_log[df_log['status'] == 'Zero-Selector성공'])
+        skipped  = len(df_log[df_log['status'].str.contains('스킵', na=False)])
+        failed   = len(df_log[df_log['status'].str.startswith('실패', na=False)])
+        rate     = f"{round((success+healed+zero_sel)/max(total-skipped,1)*100, 1)}%"
 
         # 키워드별 집계
         kw_counts = {}
@@ -1407,8 +1457,9 @@ def upload_dashboard(gc, df_log: pd.DataFrame, df_keyword: pd.DataFrame, crawled
             ["구분", "건수", ""],
             ["전체 대상", total, ""],
             ["✅ 성공", success, ""],
+            ["🤖 Zero-Selector 성공", zero_sel, ""],
             ["🔧 자가치유 성공", healed, ""],
-            ["⏭ 스킵(IP차단 등)", skipped, ""],
+            ["⏭ 스킵(IP차단/연속실패)", skipped, ""],
             ["❌ 실패", failed, ""],
             ["성공률", rate, ""],
             [""],
@@ -1474,6 +1525,10 @@ def main():
     logger.info(f"===== 크롤링 시작 (v4 자가치유): {crawled_time} =====")
 
     gc = get_gspread_client()
+    global _auto_skip_sites
+    _auto_skip_sites = load_consecutive_failures(gc)
+    if _auto_skip_sites:
+        logger.info(f"[자동스킵] {len(_auto_skip_sites)}개 사이트 등록 (연속 5회 실패)")
     df = load_sites(gc)
     logger.info(f"총 {len(df)}개 사이트")
 
@@ -1507,10 +1562,12 @@ def main():
     # 결과 요약 로그
     if not df_log.empty:
         total = len(df_log)
-        success = len(df_log[df_log['status'] == '성공'])
-        healed = len(df_log[df_log['status'] == '자가치유성공'])
-        failed = len(df_log[df_log['status'].str.startswith('실패', na=False)])
-        logger.info(f"===== 결과: 성공 {success} | 자가치유 {healed} | 실패 {failed} / 전체 {total} =====")
+        success  = len(df_log[df_log['status'] == '성공'])
+        healed   = len(df_log[df_log['status'] == '자가치유성공'])
+        zero_sel = len(df_log[df_log['status'] == 'Zero-Selector성공'])
+        failed   = len(df_log[df_log['status'].str.startswith('실패', na=False)])
+        skipped  = len(df_log[df_log['status'].str.contains('스킵', na=False)])
+        logger.info(f"===== 결과: 성공 {success} | Zero-Selector {zero_sel} | 자가치유 {healed} | 실패 {failed} | 스킵 {skipped} / 전체 {total} =====")
 
     # 로컬 백업
     df_log.to_excel(f'./df_log_{today_str}.xlsx', index=False)
