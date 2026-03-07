@@ -3032,3 +3032,523 @@ Stacktrace:
 2026-03-07 21:40:16,850 [INFO] [로그 업로드 완료] 458행 (누적)
 2026-03-07 21:40:17,470 [ERROR] [대시보드 업로드 오류] Object of type int64 is not JSON serializable
 2026-03-07 21:40:17,470 [INFO] ===== 크롤링 완료: 2026-03-07 21:40:17 KST =====
+2026-03-08 02:59:41,814 [INFO] ===== 크롤링 시작 (v4 자가치유): 2026-03-08 02:59:41 KST =====
+2026-03-08 02:59:42,607 [WARNING] [연속실패 확인 오류] 크롤링로그
+2026-03-08 02:59:43,145 [INFO] [사이트목록] 구글시트에서 229개 로드
+2026-03-08 02:59:43,146 [INFO] 총 229개 사이트
+2026-03-08 02:59:43,148 [INFO] [시작] 서울시설관리공단
+2026-03-08 02:59:43,150 [INFO] [시작] 부산시설관리공단
+2026-03-08 02:59:43,152 [INFO] [시작] 대구시설관리공단
+2026-03-08 02:59:43,153 [INFO] [시작] 인천시설관리공단
+2026-03-08 02:59:43,154 [INFO] [시작] 대전시설관리공단
+2026-03-08 02:59:43,155 [INFO] [시작] 울산시설관리공단
+2026-03-08 02:59:43,156 [INFO] [시작] 세종시설관리공단
+2026-03-08 02:59:43,158 [INFO] [시작] 전남도로관리사업소
+2026-03-08 02:59:43,160 [INFO] [시작] 충남도로관리사업소
+2026-03-08 02:59:43,161 [INFO] [스킵] 충북도로관리사업소: div='IP차단된듯'
+2026-03-08 02:59:43,163 [INFO] [스킵] 경북플랫폼: div='IP차단된듯'
+2026-03-08 02:59:43,163 [INFO] [스킵] 경북도로관리사업소: div='IP차단된듯'
+2026-03-08 02:59:43,164 [INFO] [스킵] 경북도로관리사업소: div='IP차단된듯'
+2026-03-08 02:59:43,164 [INFO] [시작] 경남도로관리사업소
+2026-03-08 02:59:43,165 [INFO] [시작] 전북도로관리사업소
+2026-03-08 02:59:43,166 [INFO] [스킵] 강원도로관리사업소: div='IP차단된듯'
+2026-03-08 02:59:43,166 [INFO] [시작] 부산광역시고시공고
+2026-03-08 02:59:43,166 [INFO] [시작] 대구광역시고시공고
+2026-03-08 02:59:43,168 [INFO] [시작] 인천광역시종합건설본부
+2026-03-08 02:59:43,169 [INFO] [시작] 울산광역시고시공고
+2026-03-08 02:59:44,814 [INFO] [시작] 강원고시공고
+2026-03-08 02:59:44,865 [INFO] [조기 중단] 인천광역시종합건설본부: 최신 공고(2026-03-03)가 2일 이상 지남
+2026-03-08 02:59:44,865 [INFO] [시작] 충북고시공고
+2026-03-08 02:59:44,928 [INFO] [조기 중단] 경남도로관리사업소: 최신 공고(2026-03-03)가 2일 이상 지남
+2026-03-08 02:59:44,942 [INFO] [시작] 충남고시공고
+2026-03-08 02:59:44,957 [INFO] [조기 중단] 전남도로관리사업소: 최신 공고(2025-12-16)가 2일 이상 지남
+2026-03-08 02:59:44,958 [INFO] [시작] 전북고시공고
+2026-03-08 02:59:45,009 [INFO] [조기 중단] 인천시설관리공단: 최신 공고(2026-03-04)가 2일 이상 지남
+2026-03-08 02:59:45,009 [INFO] [시작] 전남고시공고
+2026-03-08 02:59:46,197 [INFO] [시작] 경북고시공고
+2026-03-08 02:59:47,601 [INFO] [시작] 경남고시공고
+2026-03-08 02:59:47,653 [INFO] [시작] 경기도_고양시
+2026-03-08 02:59:47,822 [INFO] [시작] 경기도_수원시
+2026-03-08 02:59:48,470 [INFO] [시작] 경기도_과천시
+2026-03-08 02:59:48,914 [INFO] [시작] 경기도_광명시
+2026-03-08 02:59:49,502 [INFO] [시작] 경기도_구리시
+2026-03-08 02:59:49,603 [INFO] [시작] 경기도_군포시
+2026-03-08 02:59:50,930 [INFO] [시작] 경기도_김포시
+2026-03-08 02:59:51,252 [INFO] [시작] 경기도_남양주시
+2026-03-08 02:59:51,602 [INFO] [시작] 경기도_동두천시
+2026-03-08 02:59:53,119 [INFO] [시작] 경기도_시흥시
+2026-03-08 02:59:53,245 [INFO] [시작] 경기도_안산시
+2026-03-08 02:59:53,471 [ERROR] [정적 크롤링 오류] 서울시설관리공단: HTTPSConnectionPool(host='www.sisul.or.kr', port=443): Max retries exceeded with url: /open_content/main/bbs/bbsMsgList.do?bcd=specific&listsz=10&symd=&eymd=&keyfield=title&keyword= (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.sisul.or.kr', port=443) at 0x7f944a0e3390>, 'Connection to www.sisul.or.kr timed out. (connect timeout=10)'))
+2026-03-08 02:59:53,471 [WARNING] [HTTP ?] 서울시설관리공단 → URL 탐색 시도
+2026-03-08 02:59:54,122 [WARNING] [SSL 오류 → 폴백] 부산광역시고시공고
+2026-03-08 02:59:54,225 [INFO] [스킵] 경기도_양주시: div='IP차단된듯'
+2026-03-08 02:59:54,225 [INFO] [시작] 경기도_여주시
+2026-03-08 02:59:54,708 [INFO] [시작] 경기도_오산시
+2026-03-08 02:59:55,415 [INFO] [시작] 경기도_포천시
+2026-03-08 02:59:56,404 [INFO] [SSL 폴백 성공] 부산광역시고시공고
+2026-03-08 02:59:57,408 [INFO] [시작] 경기도_하남시
+2026-03-08 02:59:57,479 [INFO] [시작] 경기도_화성시
+2026-03-08 02:59:58,420 [WARNING] [SSL 오류 → 폴백] 부산광역시고시공고
+2026-03-08 03:00:00,160 [INFO] [SSL 폴백 성공] 부산광역시고시공고
+2026-03-08 03:00:01,234 [INFO] [시작] 경기도_가평군
+2026-03-08 03:00:03,953 [INFO] [시작] 경기도_양평군
+2026-03-08 03:00:04,387 [INFO] [시작] 경기도_연천군
+2026-03-08 03:00:04,581 [INFO] [시작] 강원도_삼척시
+2026-03-08 03:00:04,688 [ERROR] [정적 크롤링 오류] 울산광역시고시공고: HTTPSConnectionPool(host='www.ulsan.go.kr', port=443): Max retries exceeded with url: /u/rep/transfer/notice/list.ulsan?mId=001004002000000000&curPage=4 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.ulsan.go.kr', port=443) at 0x7f94485684d0>, 'Connection to www.ulsan.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:04,740 [INFO] [URL탐색 성공] 서울시설관리공단: https://www.sisul.or.kr/open_content/main/bbs/bbsMsgList.do?bcd=notice
+2026-03-08 03:00:04,751 [WARNING] [HTTP ?] 울산광역시고시공고 → URL 탐색 시도
+2026-03-08 03:00:05,062 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:05,066 [INFO] [Zero-Selector 시도] 울산광역시고시공고
+2026-03-08 03:00:05,067 [WARNING] [Zero-Selector] 울산광역시고시공고: HTML 수집 실패
+2026-03-08 03:00:05,068 [INFO] [시작] 강원도_원주시
+2026-03-08 03:00:06,817 [INFO] [시작] 강원도_태백시
+2026-03-08 03:00:06,841 [INFO] [시작] 강원도_영월군
+2026-03-08 03:00:07,124 [INFO] [시작] 강원도_인제군
+2026-03-08 03:00:07,974 [INFO] [시작] 강원도_철원군
+2026-03-08 03:00:09,207 [INFO] [시작] 강원도_평창군
+2026-03-08 03:00:09,256 [INFO] [시작] 강원도_홍천군
+2026-03-08 03:00:10,494 [INFO] [시작] 강원도_횡성군
+2026-03-08 03:00:10,875 [INFO] [시작] 충청도_제천시
+2026-03-08 03:00:10,919 [ERROR] [정적 크롤링 오류] 경기도_동두천시: HTTPSConnectionPool(host='www.ddc.go.kr', port=443): Max retries exceeded with url: /ddc/selectGosiList.do?key=340&not_ancmt_se_code=04&pageIndex=2 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.ddc.go.kr', port=443) at 0x7f9440c42f50>, 'Connection to www.ddc.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:10,925 [WARNING] [HTTP ?] 경기도_동두천시 → URL 탐색 시도
+2026-03-08 03:00:10,954 [INFO] [시작] 충청도_청주시
+2026-03-08 03:00:11,778 [INFO] [시작] 충청도_충주시
+2026-03-08 03:00:13,434 [INFO] [시작] 충청도_옥천군
+2026-03-08 03:00:13,437 [INFO] [시작] 충청도_음성군
+2026-03-08 03:00:15,092 [ERROR] [정적 크롤링 오류] 서울시설관리공단: HTTPSConnectionPool(host='www.sisul.or.kr', port=443): Max retries exceeded with url: /open_content/main/bbs/bbsMsgList.do?bcd=notice (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.sisul.or.kr', port=443) at 0x7f9448db0190>, 'Connection to www.sisul.or.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:15,511 [INFO] [시작] 충청도_계룡시
+2026-03-08 03:00:16,587 [INFO] [URL탐색 성공] 경기도_동두천시: https://www.ddc.go.kr/ddc/contents.do?key=340
+2026-03-08 03:00:16,854 [INFO] [시작] 충청도_공주시
+2026-03-08 03:00:17,028 [ERROR] [정적 크롤링 오류] 경기도_포천시: HTTPSConnectionPool(host='www.pocheon.go.kr', port=443): Max retries exceeded with url: /www/selectEminwonList.do?key=12563&notAncmtSeCode=01 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.pocheon.go.kr', port=443) at 0x7f9440ba8250>, 'Connection to www.pocheon.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:17,028 [WARNING] [HTTP ?] 경기도_포천시 → URL 탐색 시도
+2026-03-08 03:00:17,056 [INFO] [시작] 충청도_공주시
+2026-03-08 03:00:17,245 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:17,249 [INFO] [Zero-Selector 시도] 경기도_포천시
+2026-03-08 03:00:17,250 [WARNING] [Zero-Selector] 경기도_포천시: HTML 수집 실패
+2026-03-08 03:00:17,250 [INFO] [시작] 충청도_보령시
+2026-03-08 03:00:17,791 [INFO] [시작] 충청도_서산시
+2026-03-08 03:00:18,466 [INFO] [시작] 충청도_금산군
+2026-03-08 03:00:19,765 [INFO] [시작] 충청도_부여군
+2026-03-08 03:00:20,190 [WARNING] Failed to parse headers (url=https://www.geumsan.go.kr:443/kr/html/sub03/030302.html?GotoPage=1): [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=4u0oq61prcmno82l566lviaoq6; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/connection.py", line 574, in getresponse
+    assert_header_parsing(httplib_response.msg)
+  File "/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/urllib3/util/response.py", line 88, in assert_header_parsing
+    raise HeaderParsingError(defects=defects, unparsed_data=unparsed_data)
+urllib3.exceptions.HeaderParsingError: [MissingHeaderBodySeparatorDefect()], unparsed data: 'P3P : CP="NOI CURa ADMa DEVa TAIa OUR DELa BUS IND PHY ONL UNI COM NAV INT DEM PRE"\r\nSet-Cookie: SIDNAME=ronty; path=/; HttpOnly; secure; SameSite=None; secure\r\nCache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0\r\nPragma: no-cache\r\nSet-Cookie: PHPSESSID=4u0oq61prcmno82l566lviaoq6; path=/; HttpOnly; secure; SameSite=None\r\nExpires: Thu, 19 Nov 1981 08:52:00 GMT\r\n\r\n'
+2026-03-08 03:00:20,585 [INFO] [시작] 충청도_예산군
+2026-03-08 03:00:21,012 [INFO] [시작] 충청도_예산군
+2026-03-08 03:00:21,155 [INFO] [시작] 충청도_홍성군
+2026-03-08 03:00:21,700 [INFO] [시작] 전라도_김제시
+2026-03-08 03:00:22,519 [INFO] [조기 중단] 충청도_부여군: 최신 공고(2026-02-24)가 2일 이상 지남
+2026-03-08 03:00:22,521 [INFO] [스킵] 전라도_남원시: div='fail'
+2026-03-08 03:00:22,521 [INFO] [시작] 전라도_고창군
+2026-03-08 03:00:22,521 [INFO] [시작] 전라도_부안군
+2026-03-08 03:00:23,213 [INFO] [시작] 전라도_광양시
+2026-03-08 03:00:23,402 [INFO] [시작] 전라도_순천시
+2026-03-08 03:00:24,552 [INFO] [시작] 전라도_강진군
+2026-03-08 03:00:25,652 [INFO] [시작] 전라도_곡성군
+2026-03-08 03:00:25,923 [INFO] [시작] 전라도_구례군
+2026-03-08 03:00:26,925 [INFO] [시작] 전라도_무안군
+2026-03-08 03:00:27,033 [ERROR] [정적 크롤링 오류] 경기도_동두천시: HTTPSConnectionPool(host='www.ddc.go.kr', port=443): Max retries exceeded with url: /ddc/contents.do?key=340 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.ddc.go.kr', port=443) at 0x7f944863b990>, 'Connection to www.ddc.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:29,625 [INFO] [시작] 전라도_보성군
+2026-03-08 03:00:30,736 [WARNING] [로딩 타임아웃] 서울시설관리공단
+2026-03-08 03:00:30,828 [INFO] [시작] 전라도_신안군
+2026-03-08 03:00:33,336 [INFO] [시작] 전라도_영광군
+2026-03-08 03:00:33,831 [INFO] [조기 중단] 전라도_구례군: 최신 공고(2026-03-05)가 2일 이상 지남
+2026-03-08 03:00:33,831 [INFO] [시작] 전라도_영암군
+2026-03-08 03:00:34,911 [INFO] [시작] 전라도_완도군
+2026-03-08 03:00:35,333 [INFO] [시작] 전라도_장성군
+2026-03-08 03:00:35,711 [INFO] [시작] 전라도_진도군
+2026-03-08 03:00:36,640 [INFO] [시작] 전라도_함평군
+2026-03-08 03:00:37,269 [INFO] [시작] 전라도_함평군
+2026-03-08 03:00:38,070 [INFO] [시작] 전라도_해남군
+2026-03-08 03:00:38,474 [INFO] [조기 중단] 전라도_함평군: 최신 공고(2026-03-05)가 2일 이상 지남
+2026-03-08 03:00:38,474 [INFO] [시작] 경상도_경주시
+2026-03-08 03:00:38,511 [WARNING] [사이트목록 업데이트 실패] SITE_NO=A001 찾을 수 없음
+2026-03-08 03:00:38,511 [INFO] [URL 자동복구 성공] 서울시설관리공단: https://www.sisul.or.kr/open_content/main/bbs/bbsMsgList.do?bcd=notice
+2026-03-08 03:00:38,511 [INFO] [시작] 경상도_김천시
+2026-03-08 03:00:39,278 [INFO] [시작] 경상도_문경시
+2026-03-08 03:00:39,614 [ERROR] [정적 크롤링 HTTP오류] 경상도_김천시: 0
+2026-03-08 03:00:39,623 [WARNING] [HTTP 0] 경상도_김천시 → URL 탐색 시도
+2026-03-08 03:00:40,244 [INFO] [시작] 경상도_상주시
+2026-03-08 03:00:41,159 [INFO] [시작] 경상도_상주시
+2026-03-08 03:00:43,941 [INFO] [시작] 경상도_안동시
+2026-03-08 03:00:44,524 [INFO] [Zero-Selector 시도] 전라도_보성군
+2026-03-08 03:00:45,941 [INFO] [시작] 경상도_영주시
+2026-03-08 03:00:45,968 [INFO] [URL탐색 성공] 경상도_김천시: https://www.gc.go.kr/portal/saeol/gosi/list.do?seCode=01&mId=1202180100
+2026-03-08 03:00:46,168 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:46,170 [WARNING] [Zero-Selector 실패] 전라도_보성군: Claude API 호출 실패
+2026-03-08 03:00:46,171 [INFO] [시작] 경상도_영천시
+2026-03-08 03:00:46,356 [INFO] [시작] 경상도_영천시
+2026-03-08 03:00:46,833 [INFO] [Zero-Selector 시도] 경상도_영주시
+2026-03-08 03:00:46,953 [ERROR] [정적 크롤링 HTTP오류] 경상도_김천시: 0
+2026-03-08 03:00:47,008 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:47,012 [WARNING] [Zero-Selector 실패] 경상도_영주시: Claude API 호출 실패
+2026-03-08 03:00:47,014 [INFO] [시작] 경상도_고령군
+2026-03-08 03:00:47,362 [ERROR] [정적 크롤링 HTTP오류] 경상도_영천시: 0
+2026-03-08 03:00:47,370 [WARNING] [HTTP 0] 경상도_영천시 → URL 탐색 시도
+2026-03-08 03:00:47,392 [ERROR] [정적 크롤링 HTTP오류] 경상도_영천시: 0
+2026-03-08 03:00:47,678 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:47,683 [INFO] [Zero-Selector 시도] 경상도_영천시
+2026-03-08 03:00:47,689 [WARNING] [Zero-Selector] 경상도_영천시: HTML 수집 실패
+2026-03-08 03:00:47,686 [INFO] [URL탐색 캐시 사용] 경상도_영천시: None
+2026-03-08 03:00:47,690 [INFO] [시작] 경상도_고령군
+2026-03-08 03:00:47,697 [INFO] [Zero-Selector 시도] 경상도_영천시
+2026-03-08 03:00:47,702 [WARNING] [Zero-Selector] 경상도_영천시: HTML 수집 실패
+2026-03-08 03:00:47,706 [INFO] [시작] 경상도_군위군
+2026-03-08 03:00:48,239 [ERROR] [정적 크롤링 HTTP오류] 경상도_고령군: 0
+2026-03-08 03:00:48,252 [WARNING] [HTTP 0] 경상도_고령군 → URL 탐색 시도
+2026-03-08 03:00:48,476 [INFO] [시작] 경상도_영덕군
+2026-03-08 03:00:48,526 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:48,527 [INFO] [Zero-Selector 시도] 경상도_고령군
+2026-03-08 03:00:48,527 [WARNING] [Zero-Selector] 경상도_고령군: HTML 수집 실패
+2026-03-08 03:00:48,528 [INFO] [시작] 경상도_영덕군
+2026-03-08 03:00:48,578 [ERROR] [정적 크롤링 오류] 충청도_서산시: HTTPSConnectionPool(host='www.seosan.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:00:48,578 [WARNING] [HTTP ?] 충청도_서산시 → URL 탐색 시도
+2026-03-08 03:00:48,714 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:48,715 [INFO] [Zero-Selector 시도] 충청도_서산시
+2026-03-08 03:00:48,715 [WARNING] [Zero-Selector] 충청도_서산시: HTML 수집 실패
+2026-03-08 03:00:48,716 [INFO] [스킵] 경상도_울진군: div='IP 차단'
+2026-03-08 03:00:48,716 [INFO] [시작] 경상도_칠곡군
+2026-03-08 03:00:48,978 [ERROR] [정적 크롤링 HTTP오류] 경상도_고령군: 0
+2026-03-08 03:00:48,981 [INFO] [URL탐색 캐시 사용] 경상도_고령군: None
+2026-03-08 03:00:48,981 [INFO] [Zero-Selector 시도] 경상도_고령군
+2026-03-08 03:00:48,981 [WARNING] [Zero-Selector] 경상도_고령군: HTML 수집 실패
+2026-03-08 03:00:48,981 [INFO] [시작] 경상도_칠곡군
+2026-03-08 03:00:49,349 [INFO] [시작] 경상도_창원시
+2026-03-08 03:00:49,698 [INFO] [Zero-Selector 시도] 경상도_칠곡군
+2026-03-08 03:00:49,852 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:49,853 [WARNING] [Zero-Selector 실패] 경상도_칠곡군: Claude API 호출 실패
+2026-03-08 03:00:49,854 [INFO] [시작] 경상도_창원시
+2026-03-08 03:00:49,955 [INFO] [시작] 경상도_창원시_의창구
+2026-03-08 03:00:50,499 [WARNING] [사이트목록 업데이트 실패] SITE_NO=A049 찾을 수 없음
+2026-03-08 03:00:50,499 [INFO] [URL 자동복구 성공] 경기도_동두천시: https://www.ddc.go.kr/ddc/contents.do?key=340
+2026-03-08 03:00:50,512 [INFO] [시작] 경상도_창원시_성산구
+2026-03-08 03:00:51,639 [INFO] [Zero-Selector 시도] 경상도_칠곡군
+2026-03-08 03:00:51,861 [INFO] [조기 중단] 경상도_창원시_의창구: 최신 공고(2026-03-04)가 2일 이상 지남
+2026-03-08 03:00:51,872 [INFO] [시작] 경상도_창원시_마산합포구
+2026-03-08 03:00:51,915 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:51,917 [WARNING] [Zero-Selector 실패] 경상도_칠곡군: Claude API 호출 실패
+2026-03-08 03:00:51,918 [INFO] [시작] 경상도_창원시_마산회원구
+2026-03-08 03:00:51,962 [INFO] [시작] 경상도_창원시_진해구
+2026-03-08 03:00:52,721 [INFO] [조기 중단] 경상도_창원시_성산구: 최신 공고(2026-02-27)가 2일 이상 지남
+2026-03-08 03:00:52,721 [INFO] [시작] 경상도_거제시
+2026-03-08 03:00:54,214 [INFO] [시작] 경상도_김해시
+2026-03-08 03:00:54,354 [INFO] [조기 중단] 경상도_창원시_마산합포구: 최신 공고(2026-03-05)가 2일 이상 지남
+2026-03-08 03:00:54,354 [INFO] [시작] 경상도_김해시
+2026-03-08 03:00:54,355 [ERROR] [정적 크롤링 오류] 경상도_안동시: HTTPSConnectionPool(host='www.andong.go.kr', port=443): Max retries exceeded with url: /portal/saeol/gosi/list.do?mId=0401020100 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.andong.go.kr', port=443) at 0x7f9430d8fad0>, 'Connection to www.andong.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:00:54,366 [WARNING] [HTTP ?] 경상도_안동시 → URL 탐색 시도
+2026-03-08 03:00:54,377 [INFO] [시작] 경상도_밀양시
+2026-03-08 03:00:54,489 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:54,490 [INFO] [Zero-Selector 시도] 경상도_안동시
+2026-03-08 03:00:54,491 [WARNING] [Zero-Selector] 경상도_안동시: HTML 수집 실패
+2026-03-08 03:00:54,491 [INFO] [시작] 경상도_밀양시
+2026-03-08 03:00:55,019 [INFO] [시작] 경상도_사천시
+2026-03-08 03:00:55,201 [ERROR] [정적 크롤링 오류] 전라도_강진군: HTTPSConnectionPool(host='www.gangjin.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:00:55,201 [WARNING] [HTTP ?] 전라도_강진군 → URL 탐색 시도
+2026-03-08 03:00:55,440 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:00:55,442 [INFO] [Zero-Selector 시도] 전라도_강진군
+2026-03-08 03:00:55,443 [WARNING] [Zero-Selector] 전라도_강진군: HTML 수집 실패
+2026-03-08 03:00:55,443 [INFO] [시작] 경상도_양산시
+2026-03-08 03:00:55,694 [INFO] [시작] 경상도_양산시
+2026-03-08 03:00:56,220 [INFO] [사이트목록 자동업데이트] A161: ['URL']
+2026-03-08 03:00:56,226 [INFO] [URL 자동복구 성공] 경상도_김천시: https://www.gc.go.kr/portal/saeol/gosi/list.do?seCode=01&mId=1202180100
+2026-03-08 03:00:56,367 [INFO] [시작] 경상도_진주시
+2026-03-08 03:00:58,333 [INFO] [시작] 경상도_통영시
+2026-03-08 03:01:00,276 [INFO] [시작] 경상도_남해군_남해읍
+2026-03-08 03:01:00,520 [INFO] [시작] 경상도_남해군_이동면
+2026-03-08 03:01:00,610 [INFO] [시작] 경상도_의령군
+2026-03-08 03:01:00,707 [INFO] [스킵] 경상도_남해군_상주면: div='IP 차단'
+2026-03-08 03:01:00,707 [INFO] [시작] 경상도_창녕군
+2026-03-08 03:01:01,930 [INFO] [조기 중단] 경상도_남해군_남해읍: 최신 공고(2026-03-04)가 2일 이상 지남
+2026-03-08 03:01:01,936 [INFO] [시작] 경상도_남해군_삼동면
+2026-03-08 03:01:01,968 [INFO] [조기 중단] 경상도_남해군_이동면: 최신 공고(2026-03-03)가 2일 이상 지남
+2026-03-08 03:01:01,968 [INFO] [시작] 경상도_하동군
+2026-03-08 03:01:02,601 [INFO] [시작] 경상도_남해군_미조면
+2026-03-08 03:01:03,126 [WARNING] [버튼 없음] 경상도_김천시 페이지 2
+2026-03-08 03:01:03,262 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48999): Failed to establish a new connection: [Errno 111] Connection refused")': /session/d8d268a4ebc33fd34a33aa3834148a30
+2026-03-08 03:01:03,280 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48999): Failed to establish a new connection: [Errno 111] Connection refused")': /session/d8d268a4ebc33fd34a33aa3834148a30
+2026-03-08 03:01:03,320 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48999): Failed to establish a new connection: [Errno 111] Connection refused")': /session/d8d268a4ebc33fd34a33aa3834148a30
+2026-03-08 03:01:03,320 [INFO] [페이지 끝] 경상도_김천시: 페이지 2에 버튼 없음
+2026-03-08 03:01:03,321 [INFO] [시작] 경상도_함안군
+2026-03-08 03:01:03,428 [INFO] [시작] 경상도_남해군_남면
+2026-03-08 03:01:03,737 [INFO] [조기 중단] 경상도_남해군_삼동면: 최신 공고(2026-02-25)가 2일 이상 지남
+2026-03-08 03:01:03,743 [INFO] [스킵] 경상도_남해군_서면: div='IP 차단'
+2026-03-08 03:01:03,770 [INFO] [시작] 경상도_남해군_고현면
+2026-03-08 03:01:04,487 [INFO] [조기 중단] 경상도_남해군_미조면: 최신 공고(2026-03-03)가 2일 이상 지남
+2026-03-08 03:01:04,487 [INFO] [시작] 경상도_고성군
+2026-03-08 03:01:04,524 [INFO] [시작] 경상도_남해군_설천면
+2026-03-08 03:01:05,522 [INFO] [조기 중단] 경상도_남해군_고현면: 최신 공고(2026-02-27)가 2일 이상 지남
+2026-03-08 03:01:05,528 [INFO] [시작] 경상도_거창군
+2026-03-08 03:01:05,545 [INFO] [조기 중단] 경상도_남해군_남면: 최신 공고(2026-02-26)가 2일 이상 지남
+2026-03-08 03:01:05,545 [INFO] [시작] 경상도_남해군_창선면
+2026-03-08 03:01:05,796 [ERROR] [정적 크롤링 HTTP오류] 경상도_고성군: 0
+2026-03-08 03:01:05,797 [WARNING] [HTTP 0] 경상도_고성군 → URL 탐색 시도
+2026-03-08 03:01:06,084 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:01:06,086 [INFO] [Zero-Selector 시도] 경상도_고성군
+2026-03-08 03:01:06,108 [WARNING] [Zero-Selector] 경상도_고성군: HTML 수집 실패
+2026-03-08 03:01:06,109 [INFO] [시작] 경상도_울릉군
+2026-03-08 03:01:06,415 [INFO] [조기 중단] 경상도_남해군_설천면: 최신 공고(2026-03-03)가 2일 이상 지남
+2026-03-08 03:01:06,933 [ERROR] [정적 크롤링 오류] 경상도_진주시: HTTPSConnectionPool(host='www.jinju.go.kr', port=443): Max retries exceeded with url: /00130/02730/05586.web?&cpage=1 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jinju.go.kr', port=443) at 0x7f9440e7cdd0>, 'Connection to www.jinju.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:01:06,933 [WARNING] [HTTP ?] 경상도_진주시 → URL 탐색 시도
+2026-03-08 03:01:07,068 [INFO] [Zero-Selector 시도] 경상도_울릉군
+2026-03-08 03:01:07,082 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:01:07,093 [INFO] [Zero-Selector 시도] 경상도_진주시
+2026-03-08 03:01:07,096 [WARNING] [Zero-Selector] 경상도_진주시: HTML 수집 실패
+2026-03-08 03:01:07,273 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:01:07,274 [WARNING] [Zero-Selector 실패] 경상도_울릉군: Claude API 호출 실패
+2026-03-08 03:01:07,510 [INFO] [조기 중단] 경상도_남해군_창선면: 최신 공고(2026-02-27)가 2일 이상 지남
+2026-03-08 03:01:11,065 [ERROR] [정적 크롤링 오류] 경상도_창녕군: HTTPSConnectionPool(host='www.cng.go.kr', port=443): Max retries exceeded with url: /01541/01539/01553.web?&cpage=1 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.cng.go.kr', port=443) at 0x7f9448d73390>, 'Connection to www.cng.go.kr timed out. (connect timeout=10)'))
+2026-03-08 03:01:11,065 [WARNING] [HTTP ?] 경상도_창녕군 → URL 탐색 시도
+2026-03-08 03:01:11,247 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:01:11,248 [INFO] [Zero-Selector 시도] 경상도_창녕군
+2026-03-08 03:01:11,248 [WARNING] [Zero-Selector] 경상도_창녕군: HTML 수집 실패
+2026-03-08 03:01:14,627 [ERROR] [정적 크롤링 오류] 경상도_문경시: HTTPSConnectionPool(host='www.gbmg.go.kr', port=443): Read timed out.
+2026-03-08 03:01:14,628 [WARNING] [HTTP ?] 경상도_문경시 → URL 탐색 시도
+2026-03-08 03:01:14,762 [ERROR] [Claude API] HTTP 429: {"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed your organization's rate limit of 50,000 input tokens per minute (org: 0fe5a87c-1c6c-4251-9ff6-15ae5a839d61, mod
+2026-03-08 03:01:14,764 [INFO] [Zero-Selector 시도] 경상도_문경시
+2026-03-08 03:01:14,764 [WARNING] [Zero-Selector] 경상도_문경시: HTML 수집 실패
+2026-03-08 03:01:44,798 [ERROR] [정적 크롤링 오류] 경상도_밀양시: HTTPSConnectionPool(host='www.miryang.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:01:44,798 [WARNING] [HTTP ?] 경상도_밀양시 → URL 탐색 시도
+2026-03-08 03:01:44,958 [ERROR] [정적 크롤링 오류] 경상도_밀양시: HTTPSConnectionPool(host='www.miryang.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:01:48,529 [INFO] [URL탐색 성공] 경상도_밀양시: https://www.miryang.go.kr/web/eMinwonList.do?mnNo=20903000000
+2026-03-08 03:01:48,531 [INFO] [URL탐색 캐시 사용] 경상도_밀양시: https://www.miryang.go.kr/web/eMinwonList.do?mnNo=20903000000
+2026-03-08 03:02:01,667 [WARNING] [타임아웃] 경상도_양산시
+2026-03-08 03:02:01,667 [INFO] [Zero-Selector 시도] 경상도_양산시
+2026-03-08 03:02:01,667 [WARNING] [Zero-Selector] 경상도_양산시: HTML 수집 실패
+2026-03-08 03:02:23,981 [ERROR] [정적 크롤링 오류] 경상도_밀양시: HTTPSConnectionPool(host='www.miryang.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:02:24,006 [ERROR] [정적 크롤링 오류] 경상도_밀양시: HTTPSConnectionPool(host='www.miryang.go.kr', port=443): Read timed out. (read timeout=30)
+2026-03-08 03:02:26,002 [INFO] [Zero-Selector 시도] 전라도_함평군
+2026-03-08 03:02:30,473 [INFO] [Zero-Selector 성공] 전라도_함평군: 10건
+2026-03-08 03:02:39,452 [WARNING] [로딩 타임아웃] 경상도_밀양시
+2026-03-08 03:02:39,617 [WARNING] [로딩 타임아웃] 경상도_밀양시
+2026-03-08 03:02:47,260 [WARNING] [사이트목록 업데이트 실패] SITE_NO=A188-1 찾을 수 없음
+2026-03-08 03:02:47,260 [INFO] [URL 자동복구 성공] 경상도_밀양시: https://www.miryang.go.kr/web/eMinwonList.do?mnNo=20903000000
+2026-03-08 03:02:47,474 [WARNING] [사이트목록 업데이트 실패] SITE_NO=A188-2 찾을 수 없음
+2026-03-08 03:02:47,475 [INFO] [URL 자동복구 성공] 경상도_밀양시: https://www.miryang.go.kr/web/eMinwonList.do?mnNo=20903000000
+2026-03-08 03:02:47,478 [INFO] [스킵] 광주도시관리공사: div='fail'
+2026-03-08 03:02:47,478 [INFO] [스킵] 광주도시관리공사: div='fail'
+2026-03-08 03:02:47,478 [INFO] [스킵] 서울특별시건설신기술공법선정위원회: div='IP차단된듯'
+2026-03-08 03:02:47,479 [INFO] [시작] 광주광역시고시공고
+2026-03-08 03:02:47,479 [INFO] [시작] 대전광역시고시공고
+2026-03-08 03:02:47,479 [INFO] [시작] 세종소개공고
+2026-03-08 03:02:47,480 [INFO] [시작] 경기고시공고
+2026-03-08 03:02:47,480 [INFO] [시작] 경기도감사위원회고시공고
+2026-03-08 03:02:47,480 [INFO] [시작] 경기도_수원_권선구
+2026-03-08 03:02:47,481 [INFO] [시작] 경기도_수원_장안구
+2026-03-08 03:03:00,009 [INFO] [시작] 경기도_수원_팔달구
+2026-03-08 03:03:04,351 [WARNING] [로딩 타임아웃] 경기도감사위원회고시공고
+2026-03-08 03:03:04,871 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-08 03:03:08,599 [INFO] [Zero-Selector 시도] 경기도_수원_팔달구
+2026-03-08 03:03:09,654 [WARNING] [Zero-Selector 실패] 경기도_수원_팔달구: 0건
+2026-03-08 03:03:09,654 [INFO] [시작] 경기도_수원_영통구
+2026-03-08 03:03:11,414 [INFO] [Zero-Selector 시도] 경기도감사위원회고시공고
+2026-03-08 03:03:11,416 [WARNING] [Zero-Selector 실패] 경기도감사위원회고시공고: 텍스트 추출 실패
+2026-03-08 03:03:11,416 [INFO] [시작] 경기도_용인시공법선정위원회
+2026-03-08 03:03:18,440 [WARNING] [타임아웃] 경기도_수원_장안구
+2026-03-08 03:03:18,440 [INFO] [Zero-Selector 시도] 경기도_수원_장안구
+2026-03-08 03:03:18,441 [WARNING] [Zero-Selector] 경기도_수원_장안구: HTML 수집 실패
+2026-03-08 03:03:18,441 [INFO] [시작] 경기도_용인시처인구
+2026-03-08 03:03:19,961 [WARNING] [타임아웃] 경기도_수원_권선구
+2026-03-08 03:03:19,961 [INFO] [Zero-Selector 시도] 경기도_수원_권선구
+2026-03-08 03:03:19,962 [WARNING] [Zero-Selector] 경기도_수원_권선구: HTML 수집 실패
+2026-03-08 03:03:19,962 [INFO] [시작] 경기도_광주시
+2026-03-08 03:03:23,216 [INFO] [시작] 경기도_부천시
+2026-03-08 03:03:27,959 [INFO] [시작] 경기도_성남시
+2026-03-08 03:03:28,804 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-08 03:03:31,886 [INFO] [Zero-Selector 시도] 경기도_부천시
+2026-03-08 03:03:32,479 [WARNING] [Zero-Selector 실패] 경기도_부천시: 0건
+2026-03-08 03:03:32,479 [INFO] [시작] 경기도_성남시수정구
+2026-03-08 03:03:39,357 [INFO] [시작] 경기도_성남시중원구
+2026-03-08 03:03:52,951 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-08 03:04:08,444 [WARNING] [타임아웃] 경기도_광주시
+2026-03-08 03:04:08,444 [INFO] [Zero-Selector 시도] 경기도_광주시
+2026-03-08 03:04:08,444 [WARNING] [Zero-Selector] 경기도_광주시: HTML 수집 실패
+2026-03-08 03:04:08,444 [INFO] [시작] 경기도_성남시분당구
+2026-03-08 03:04:16,357 [INFO] [시작] 경기도_안성시
+2026-03-08 03:04:17,135 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-08 03:04:20,756 [INFO] [시작] 경기도_안양시
+2026-03-08 03:04:36,818 [INFO] [시작] 경기도_의왕시
+2026-03-08 03:04:39,236 [INFO] [시작] 경기도_의정부시
+2026-03-08 03:04:41,231 [WARNING] [로딩 타임아웃] 경기고시공고
+2026-03-08 03:04:41,433 [INFO] [Zero-Selector 시도] 경기도_용인시처인구
+2026-03-08 03:04:42,205 [WARNING] [Zero-Selector 실패] 경기도_용인시처인구: 0건
+2026-03-08 03:04:42,205 [INFO] [시작] 경기도_이천시
+2026-03-08 03:04:49,076 [INFO] [시작] 경기도_파주시
+2026-03-08 03:04:49,729 [INFO] [시작] 경기도_평택시
+2026-03-08 03:04:51,757 [INFO] [시작] 강원도_강릉시
+2026-03-08 03:04:55,107 [WARNING] [로딩 타임아웃] 경기도_의정부시
+2026-03-08 03:04:58,105 [INFO] [시작] 강원도_동해시
+2026-03-08 03:05:02,183 [INFO] [Zero-Selector 시도] 경기도_의정부시
+2026-03-08 03:05:02,183 [WARNING] [Zero-Selector 실패] 경기도_의정부시: 텍스트 추출 실패
+2026-03-08 03:05:02,183 [INFO] [시작] 강원도_속초시
+2026-03-08 03:05:10,514 [INFO] [시작] 강원도_춘천시
+2026-03-08 03:05:13,140 [INFO] [시작] 강원도_고성군
+2026-03-08 03:05:22,332 [WARNING] [버튼 없음] 경기도_평택시 페이지 2
+2026-03-08 03:05:22,592 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48001): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ff8d2f49e19922439e0efb2563c60064
+2026-03-08 03:05:22,599 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48001): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ff8d2f49e19922439e0efb2563c60064
+2026-03-08 03:05:22,608 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=48001): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ff8d2f49e19922439e0efb2563c60064
+2026-03-08 03:05:22,609 [INFO] [페이지 끝] 경기도_평택시: 페이지 2에 버튼 없음
+2026-03-08 03:05:22,609 [INFO] [시작] 강원도_양구군
+2026-03-08 03:05:26,799 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-08 03:05:30,855 [INFO] [Zero-Selector 시도] 강원도_고성군
+2026-03-08 03:05:30,855 [WARNING] [Zero-Selector] 강원도_고성군: HTML 수집 실패
+2026-03-08 03:05:30,855 [INFO] [시작] 강원도_양양군
+2026-03-08 03:05:35,626 [INFO] [시작] 강원도_정선군
+2026-03-08 03:05:38,910 [WARNING] [로딩 타임아웃] 강원도_양구군
+2026-03-08 03:05:41,601 [INFO] [시작] 강원도_화천군
+2026-03-08 03:05:46,101 [INFO] [Zero-Selector 시도] 강원도_양구군
+2026-03-08 03:05:46,109 [WARNING] [Zero-Selector 실패] 강원도_양구군: 텍스트 추출 실패
+2026-03-08 03:05:46,111 [INFO] [시작] 충청도_괴산군
+2026-03-08 03:05:51,157 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-08 03:05:51,770 [WARNING] [로딩 타임아웃] 강원도_정선군
+2026-03-08 03:05:57,048 [WARNING] [로딩 타임아웃] 강원도_화천군
+2026-03-08 03:05:59,048 [INFO] [시작] 충청도_단양군
+2026-03-08 03:06:05,273 [INFO] [Zero-Selector 시도] 강원도_화천군
+2026-03-08 03:06:05,991 [WARNING] [Zero-Selector 실패] 강원도_화천군: 0건
+2026-03-08 03:06:05,992 [INFO] [시작] 충청도_청주시_상당구
+2026-03-08 03:06:11,553 [INFO] [스킵] 충청도_청주시_서원구: div='IP차단'
+2026-03-08 03:06:11,553 [INFO] [시작] 충청도_청주시_흥덕구
+2026-03-08 03:06:13,527 [INFO] [시작] 충청도_보은군
+2026-03-08 03:06:15,107 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-08 03:06:15,864 [WARNING] [타임아웃] 강원도_정선군
+2026-03-08 03:06:15,864 [INFO] [Zero-Selector 시도] 강원도_정선군
+2026-03-08 03:06:15,864 [WARNING] [Zero-Selector] 강원도_정선군: HTML 수집 실패
+2026-03-08 03:06:15,864 [INFO] [시작] 충청도_영동군
+2026-03-08 03:06:19,154 [INFO] [시작] 충청도_증평군
+2026-03-08 03:06:25,660 [INFO] [시작] 충청도_진천군
+2026-03-08 03:06:31,482 [INFO] [시작] 충청도_논산시
+2026-03-08 03:06:32,177 [INFO] [시작] 충청도_당진시
+2026-03-08 03:06:37,777 [INFO] [Zero-Selector 시도] 충청도_증평군
+2026-03-08 03:06:38,237 [WARNING] [Zero-Selector 실패] 충청도_증평군: 0건
+2026-03-08 03:06:38,237 [INFO] [시작] 충청도_아산시
+2026-03-08 03:06:39,023 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-08 03:06:57,232 [WARNING] [타임아웃] 충청도_논산시
+2026-03-08 03:06:57,233 [INFO] [Zero-Selector 시도] 충청도_논산시
+2026-03-08 03:06:57,233 [WARNING] [Zero-Selector] 충청도_논산시: HTML 수집 실패
+2026-03-08 03:06:57,233 [INFO] [시작] 충청도_천안시
+2026-03-08 03:06:57,521 [WARNING] [타임아웃] 충청도_당진시
+2026-03-08 03:06:57,522 [INFO] [Zero-Selector 시도] 충청도_당진시
+2026-03-08 03:06:57,522 [WARNING] [Zero-Selector] 충청도_당진시: HTML 수집 실패
+2026-03-08 03:06:57,522 [INFO] [시작] 충청도_서천군
+2026-03-08 03:07:03,304 [WARNING] [로딩 타임아웃] 강원도_춘천시
+2026-03-08 03:07:09,361 [INFO] [시작] 충청도_청양군
+2026-03-08 03:07:10,719 [INFO] [시작] 충청도_태안군
+2026-03-08 03:07:17,158 [INFO] [시작] 전라도_군산시
+2026-03-08 03:07:23,821 [INFO] [시작] 전라도_익산시
+2026-03-08 03:07:26,503 [WARNING] [로딩 타임아웃] 충청도_태안군
+2026-03-08 03:07:33,639 [INFO] [Zero-Selector 시도] 충청도_태안군
+2026-03-08 03:07:33,640 [WARNING] [Zero-Selector 실패] 충청도_태안군: 텍스트 추출 실패
+2026-03-08 03:07:33,641 [INFO] [시작] 전라도_전주시
+2026-03-08 03:07:42,190 [WARNING] [로딩 타임아웃] 충청도_서천군
+2026-03-08 03:07:42,443 [WARNING] [타임아웃] 전라도_군산시
+2026-03-08 03:07:42,443 [INFO] [Zero-Selector 시도] 전라도_군산시
+2026-03-08 03:07:42,443 [WARNING] [Zero-Selector] 전라도_군산시: HTML 수집 실패
+2026-03-08 03:07:42,443 [INFO] [시작] 전라도_정읍시
+2026-03-08 03:07:49,096 [WARNING] [로딩 타임아웃] 전라도_전주시
+2026-03-08 03:07:49,260 [INFO] [Zero-Selector 시도] 충청도_서천군
+2026-03-08 03:07:49,263 [WARNING] [Zero-Selector 실패] 충청도_서천군: 텍스트 추출 실패
+2026-03-08 03:07:49,264 [INFO] [시작] 전라도_무주군
+2026-03-08 03:07:50,134 [INFO] [시작] 전라도_순창군
+2026-03-08 03:07:50,591 [INFO] [시작] 전라도_완주군
+2026-03-08 03:07:56,209 [INFO] [Zero-Selector 시도] 전라도_전주시
+2026-03-08 03:07:56,210 [WARNING] [Zero-Selector 실패] 전라도_전주시: 텍스트 추출 실패
+2026-03-08 03:07:56,213 [INFO] [시작] 전라도_임실군
+2026-03-08 03:07:58,876 [INFO] [시작] 전라도_장수군
+2026-03-08 03:08:03,979 [WARNING] [로딩 타임아웃] 전라도_정읍시
+2026-03-08 03:08:06,228 [WARNING] [로딩 타임아웃] 전라도_순창군
+2026-03-08 03:08:10,060 [WARNING] [타임아웃] 전라도_익산시
+2026-03-08 03:08:10,060 [INFO] [Zero-Selector 시도] 전라도_익산시
+2026-03-08 03:08:10,060 [WARNING] [Zero-Selector] 전라도_익산시: HTML 수집 실패
+2026-03-08 03:08:10,060 [INFO] [시작] 전라도_진안군
+2026-03-08 03:08:13,297 [INFO] [Zero-Selector 시도] 전라도_순창군
+2026-03-08 03:08:13,298 [WARNING] [Zero-Selector 실패] 전라도_순창군: 텍스트 추출 실패
+2026-03-08 03:08:13,298 [INFO] [시작] 전라도_나주시
+2026-03-08 03:08:14,267 [WARNING] [로딩 타임아웃] 전라도_장수군
+2026-03-08 03:08:18,510 [INFO] [Zero-Selector 시도] 전라도_진안군
+2026-03-08 03:08:18,928 [WARNING] [Zero-Selector 실패] 전라도_진안군: 0건
+2026-03-08 03:08:18,929 [INFO] [시작] 전라도_목포시
+2026-03-08 03:08:21,359 [INFO] [시작] 전라도_여수시
+2026-03-08 03:08:28,676 [WARNING] [로딩 타임아웃] 전라도_나주시
+2026-03-08 03:08:35,749 [INFO] [Zero-Selector 시도] 전라도_나주시
+2026-03-08 03:08:35,750 [WARNING] [Zero-Selector 실패] 전라도_나주시: 텍스트 추출 실패
+2026-03-08 03:08:35,750 [INFO] [시작] 전라도_고흥군
+2026-03-08 03:08:42,621 [INFO] [시작] 전라도_담양군
+2026-03-08 03:08:55,321 [INFO] [시작] 전라도_장흥군
+2026-03-08 03:08:59,086 [INFO] [시작] 전라도_화순군
+2026-03-08 03:09:01,607 [ERROR] [크롤링 오류] 전라도_담양군: Alert Text: /eminwon/getSearchList 페이징 오류
+Message: unexpected alert open: {Alert text : /eminwon/getSearchList 페이징 오류}
+  (Session info: chrome=145.0.7632.116)
+Stacktrace:
+#0 0x5572e8592b6a <unknown>
+#1 0x5572e7fa5a32 <unknown>
+#2 0x5572e8043cd5 <unknown>
+#3 0x5572e7fecc0f <unknown>
+#4 0x5572e7fed9d1 <unknown>
+#5 0x5572e85576b9 <unknown>
+#6 0x5572e855a5c1 <unknown>
+#7 0x5572e8543e29 <unknown>
+#8 0x5572e855b17e <unknown>
+#9 0x5572e852a4b0 <unknown>
+#10 0x5572e857f578 <unknown>
+#11 0x5572e857f74b <unknown>
+#12 0x5572e85911a3 <unknown>
+#13 0x7fc06f89caa4 <unknown>
+#14 0x7fc06f929c6c <unknown>
+
+2026-03-08 03:09:01,607 [INFO] [Zero-Selector 시도] 전라도_담양군
+2026-03-08 03:09:01,607 [WARNING] [Zero-Selector] 전라도_담양군: HTML 수집 실패
+2026-03-08 03:09:01,609 [INFO] [시작] 경상도_경산시
+2026-03-08 03:09:06,184 [INFO] [시작] 경상도_구미시
+2026-03-08 03:09:07,290 [INFO] [시작] 경상도_포항시
+2026-03-08 03:09:10,582 [INFO] [시작] 경상도_포항시
+2026-03-08 03:09:17,082 [INFO] [시작] 경상도_봉화군
+2026-03-08 03:09:18,587 [WARNING] [로딩 타임아웃] 전라도_무주군
+2026-03-08 03:09:27,405 [INFO] [시작] 경상도_성주군
+2026-03-08 03:09:31,979 [INFO] [시작] 경상도_성주군
+2026-03-08 03:09:32,637 [WARNING] [로딩 타임아웃] 경상도_봉화군
+2026-03-08 03:09:48,097 [INFO] [Zero-Selector 시도] 경상도_경산시
+2026-03-08 03:09:48,567 [WARNING] [Zero-Selector 실패] 경상도_경산시: 0건
+2026-03-08 03:09:48,568 [INFO] [시작] 경상도_영양군
+2026-03-08 03:10:13,426 [INFO] [Zero-Selector 시도] 경상도_성주군
+2026-03-08 03:10:13,860 [WARNING] [Zero-Selector 실패] 경상도_성주군: 0건
+2026-03-08 03:10:13,860 [INFO] [시작] 경상도_예천군
+2026-03-08 03:10:18,402 [INFO] [Zero-Selector 시도] 경상도_성주군
+2026-03-08 03:10:18,833 [WARNING] [Zero-Selector 실패] 경상도_성주군: 0건
+2026-03-08 03:10:18,833 [INFO] [시작] 경상도_예천군
+2026-03-08 03:10:22,151 [WARNING] [타임아웃] 전라도_무주군
+2026-03-08 03:10:22,151 [INFO] [Zero-Selector 시도] 전라도_무주군
+2026-03-08 03:10:22,151 [WARNING] [Zero-Selector] 전라도_무주군: HTML 수집 실패
+2026-03-08 03:10:22,151 [INFO] [시작] 경상도_의성군
+2026-03-08 03:10:31,369 [INFO] [Zero-Selector 시도] 경상도_봉화군
+2026-03-08 03:10:31,771 [WARNING] [Zero-Selector 실패] 경상도_봉화군: 0건
+2026-03-08 03:10:31,772 [INFO] [시작] 경상도_의성군
+2026-03-08 03:10:36,515 [INFO] [Zero-Selector 시도] 경상도_영양군
+2026-03-08 03:10:37,097 [INFO] [시작] 경상도_청도군
+2026-03-08 03:10:37,613 [WARNING] [Zero-Selector 실패] 경상도_영양군: 0건
+2026-03-08 03:10:37,613 [INFO] [스킵] 경상도_청송군: div='fail'
+2026-03-08 03:10:37,613 [INFO] [스킵] 경상도_청송군: div='fail'
+2026-03-08 03:10:37,613 [INFO] [시작] 경상도_산청군
+2026-03-08 03:10:42,835 [INFO] [시작] 경상도_함양군
+2026-03-08 03:10:45,237 [INFO] [시작] 경상도_합천군
+2026-03-08 03:10:53,742 [WARNING] [버튼 없음] 경상도_청도군 페이지 2
+2026-03-08 03:10:53,803 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47069): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9f0cb777060423e021375b3de5064443
+2026-03-08 03:10:53,804 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47069): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9f0cb777060423e021375b3de5064443
+2026-03-08 03:10:53,805 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47069): Failed to establish a new connection: [Errno 111] Connection refused")': /session/9f0cb777060423e021375b3de5064443
+2026-03-08 03:10:53,805 [INFO] [페이지 끝] 경상도_청도군: 페이지 2에 버튼 없음
+2026-03-08 03:10:53,806 [INFO] [Zero-Selector 시도] 경상도_청도군
+2026-03-08 03:10:53,806 [WARNING] [Zero-Selector] 경상도_청도군: HTML 수집 실패
+2026-03-08 03:11:00,798 [INFO] [Zero-Selector 시도] 경상도_예천군
+2026-03-08 03:11:01,293 [WARNING] [Zero-Selector 실패] 경상도_예천군: 0건
+2026-03-08 03:11:05,263 [WARNING] [로딩 타임아웃] 경상도_합천군
+2026-03-08 03:11:06,850 [INFO] [Zero-Selector 시도] 경상도_예천군
+2026-03-08 03:11:07,360 [WARNING] [Zero-Selector 실패] 경상도_예천군: 0건
+2026-03-08 03:11:12,332 [INFO] [Zero-Selector 시도] 경상도_합천군
+2026-03-08 03:11:12,332 [WARNING] [Zero-Selector 실패] 경상도_합천군: 텍스트 추출 실패
+2026-03-08 03:11:53,810 [INFO] 필터링 후 0개 공고 (키워드 매칭)
+2026-03-08 03:11:53,813 [INFO] 전체공고 (키워드 미해당) 0개
+2026-03-08 03:11:53,815 [INFO] ===== 결과: 성공 162 | Zero-Selector 1 | 자가치유 1 | 실패 49 | 스킵 16 / 전체 229 =====
+2026-03-08 03:11:56,104 [INFO] [로그 업로드 완료] 229행 (누적)
+2026-03-08 03:11:56,856 [INFO] [대시보드 업로드 완료]
+2026-03-08 03:11:56,856 [INFO] ===== 크롤링 완료: 2026-03-08 03:11:56 KST =====
