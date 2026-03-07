@@ -780,7 +780,7 @@ def parse_soup(soup, row, site_name) -> tuple:
               if site_name == '대전광역시고시공고'
               else soup.select_one(row['table_body']))
         if not tb:
-            return [], [], [], f"테이블 없음: {row['table_body']}"
+            return [], [], [], [], f"테이블 없음: {row['table_body']}"
 
         titles = tb.select(row['title'])
         dates = tb.select(row['date'])
