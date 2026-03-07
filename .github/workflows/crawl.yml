@@ -3,7 +3,7 @@ name: 매일 공고 크롤링
 on:
   schedule:
     - cron: '0 22 * * *'   # 오전 7시 KST (UTC 22:00 전날)
-    - cron: '0 8 * * *'    # 오후 5시 KST (UTC 08:00)
+    - cron: '0 7 * * *'    # 오후 4시 KST (UTC 07:00)
   workflow_dispatch:        # 수동 실행 가능
 
 jobs:
@@ -35,7 +35,6 @@ jobs:
         env:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }} 
         run: python crawl_optimized.py
 
       - name: 결과 파일 커밋
