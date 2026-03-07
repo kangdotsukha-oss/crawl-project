@@ -24,6 +24,7 @@ import math
 import os
 import re
 import sqlite3
+import threading
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -84,6 +85,8 @@ logger = logging.getLogger(__name__)
 
 def now_kst():
     return datetime.now(KST)
+
+SELF_HEALING_ENABLED = now_kst().weekday() == 0  # 월요일만 자가치유
 
 # ─────────────────────────────────────────
 # 유틸
@@ -406,6 +409,8 @@ def parse_with_selector(html: str, site: dict) -> list[dict]:
 # ─────────────────────────────────────────
 _claude_available: bool = True
 _claude_client: Optional[anthropic.Anthropic] = None
+_selector_updates: dict = {}   # {site_id: new_selector_dict} - 자가치유 성공 시 기록
+_selector_lock = threading.Lock()
 
 def get_claude():
     global _claude_client
@@ -525,6 +530,50 @@ def preprocess_html(html: str) -> str:
     return (text or '')[:8000]
 
 # ─────────────────────────────────────────
+# 자가치유: CSS 셀렉터 분석 (주 1회 월요일)
+# ─────────────────────────────────────────
+def analyze_selector_with_claude(site_name: str, url: str, html: str) -> Optional[dict]:
+    """HTML에서 새 CSS 셀렉터 자동 분석 (자가치유용)"""
+    try:
+        soup_trim = BeautifulSoup(html, 'html.parser')
+        for tag in soup_trim(['script', 'style', 'link', 'meta']):
+            tag.decompose()
+        body = soup_trim.find('body')
+        html_trimmed = str(body)[:15000] if body else html[:15000]
+    except Exception:
+        html_trimmed = html[:15000]
+
+    prompt = f"""아래는 공공기관 고시/공고 목록 페이지의 HTML입니다.
+사이트명: {site_name}
+URL: {url}
+
+HTML:
+{html_trimmed}
+
+이 HTML에서 공고 목록 크롤링용 CSS 셀렉터를 찾아주세요.
+JSON만 출력하세요 (다른 설명 없이):
+
+{{"table_body": "공고 목록 컨테이너 CSS 셀렉터", "title": "제목 CSS 셀렉터 (table_body 기준)", "date": "날짜 CSS 셀렉터 (table_body 기준)"}}"""
+
+    try:
+        resp = get_claude().messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        raw = resp.content[0].text.strip()
+        m = re.search(r'\{.*\}', raw, re.DOTALL)
+        if m:
+            parsed = json.loads(m.group())
+            tb = parsed.get('table_body', '')
+            if tb and tb not in ('null', 'Unable to determine', ''):
+                logger.info(f"[자가치유 셀렉터 분석] {site_name}: {tb[:60]}")
+                return parsed
+    except Exception as e:
+        logger.warning(f"[자가치유 분석 오류] {site_name}: {e}")
+    return None
+
+# ─────────────────────────────────────────
 # 단일 사이트 크롤링
 # ─────────────────────────────────────────
 async def crawl_site(site: dict, browser=None) -> dict:
@@ -538,10 +587,11 @@ async def crawl_site(site: dict, browser=None) -> dict:
 
     collected, all_items = [], []
     all_dates = []
-    error_msg = ""
-    status    = "성공"
-    method    = "selector"  # 어떤 방식으로 추출했는지 기록
-    page      = None
+    error_msg  = ""
+    status     = "성공"
+    method     = "selector"  # 어떤 방식으로 추출했는지 기록
+    self_healed = False
+    page       = None
 
     if site.get('skip'):
         return _skip_result(site)
@@ -595,30 +645,46 @@ async def crawl_site(site: dict, browser=None) -> dict:
             items = parse_with_selector(html, site)
             used_method = "selector"
 
-            # ── 2순위: 셀렉터 실패 시 Claude/regex fallback ──
+            # ── 2순위: 셀렉터 실패 시 ──
             if not items:
                 if page_num == 1:
-                    # HTML 샘플 로깅 (디버그용)
                     soup_dbg = BeautifulSoup(html, 'html.parser')
                     title_tag = soup_dbg.find('title')
                     page_title = title_tag.get_text(strip=True)[:60] if title_tag else 'no-title'
                     logger.debug(f"[셀렉터 0건] {site_name} html={len(html)}b title='{page_title}'")
-                text = preprocess_html(html)
-                if text and len(text) >= 30:
-                    items = extract_with_claude(site_name, text)
-                    used_method = "claude" if _claude_available else "regex"
-                    if items:
-                        logger.info(f"[{used_method} fallback] {site_name} p{page_num}: {len(items)}건")
+
+                    # ── 자가치유 (월요일만): 새 CSS 셀렉터 탐색 ──
+                    if SELF_HEALING_ENABLED:
+                        new_sel = analyze_selector_with_claude(site_name, url, html)
+                        if new_sel:
+                            healed = parse_with_selector(html, {**site, 'selector': new_sel})
+                            if healed:
+                                items = healed
+                                used_method = "self_healed"
+                                self_healed = True
+                                site = {**site, 'selector': new_sel}
+                                with _selector_lock:
+                                    _selector_updates[site_id] = new_sel
+                                logger.info(f"[자가치유 성공] {site_name}: {len(items)}건")
+
+                # ── Zero-Selector fallback (자가치유 실패 또는 비활성 날) ──
+                if not items:
+                    text = preprocess_html(html)
+                    if text and len(text) >= 30:
+                        items = extract_with_claude(site_name, text)
+                        used_method = "claude" if _claude_available else "regex"
+                        if items:
+                            logger.info(f"[{used_method} fallback] {site_name} p{page_num}: {len(items)}건")
+                        else:
+                            if page_num == 1:
+                                error_msg = "공고 추출 0건"
+                                status = "실패"
+                            break
                     else:
                         if page_num == 1:
-                            error_msg = "공고 추출 0건"
+                            error_msg = "본문 추출 실패"
                             status = "실패"
                         break
-                else:
-                    if page_num == 1:
-                        error_msg = "본문 추출 실패"
-                        status = "실패"
-                    break
 
             if page_num == 1:
                 method = used_method
@@ -659,6 +725,8 @@ async def crawl_site(site: dict, browser=None) -> dict:
             except Exception:
                 pass
 
+    if self_healed and status == "성공":
+        status = "자가치유성공"
     logger.info(f"[완료] {site_name}: 키워드 {len(collected)}건 / 전체 {len(all_items)}건 ({method})")
     return {
         'site_id': site_id, 'site_name': site_name,
@@ -889,8 +957,19 @@ async def main():
         m = r.get('method','')
         by_method[m] = by_method.get(m, 0) + 1
 
-    logger.info(f"===== 결과: 성공 {success} | 실패 {failed} | 스킵 {skipped} / 전체 {len(results)} =====")
+    healed = sum(1 for r in results if r['status'] == '자가치유성공')
+    logger.info(f"===== 결과: 성공 {success} | 자가치유 {healed} | 실패 {failed} | 스킵 {skipped} / 전체 {len(results)} =====")
     logger.info(f"추출 방식: {by_method}")
+
+    # 자가치유 성공 시 sites.json 업데이트
+    if _selector_updates:
+        for s in sites:
+            if s['id'] in _selector_updates:
+                s['selector'] = _selector_updates[s['id']]
+                logger.info(f"[sites.json 업데이트] {s['name']}: 새 셀렉터 저장")
+        with open(SITES_FILE, 'w', encoding='utf-8') as f:
+            json.dump(sites, f, ensure_ascii=False, indent=2)
+        logger.info(f"[sites.json] {len(_selector_updates)}개 사이트 셀렉터 업데이트 완료")
 
     save_to_db(con, results, run_at)
     con.close()

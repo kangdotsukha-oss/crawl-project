@@ -65,7 +65,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add df_log_v5_*.xlsx df_list_v5_*.xlsx crawl_v5.log crawl_v5.db || true
+          git add df_log_v5_*.xlsx df_list_v5_*.xlsx crawl_v5.log crawl_v5.db sites.json || true
           git rm --cached $(git ls-files --deleted "df_log_v5_*.xlsx" "df_list_v5_*.xlsx") 2>/dev/null || true
           git diff --staged --quiet || git commit -m "v5 크롤링 결과 $(date +'%Y-%m-%d %H:%M')"
           # rebase 후 push (재시도 3회)
