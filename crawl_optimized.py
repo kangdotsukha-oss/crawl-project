@@ -51,6 +51,8 @@ def now_kst() -> datetime:
     """현재 KST 시각 반환"""
     return datetime.now(KST)
 
+SELF_HEALING_ENABLED = now_kst().weekday() == 0  # 월요일만 자가치유
+
 # Claude API 동시 호출 방지 Lock (rate limit 대응)
 _claude_lock = threading.Lock()
 
@@ -683,6 +685,77 @@ HTML:
 
 
 # ─────────────────────────────────────────────
+# Zero-Selector: Claude가 HTML 텍스트에서 직접 추출
+# ─────────────────────────────────────────────
+def zero_selector_extract(site_name: str, html: str, row: dict) -> tuple:
+    """CSS 셀렉터 없이 Claude가 텍스트에서 공고 목록 직접 추출"""
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+        for tag in soup(['script', 'style', 'nav', 'footer', 'header', 'aside']):
+            tag.decompose()
+        for td in soup.find_all('td'):
+            td.insert_after('\t')
+        for tr in soup.find_all('tr'):
+            tr.insert_after('\n')
+        text = soup.get_text(separator='\n', strip=True)
+        text = re.sub(r'\n{3,}', '\n\n', text)[:6000]
+    except Exception as e:
+        return [], [], [], [], f"전처리 오류: {e}"
+
+    if len(text.strip()) < 50:
+        return [], [], [], [], "텍스트 추출 실패"
+
+    prompt = f"""다음은 한국 공공기관 고시/공고 목록 페이지의 텍스트입니다.
+사이트명: {site_name}
+
+텍스트:
+{text}
+
+위 텍스트에서 고시/공고 항목들을 추출하세요.
+- 각 항목의 제목(title)과 날짜(date)를 추출
+- 날짜는 YYYY-MM-DD 형식으로 정규화
+- 날짜 불명 시 "" 표시
+- 공고 없으면 빈 배열
+- JSON 배열만 출력 (다른 설명 없이)
+
+[{{"title": "공고 제목", "date": "YYYY-MM-DD"}}, ...]"""
+
+    result = call_claude_api(prompt, max_tokens=2000)
+    if not result:
+        return [], [], [], [], "Claude API 호출 실패"
+
+    try:
+        content = result.get('content', [])
+        raw = next((b['text'] for b in content if b.get('type') == 'text'), '').strip()
+        m = re.search(r'\[.*\]', raw, re.DOTALL)
+        if not m:
+            return [], [], [], [], "JSON 파싱 실패"
+        items = [i for i in json.loads(m.group()) if isinstance(i, dict) and i.get('title')]
+    except Exception as e:
+        return [], [], [], [], f"결과 파싱 오류: {e}"
+
+    titles, dates, collected, unfiltered = [], [], [], []
+    url = row.get('URL', '')
+    site_no = row.get('SITE_NO', '')
+    for item in items:
+        title = str(item.get('title', '')).strip()
+        date = fix_date_format(str(item.get('date', '')))
+        if not title:
+            continue
+        titles.append(title)
+        dates.append(date)
+        matched_kw = [kw for kw in FILTER_KEYWORDS if kw in title]
+        entry = {"SITE_NO": site_no, "출처": site_name, "URL": url,
+                 "제목": title, "작성일": date, "키워드": ", ".join(matched_kw)}
+        if matched_kw:
+            collected.append(entry)
+        else:
+            unfiltered.append(entry)
+
+    return titles, dates, collected, unfiltered, ""
+
+
+# ─────────────────────────────────────────────
 # URL 자동 탐색 (Claude 웹서치)
 # ─────────────────────────────────────────────
 def search_new_url_with_claude(site_name: str, old_url: str) -> str | None:
@@ -880,103 +953,84 @@ def crawl_site(row, gc=None) -> dict:
                 row['URL'], row['crawl_type'], page_number, row.get('ct2', '')
             )
 
-            soup, status, success = None, 'ok', False
-            url_searched = False  # URL 탐색은 사이트당 1회만
+            soup, status = None, 'ok'
+            url_searched = False
 
-            while retries < MAX_RETRIES and not success:
-                try:
-                    ct = row['crawl_type']
-                    if ct == 's':
-                        soup, status = static_crawl(row)
-                    elif ct == 'd':
-                        soup, status = dynamic_crawl(row)
-                    elif ct == 'd1':
-                        soup, status = dynamic_crawl_1(row)
-                    elif ct == 'd2':
-                        soup, status = dynamic_crawl_2(row)
-                    elif ct == 'p':
-                        soup, status = post_crawl(row)
-                    elif ct in CLICK_CRAWL_CONFIG:
-                        soup, status = click_dynamic_crawl(row, page_number)
-                    else:
-                        error_msg = f"알 수 없는 타입: {ct}"
-                        logger.error(f"[알 수 없는 타입] {site_name}: {ct}")
-                        failed = True
-                        break
-
-                    # ── 버튼 없음 → 더 이상 다음 페이지 없음, 정상 종료 ──
-                    if status == 'no_button':
-                        logger.info(f"[페이지 끝] {site_name}: 페이지 {page_number}에 버튼 없음, 순회 종료")
-                        break
-
-                    # ── 웹방화벽 감지 → 우회 시도 ──
-                    if status == 'firewall':
-                        soup, status = try_bypass_firewall(row)
-                        if status == 'firewall_blocked':
-                            error_msg = "웹방화벽 차단 (IP차단, 우회 실패)"
-                            failed = True
-                            break
-
-                    # ── HTTP 오류 (404/400/연결실패) → URL 탐색 시도 (사이트당 1회, 캐시 공유) ──
-                    if soup is None and (status.startswith('http_') or status == 'error') and not url_searched:
-                        url_searched = True
-                        error_code = status.split('_')[1] if '_' in status else '?'
-                        # 캐시 확인: 다른 스레드가 이미 탐색했으면 결과 재사용
-                        with _url_search_cache_lock:
-                            if site_name in _url_search_cache:
-                                new_url = _url_search_cache[site_name]
-                                logger.info(f"[URL탐색 캐시 사용] {site_name}: {new_url}")
-                            else:
-                                logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
-                                new_url = search_new_url_with_claude(site_name, row['URL'])
-                                _url_search_cache[site_name] = new_url
-                        if new_url:
-                            row = row.copy()
-                            row['URL'] = new_url
-                            soup, status = static_crawl(row)
-                            if soup is None:
-                                soup, status = dynamic_crawl(row)
-                            if soup:
-                                if gc:
-                                    update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=row['URL'])
-                                auto_fixed = True
-                                logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
-                            else:
-                                # 새 URL도 안 되면 포기 (무한루프 방지)
-                                error_msg = f"URL 복구 후에도 접근 불가 (IP차단 추정)"
-                                logger.warning(f"[URL 복구 후 실패] {site_name}")
-                                failed = True
-                                break
-                        else:
-                            error_msg = f"HTTP {error_code}: 새 URL 탐색 실패"
-                            failed = True
-                            break
-
-                    if soup:
-                        success = True
-                    else:
-                        retries += 1
-                        time.sleep(2)
-
-                except TimeoutException:
-                    retries += 1
-                    error_msg = f"타임아웃 (재시도 {retries}/{MAX_RETRIES})"
-                    logger.warning(f"[타임아웃] {site_name} 재시도 {retries}/{MAX_RETRIES}")
-                    time.sleep(2)
-                except Exception as e:
-                    retries += 1
-                    error_msg = str(e)[:100]
-                    logger.error(f"[크롤링 오류] {site_name}: {e}")
-                    time.sleep(2)
-
-            if failed or not success or soup is None:
-                # no_button은 페이지 끝 = 정상 종료 (실패 아님)
-                if status == 'no_button':
-                    break
-                if not failed:
-                    error_msg = error_msg or "최종 실패 (재시도 소진)"
-                    logger.error(f"[최종 실패] {site_name}")
+            try:
+                ct = row['crawl_type']
+                if ct == 's':
+                    soup, status = static_crawl(row)
+                elif ct == 'd':
+                    soup, status = dynamic_crawl(row)
+                elif ct == 'd1':
+                    soup, status = dynamic_crawl_1(row)
+                elif ct == 'd2':
+                    soup, status = dynamic_crawl_2(row)
+                elif ct == 'p':
+                    soup, status = post_crawl(row)
+                elif ct in CLICK_CRAWL_CONFIG:
+                    soup, status = click_dynamic_crawl(row, page_number)
+                else:
+                    error_msg = f"알 수 없는 타입: {ct}"
+                    logger.error(f"[알 수 없는 타입] {site_name}: {ct}")
                     failed = True
+
+                # ── 버튼 없음 → 페이지 끝, 정상 종료 ──
+                if status == 'no_button':
+                    logger.info(f"[페이지 끝] {site_name}: 페이지 {page_number}에 버튼 없음")
+                    break
+
+                # ── 웹방화벽 감지 → 우회 시도 ──
+                if not failed and status == 'firewall':
+                    soup, status = try_bypass_firewall(row)
+                    if status == 'firewall_blocked':
+                        error_msg = "웹방화벽 차단 (IP차단, 우회 실패)"
+                        failed = True
+
+                # ── HTTP 오류 → URL 탐색 시도 (사이트당 1회) ──
+                if not failed and soup is None and (status.startswith('http_') or status == 'error'):
+                    url_searched = True
+                    error_code = status.split('_')[1] if '_' in status else '?'
+                    with _url_search_cache_lock:
+                        if site_name in _url_search_cache:
+                            new_url = _url_search_cache[site_name]
+                            logger.info(f"[URL탐색 캐시 사용] {site_name}: {new_url}")
+                        else:
+                            logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
+                            new_url = search_new_url_with_claude(site_name, row['URL'])
+                            _url_search_cache[site_name] = new_url
+                    if new_url:
+                        row = row.copy()
+                        row['URL'] = new_url
+                        soup, status = static_crawl(row)
+                        if soup is None:
+                            soup, status = dynamic_crawl(row)
+                        if soup:
+                            if gc:
+                                update_site_in_sheet(gc, str(row.get('SITE_NO', '')), {'URL': new_url}, original_url=row['URL'])
+                            auto_fixed = True
+                            logger.info(f"[URL 자동복구 성공] {site_name}: {new_url}")
+                        else:
+                            error_msg = "URL 복구 후에도 접근 불가 (IP차단 추정)"
+                            failed = True
+                    else:
+                        error_msg = f"HTTP {error_code}: 새 URL 탐색 실패"
+                        failed = True
+
+                if not failed and soup is None:
+                    error_msg = error_msg or "HTML 수집 실패"
+                    failed = True
+
+            except TimeoutException:
+                error_msg = "타임아웃"
+                logger.warning(f"[타임아웃] {site_name}")
+                failed = True
+            except Exception as e:
+                error_msg = str(e)[:100]
+                logger.error(f"[크롤링 오류] {site_name}: {e}")
+                failed = True
+
+            if failed:
                 break
 
             # ── 파싱 ──
@@ -1014,9 +1068,9 @@ def crawl_site(row, gc=None) -> dict:
             break
 
     # ──────────────────────────────────────────
-    # 자가치유: 셀렉터 자동수정 + 즉시 재크롤링
+    # 자가치유: 셀렉터 자동수정 + 즉시 재크롤링 (월요일만)
     # ──────────────────────────────────────────
-    if failed and not auto_fixed and gc is not None:
+    if failed and not auto_fixed and gc is not None and SELF_HEALING_ENABLED:
         logger.info(f"[자가치유 시작] {site_name}")
         html = fetch_html_for_analysis(row)
         if html:
@@ -1069,8 +1123,33 @@ def crawl_site(row, gc=None) -> dict:
             else:
                 logger.warning(f"[자가치유 불가] {site_name}: Claude가 셀렉터 찾지 못함")
 
+    # ──────────────────────────────────────────
+    # Zero-Selector: CSS 실패 또는 0건 추출 시 Claude 직접 추출
+    # ──────────────────────────────────────────
+    zero_selector_used = False
+    if not auto_fixed and (failed or not all_titles):
+        logger.info(f"[Zero-Selector 시도] {site_name}")
+        html_for_zero = fetch_html_for_analysis(row)
+        if html_for_zero:
+            zs_titles, zs_dates, zs_data, zs_unfiltered, zs_err = zero_selector_extract(site_name, html_for_zero, row)
+            if not zs_err and zs_titles:
+                all_titles.extend(zs_titles)
+                cleaned_dates.extend(zs_dates)
+                collected_data.extend(zs_data)
+                all_unfiltered.extend(zs_unfiltered)
+                failed = False
+                zero_selector_used = True
+                error_msg = ""
+                logger.info(f"[Zero-Selector 성공] {site_name}: {len(zs_titles)}건")
+            else:
+                logger.warning(f"[Zero-Selector 실패] {site_name}: {zs_err or '0건'}")
+        else:
+            logger.warning(f"[Zero-Selector] {site_name}: HTML 수집 실패")
+
     final_status = '성공'
-    if failed and auto_fixed:
+    if not failed and zero_selector_used:
+        final_status = 'Zero-Selector성공'
+    elif not failed and auto_fixed:
         final_status = '자가치유성공'
     elif failed:
         final_status = f'실패({error_msg[:30]})'
