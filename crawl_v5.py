@@ -119,14 +119,35 @@ def get_claude():
         _claude_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
     return _claude_client
 
+# Claude API 사용 가능 여부 캐시 (크레딧 소진 시 빠른 fallback 전환)
+_claude_available: bool = True
+
 def extract_with_claude(site_name: str, text: str) -> list[dict]:
     """
     trafilatura로 전처리된 텍스트에서 공고 목록 추출.
+    Claude API 실패(크레딧 부족 등) 시 regex fallback 자동 전환.
     반환: [{"title": "...", "date": "YYYY-MM-DD"}, ...]
     """
-    if not ANTHROPIC_API_KEY or not text or len(text.strip()) < 50:
+    global _claude_available
+
+    if not text or len(text.strip()) < 50:
         return []
 
+    # Claude 가능하면 Claude 우선 시도
+    if ANTHROPIC_API_KEY and _claude_available:
+        result = _extract_claude(site_name, text)
+        if result is not None:
+            return result
+        # None 반환 = 크레딧 소진 등 비복구 오류 → fallback 전환
+        logger.warning(f"[fallback 전환] Claude 사용 불가 → regex fallback")
+        _claude_available = False
+
+    # Regex fallback
+    return _extract_regex(text)
+
+
+def _extract_claude(site_name: str, text: str) -> list[dict] | None:
+    """Claude 추출. 성공 시 list, 크레딧 부족 등 비복구 오류 시 None."""
     prompt = f"""다음은 한국 공공기관 고시/공고 목록 페이지의 텍스트입니다.
 사이트명: {site_name}
 
@@ -153,14 +174,80 @@ def extract_with_claude(site_name: str, text: str) -> list[dict]:
             messages=[{"role": "user", "content": prompt}]
         )
         raw = response.content[0].text.strip()
-        # JSON 배열 추출
         match = re.search(r'\[.*\]', raw, re.DOTALL)
         if match:
             items = json.loads(match.group())
             return [i for i in items if isinstance(i, dict) and i.get('title')]
+        return []
+    except anthropic.BadRequestError as e:
+        # 크레딧 부족 / 잘못된 요청 → 비복구, None 반환
+        if 'credit' in str(e).lower() or 'balance' in str(e).lower():
+            logger.warning(f"[Claude 크레딧 부족] fallback으로 전환합니다")
+            return None
+        logger.warning(f"[Claude 오류] {site_name}: {e}")
+        return []
     except Exception as e:
         logger.warning(f"[Claude 오류] {site_name}: {e}")
-    return []
+        return []
+
+
+# 날짜 정규화 패턴
+_DATE_PATTERNS = [
+    re.compile(r'(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})'),  # 2026-03-07
+    re.compile(r'(\d{4})(\d{2})(\d{2})'),                    # 20260307
+]
+_KO_TITLE_RE = re.compile(r'[\uAC00-\uD7A3]{2,}[^\n\t]{3,60}')
+
+def _extract_regex(text: str) -> list[dict]:
+    """
+    Claude 없이 regex로 제목/날짜 추출하는 fallback.
+    공고 목록 특성상 날짜 근처 줄이 제목일 가능성이 높음.
+    """
+    lines = [l.strip() for l in text.split('\n') if l.strip()]
+    items = []
+    seen_titles = set()
+
+    for i, line in enumerate(lines):
+        date_str = ""
+        for pat in _DATE_PATTERNS:
+            m = pat.search(line)
+            if m:
+                try:
+                    y, mo, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
+                    if 2020 <= y <= 2030 and 1 <= mo <= 12 and 1 <= d <= 31:
+                        date_str = f"{y:04d}-{mo:02d}-{d:02d}"
+                        break
+                except Exception:
+                    pass
+
+        if not date_str:
+            continue
+
+        # 제목: 같은 줄 또는 앞 줄에서 한글 포함 텍스트 탐색
+        title = ""
+        for offset in [0, -1, -2, 1]:
+            idx = i + offset
+            if 0 <= idx < len(lines):
+                candidate = lines[idx]
+                # 날짜만 있는 줄, 숫자만 있는 줄 제외
+                if _KO_TITLE_RE.search(candidate) and not re.fullmatch(r'[\d\s.\-/|]+', candidate):
+                    # 날짜 패턴만으로 이루어진 줄 제외
+                    clean = re.sub(r'\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}', '', candidate).strip()
+                    if len(clean) >= 5:
+                        title = clean[:100]
+                        break
+
+        if title and title not in seen_titles:
+            # 테이블 구분자(|), 앞 번호, 조회수 정리
+            title = re.sub(r'\|\s*\d+\s*\|?', '', title)
+            title = re.sub(r'^\s*\d+\s+', '', title)
+            title = re.sub(r'\s{2,}', ' ', title).strip('| \t')
+            if len(title) < 5:
+                continue
+            seen_titles.add(title)
+            items.append({"title": title, "date": date_str})
+
+    return items[:30]
 
 # ─────────────────────────────────────────
 # HTML 전처리 (trafilatura)
