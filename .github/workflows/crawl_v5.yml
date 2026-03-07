@@ -1,0 +1,64 @@
+name: 매일 공고 크롤링 v5 (Zero-Selector)
+
+on:
+  schedule:
+    - cron: '0 22 * * *'   # 오전 7시 KST
+    - cron: '0 7 * * *'    # 오후 4시 KST
+  workflow_dispatch:
+
+# 동시 실행 방지 (git push race condition 해결)
+concurrency:
+  group: crawl-v5
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    # redesign/v5 브랜치에서만 실행
+    if: github.ref == 'refs/heads/redesign/v5'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 패키지 설치
+        run: pip install -r requirements_v5.txt
+
+      - name: Playwright 브라우저 설치
+        run: playwright install chromium --with-deps
+
+      - name: 크롤링 실행
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python crawl_v5.py
+
+      - name: 오래된 결과 파일 정리 (7일 초과)
+        run: |
+          find . -maxdepth 1 -name "df_log_v5_*.xlsx" -mtime +7 -delete
+          find . -maxdepth 1 -name "df_list_v5_*.xlsx" -mtime +7 -delete
+
+      - name: 결과 파일 커밋 및 푸시
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add df_log_v5_*.xlsx df_list_v5_*.xlsx crawl_v5.log crawl_v5.db || true
+          git rm --cached $(git ls-files --deleted "df_log_v5_*.xlsx" "df_list_v5_*.xlsx") 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "v5 크롤링 결과 $(date +'%Y-%m-%d %H:%M')"
+          # rebase 후 push (재시도 3회)
+          for i in 1 2 3; do
+            git pull --rebase origin redesign/v5 && git push && break
+            echo "Push 재시도 $i/3..."
+            sleep 5
+          done

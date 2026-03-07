@@ -1,0 +1,11 @@
+requests
+beautifulsoup4
+pandas
+openpyxl
+playwright
+trafilatura
+anthropic
+gspread
+google-auth
+tqdm
+python-dotenv
