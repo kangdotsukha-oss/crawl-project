@@ -50,4 +50,4 @@ jobs:
           git add df_log_*.xlsx df_list_*.xlsx crawl.log || true
           git rm --cached $(git ls-files --deleted "df_log_*.xlsx" "df_list_*.xlsx") 2>/dev/null || true
           git diff --staged --quiet || git commit -m "자동 크롤링 결과 업데이트 $(date +'%Y-%m-%d %H:%M')"
-          git push
+          git pull --rebase origin main && git push
