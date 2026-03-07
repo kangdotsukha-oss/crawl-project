@@ -54,17 +54,26 @@ def now_kst() -> datetime:
 # Claude API 동시 호출 방지 Lock (rate limit 대응)
 _claude_lock = threading.Lock()
 
+# URL 탐색 결과 캐시: 사이트당 1회만 Claude 웹서치 (다중 스레드 중복 방지)
+_url_search_cache: dict = {}
+_url_search_cache_lock = threading.Lock()
+
 # ─────────────────────────────────────────────
-# 로깅 설정
+# 로깅 설정 (KST 기준)
 # ─────────────────────────────────────────────
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.FileHandler("crawl.log", encoding="utf-8"),
-        logging.StreamHandler()
-    ]
-)
+class _KSTFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        dt = datetime.fromtimestamp(record.created, tz=KST)
+        if datefmt:
+            return dt.strftime(datefmt)
+        return dt.strftime('%Y-%m-%d %H:%M:%S') + f',{int(record.msecs):03d}'
+
+_fmt = _KSTFormatter("%(asctime)s [%(levelname)s] %(message)s")
+_fh = logging.FileHandler("crawl.log", encoding="utf-8")
+_fh.setFormatter(_fmt)
+_sh = logging.StreamHandler()
+_sh.setFormatter(_fmt)
+logging.basicConfig(level=logging.INFO, handlers=[_fh, _sh])
 logger = logging.getLogger(__name__)
 
 # ─────────────────────────────────────────────
@@ -782,8 +791,11 @@ def parse_soup(soup, row, site_name) -> tuple:
         if not tb:
             return [], [], [], [], f"테이블 없음: {row['table_body']}"
 
-        titles = tb.select(row['title'])
-        dates = tb.select(row['date'])
+        try:
+            titles = tb.select(row['title'])
+            dates = tb.select(row['date'])
+        except Exception as e:
+            return [], [], [], [], f"셀렉터 오류: {str(e)[:80]}"
         if site_name == '충청도_서천군':
             dates = [d for d in dates if '등록일' not in d.get_text(strip=True)]
 
@@ -821,6 +833,20 @@ def crawl_site(row, gc=None) -> dict:
     failed = False
     error_msg = ""
     auto_fixed = False  # 자동복구 성공 여부
+
+    # IP 차단 / fail 사이트 즉시 스킵
+    div_val = str(row.get('div', '') or '')
+    if 'IP' in div_val or 'fail' in div_val:
+        logger.info(f"[스킵] {site_name}: div='{div_val}'")
+        return {
+            'data': [], 'all_data': [],
+            'log': {
+                'SITE_NAME': site_name, 'URL': row['URL'],
+                'len_tbody': 0, 'unique_date': 0,
+                'min_date': '', 'max_date': '',
+                'status': f'스킵({div_val})', 'error_msg': '', 'auto_fixed': ''
+            }
+        }
 
     logger.info(f"[시작] {site_name}")
 
@@ -873,12 +899,19 @@ def crawl_site(row, gc=None) -> dict:
                             failed = True
                             break
 
-                    # ── HTTP 오류 (404/400/연결실패) → URL 탐색 시도 (1회만) ──
+                    # ── HTTP 오류 (404/400/연결실패) → URL 탐색 시도 (사이트당 1회, 캐시 공유) ──
                     if soup is None and (status.startswith('http_') or status == 'error') and not url_searched:
                         url_searched = True
                         error_code = status.split('_')[1] if '_' in status else '?'
-                        logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
-                        new_url = search_new_url_with_claude(site_name, row['URL'])
+                        # 캐시 확인: 다른 스레드가 이미 탐색했으면 결과 재사용
+                        with _url_search_cache_lock:
+                            if site_name in _url_search_cache:
+                                new_url = _url_search_cache[site_name]
+                                logger.info(f"[URL탐색 캐시 사용] {site_name}: {new_url}")
+                            else:
+                                logger.warning(f"[HTTP {error_code}] {site_name} → URL 탐색 시도")
+                                new_url = search_new_url_with_claude(site_name, row['URL'])
+                                _url_search_cache[site_name] = new_url
                         if new_url:
                             row = row.copy()
                             row['URL'] = new_url
