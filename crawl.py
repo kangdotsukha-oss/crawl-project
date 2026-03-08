@@ -606,7 +606,7 @@ def _fetch_dynamic(row: dict) -> tuple:
                     driver.find_element(By.CSS_SELECTOR, click_btn).click()
                     time.sleep(3)
                 else:
-                    time.sleep(10)
+                    time.sleep(extra.get('sleep', 10))
 
                 # page_source 호출 시 alert 처리
                 try:
