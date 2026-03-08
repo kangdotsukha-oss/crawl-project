@@ -96,11 +96,20 @@ schtasks /delete /tn "CrawlerAM" /f >nul 2>&1
 schtasks /delete /tn "CrawlerPM" /f >nul 2>&1
 
 :: 07:00 AM
-schtasks /create /tn "CrawlerAM" /tr "cmd /c cd /d %PROJECT_DIR% && python crawl.py >> %PROJECT_DIR%\cron.log 2>&1" /sc daily /st 07:00 /ru "%USERNAME%" /f >nul
-:: 04:00 PM
-schtasks /create /tn "CrawlerPM" /tr "cmd /c cd /d %PROJECT_DIR% && python crawl.py >> %PROJECT_DIR%\cron.log 2>&1" /sc daily /st 16:00 /ru "%USERNAME%" /f >nul
+schtasks /create /tn "CrawlerAM" /tr "cmd /c cd /d \"%PROJECT_DIR%\" && python crawl.py >> \"%PROJECT_DIR%\cron.log\" 2>&1" /sc daily /st 07:00 /f
+if %errorlevel% neq 0 (
+    echo [ERROR] CrawlerAM registration failed
+) else (
+    echo      CrawlerAM registered OK
+)
 
-echo      Task Scheduler registered
+:: 04:00 PM
+schtasks /create /tn "CrawlerPM" /tr "cmd /c cd /d \"%PROJECT_DIR%\" && python crawl.py >> \"%PROJECT_DIR%\cron.log\" 2>&1" /sc daily /st 16:00 /f
+if %errorlevel% neq 0 (
+    echo [ERROR] CrawlerPM registration failed
+) else (
+    echo      CrawlerPM registered OK
+)
 
 :: ── Done ───────────────────────────────────────────────────────────────────
 echo.
