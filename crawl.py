@@ -1235,7 +1235,8 @@ def crawl_site(row) -> dict:
 # 병렬 크롤링 (Phase 1 + Phase 2)
 # ─────────────────────────────────────────────
 def run_crawling(df: pd.DataFrame, gc,
-                 static_workers: int = 15, dynamic_workers: int = 4) -> tuple:
+                 static_workers: int = int(os.getenv('STATIC_WORKERS', 15)),
+                 dynamic_workers: int = int(os.getenv('DYNAMIC_WORKERS', 4))) -> tuple:
     kw_data, logs, all_data = [], [], []
     pending_claude = []
 
