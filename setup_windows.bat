@@ -6,7 +6,7 @@ echo   Crawler Auto Setup Script (Windows)
 echo ================================================
 echo.
 
-:: â”€â”€ Check admin privileges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ Check admin privileges ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 net session >/dev/null 2>&1
 if %errorlevel% neq 0 (
     echo [ERROR] Please run as Administrator.
@@ -17,7 +17,7 @@ if %errorlevel% neq 0 (
 
 set "PROJECT_DIR=%USERPROFILE%\crawl-project"
 
-:: â”€â”€ 1. Check winget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 1. Check winget ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo [1/7] Checking winget...
 winget --version >/dev/null 2>&1
 if %errorlevel% neq 0 (
@@ -27,7 +27,7 @@ if %errorlevel% neq 0 (
 )
 echo      OK
 
-:: â”€â”€ 2. Install Python â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 2. Install Python ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [2/7] Checking Python...
 python --version >/dev/null 2>&1
@@ -40,7 +40,7 @@ if %errorlevel% neq 0 (
     echo      OK (already installed)
 )
 
-:: â”€â”€ 3. Install Git â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 3. Install Git ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [3/7] Checking Git...
 git --version >/dev/null 2>&1
@@ -53,7 +53,7 @@ if %errorlevel% neq 0 (
     echo      OK (already installed)
 )
 
-:: â”€â”€ 4. Clone / update project â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 4. Clone / update project ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [4/7] Downloading project...
 if exist "%PROJECT_DIR%\" (
@@ -66,7 +66,7 @@ if exist "%PROJECT_DIR%\" (
     echo      Download complete
 )
 
-:: â”€â”€ 5. Install Python packages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 5. Install Python packages ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [5/7] Installing Python packages... (2-3 min)
 cd /d "%PROJECT_DIR%"
@@ -74,12 +74,12 @@ python -m pip install --upgrade pip --quiet
 python -m pip install -r requirements.txt --quiet
 echo      OK
 
-:: â”€â”€ 6. .env setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 6. .env setup ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [6/7] Checking .env...
 if not exist "%PROJECT_DIR%\.env" (
     echo.
-    echo      [!] .env file not found!
+    echo      [\!] .env file not found\!
     echo      Copy your .env file to: %PROJECT_DIR%
     echo      Then press any key to continue...
     pause >/dev/null
@@ -92,7 +92,7 @@ if not exist "%PROJECT_DIR%\.env" (
     echo      OK
 )
 
-:: â”€â”€ 7. Task Scheduler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ 7. Task Scheduler ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo [7/7] Registering scheduled tasks...
 
@@ -115,25 +115,25 @@ for %%T in (CrawlerAM CrawlerPM WakeAM WakePM SleepAM SleepPM) do (
 
 :: -- Crawler tasks (Interactive session for Chrome stability) --
 powershell -NoProfile -Command ^
-    "$a = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument '/c \"%PROJECT_DIR%\run_crawl.bat\"' -WorkingDirectory '%PROJECT_DIR%';" ^
-    "$t = New-ScheduledTaskTrigger -Daily -At '07:00';" ^
-    "$s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1);" ^
-    "$p = New-ScheduledTaskPrincipal -UserId '%USERNAME%' -LogonType Interactive -RunLevel Highest;" ^
-    "Register-ScheduledTask -TaskName 'CrawlerAM' -Action $a -Trigger $t -Settings $s -Principal $p -Force | Out-Null;" ^
+    " = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument '/c \"%PROJECT_DIR%\run_crawl.bat\"' -WorkingDirectory '%PROJECT_DIR%';" ^
+    " = New-ScheduledTaskTrigger -Daily -At '07:00';" ^
+    " = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1);" ^
+    " = New-ScheduledTaskPrincipal -UserId '%USERNAME%' -LogonType Interactive -RunLevel Highest;" ^
+    "Register-ScheduledTask -TaskName 'CrawlerAM' -Action  -Trigger  -Settings  -Principal  -Force | Out-Null;" ^
     "Write-Host '     CrawlerAM registered OK'"
 
 powershell -NoProfile -Command ^
-    "$a = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument '/c \"%PROJECT_DIR%\run_crawl.bat\"' -WorkingDirectory '%PROJECT_DIR%';" ^
-    "$t = New-ScheduledTaskTrigger -Daily -At '16:00';" ^
-    "$s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1);" ^
-    "$p = New-ScheduledTaskPrincipal -UserId '%USERNAME%' -LogonType Interactive -RunLevel Highest;" ^
-    "Register-ScheduledTask -TaskName 'CrawlerPM' -Action $a -Trigger $t -Settings $s -Principal $p -Force | Out-Null;" ^
+    " = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument '/c \"%PROJECT_DIR%\run_crawl.bat\"' -WorkingDirectory '%PROJECT_DIR%';" ^
+    " = New-ScheduledTaskTrigger -Daily -At '16:00';" ^
+    " = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1);" ^
+    " = New-ScheduledTaskPrincipal -UserId '%USERNAME%' -LogonType Interactive -RunLevel Highest;" ^
+    "Register-ScheduledTask -TaskName 'CrawlerPM' -Action  -Trigger  -Settings  -Principal  -Force | Out-Null;" ^
     "Write-Host '     CrawlerPM registered OK'"
 
-:: â”€â”€ Done â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+:: ¦¡¦¡ Done ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 echo.
 echo ================================================
-echo   Setup Complete!
+echo   Setup Complete\!
 echo ================================================
 echo.
 echo   Install path : %PROJECT_DIR%
