@@ -62,14 +62,16 @@ if [ "$ARCH" = "aarch64" ]; then
 fi
 
 echo "===== 9. crontab 등록 (오전 7시 / 오후 4시 KST) ====="
-CRON_JOB="0 22 * * * cd $HOME/crawl-project && python3 crawl_optimized.py >> $HOME/crawl-project/cron.log 2>&1
-0 7 * * * cd $HOME/crawl-project && python3 crawl_optimized.py >> $HOME/crawl-project/cron.log 2>&1"
+# KST 07:00 = UTC 22:00 (전날), KST 16:00 = UTC 07:00
+CRON_JOB="0 22 * * * cd $HOME/crawl-project && python3 crawl.py >> $HOME/crawl-project/cron.log 2>&1
+0 7 * * * cd $HOME/crawl-project && python3 crawl.py >> $HOME/crawl-project/cron.log 2>&1"
 
-(crontab -l 2>/dev/null | grep -v crawl_optimized; echo "$CRON_JOB") | crontab -
+(crontab -l 2>/dev/null | grep -v crawl\.py; echo "$CRON_JOB") | crontab -
 
 echo ""
 echo "===== 설치 완료 ====="
 echo "남은 작업:"
-echo "  1. nano ~/crawl-project/.env  → API 키 / 시트 ID / 서비스계정 JSON 입력"
-echo "  2. python3 ~/crawl-project/crawl_optimized.py --test 3  → 테스트 실행"
-echo "  3. crontab -l  → 스케줄 확인"
+echo "  1. nano ~/crawl-project/.env          → API 키 / 시트 ID / 서비스계정 JSON 입력"
+echo "  2. python3 ~/crawl-project/migrate_gsheets.py  → GSheets 사이트목록 마이그레이션"
+echo "  3. python3 ~/crawl-project/crawl.py --test 3   → 동작 확인"
+echo "  4. crontab -l                          → 스케줄 확인"
