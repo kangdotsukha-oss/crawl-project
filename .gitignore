@@ -1,0 +1,21 @@
+# 환경변수 / 인증정보
+.env
+keys.txt
+*.json
+
+# 로그
+*.log
+*.log.*
+
+# 결과 파일 (실행 시 자동 생성)
+result_*.xlsx
+df_list_*.xlsx
+df_log_*.xlsx
+
+# 캐시 / DB
+*.db
+__pycache__/
+*.pyc
+
+# 개발용 (GitHub에 불필요)
+*.ipynb
