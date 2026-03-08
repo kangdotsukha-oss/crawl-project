@@ -163,7 +163,7 @@ def write_sheet(sh, sheet_name: str, df: pd.DataFrame):
     data = df.fillna("").astype(str)
     ws.clear()
     ws.update([data.columns.tolist()] + data.values.tolist())
-    print(f"  ✅ '{sheet_name}' 시트 업데이트 완료 ({len(df)}행)")
+    print(f"  OK '{sheet_name}' 시트 업데이트 완료 ({len(df)}행)")
 
 
 def main():
@@ -189,7 +189,7 @@ def main():
 
     # 이미 신 컬럼 구조인지 확인
     if 'fetch_type' in df_old.columns:
-        print("  ⚠️  이미 신 컬럼 구조입니다. 클릭설정 시트만 업데이트합니다.")
+        print("  [!] 이미 신 컬럼 구조입니다. 클릭설정 시트만 업데이트합니다.")
         df_new = df_old
     else:
         # ── 2. 마이그레이션 변환 ─────────────────────────────────────────────

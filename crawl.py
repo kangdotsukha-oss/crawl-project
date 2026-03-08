@@ -357,7 +357,7 @@ def _sync_db(df: pd.DataFrame):
         con.execute("DELETE FROM sites")
         for _, row in df.iterrows():
             con.execute(
-                "INSERT INTO sites (SITE_NO, data, updated_at) VALUES (?, ?, ?)",
+                "INSERT OR REPLACE INTO sites (SITE_NO, data, updated_at) VALUES (?, ?, ?)",
                 (str(row.get('SITE_NO', '')), json.dumps(row.to_dict(), ensure_ascii=False), now)
             )
         con.commit()
