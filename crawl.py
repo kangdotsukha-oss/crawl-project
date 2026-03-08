@@ -533,7 +533,7 @@ def _fetch_static(row: dict) -> tuple:
     try:
         res = _http.get(row['URL'], timeout=(10, 30), verify=False)
         res.raise_for_status()
-        res.encoding = 'utf-8'
+        res.encoding = res.apparent_encoding or 'utf-8'
         if is_firewall_blocked(res.text, res.status_code):
             return None, 'firewall'
         return BeautifulSoup(res.text, 'html.parser'), 'ok'
@@ -559,7 +559,7 @@ def _fetch_static(row: dict) -> tuple:
             s.mount("https://", _SSLAdapter())
             res = s.get(row['URL'], timeout=(10, 30), verify=False)
             res.raise_for_status()
-            res.encoding = 'utf-8'
+            res.encoding = res.apparent_encoding or 'utf-8'
             if is_firewall_blocked(res.text, res.status_code):
                 return None, 'firewall'
             logger.info(f"[SSL폴백 성공] {row['SITE_NAME']}")
@@ -1240,6 +1240,8 @@ def run_crawling(df: pd.DataFrame, gc,
     kw_data, logs, all_data = [], [], []
     pending_claude = []
 
+    fut_to_row = {}
+
     def collect(futures, desc: str):
         for fut in tqdm(as_completed(futures), total=len(futures), desc=desc):
             try:
@@ -1251,18 +1253,36 @@ def run_crawling(df: pd.DataFrame, gc,
                     all_data.extend(r.get('all_data', []))
                     logs.append(r['log'])
             except Exception as e:
-                logger.error(f"[병렬 오류] {e}")
+                row = fut_to_row.get(fut, {})
+                name = row.get('SITE_NAME', '?')
+                logger.error(f"[병렬 오류] {name}: {e}")
+                logs.append({
+                    'SITE_NAME': name, 'URL': row.get('URL', ''),
+                    'len_tbody': 0, 'unique_date': 0,
+                    'min_date': '', 'max_date': '',
+                    'status': f'실패(병렬오류: {str(e)[:20]})',
+                    'error_msg': str(e)[:100],
+                    'auto_fixed': '', '최신제목': '', '최신날짜': '',
+                })
 
-    df_http     = df[df['fetch_type'] == 'http']      # HTTP 기반 (정적 + POST)
-    df_selenium = df[df['fetch_type'] == 'selenium']  # Selenium 기반
+    df_http     = df[df['fetch_type'] == 'http']
+    df_selenium = df[df['fetch_type'] == 'selenium']
+    df_other    = df[~df['fetch_type'].isin(['http', 'selenium'])]
+    if not df_other.empty:
+        logger.warning(f"[fetch_type 누락] {df_other['SITE_NAME'].tolist()} -> http로 처리")
+        df_http = pd.concat([df_http, df_other], ignore_index=True)
 
     # Phase 1: 병렬 크롤링 (gc 불필요)
     with ThreadPoolExecutor(max_workers=static_workers) as ex:
-        collect({ex.submit(crawl_site, row): i for i, row in df_http.iterrows()},
-                f"HTTP ({len(df_http)}개)")
+        futures_http = {ex.submit(crawl_site, row): i for i, row in df_http.iterrows()}
+        for fut, i in futures_http.items():
+            fut_to_row[fut] = df_http.loc[i].to_dict() if i in df_http.index else {}
+        collect(futures_http, f"HTTP ({len(df_http)}개)")
     with ThreadPoolExecutor(max_workers=dynamic_workers) as ex:
-        collect({ex.submit(crawl_site, row): i for i, row in df_selenium.iterrows()},
-                f"Selenium ({len(df_selenium)}개)")
+        futures_sel = {ex.submit(crawl_site, row): i for i, row in df_selenium.iterrows()}
+        for fut, i in futures_sel.items():
+            fut_to_row[fut] = df_selenium.loc[i].to_dict() if i in df_selenium.index else {}
+        collect(futures_sel, f"Selenium ({len(df_selenium)}개)")
 
     # Phase 2: Claude 순차 처리
     if pending_claude:
@@ -1394,9 +1414,11 @@ def upload_log(gc, df: pd.DataFrame, crawled_time: str = ""):
         # 기존 미실행 사이트 보존 + 이번 결과 병합
         if not existing.empty:
             new_sites = set(df['SITE_NAME'].astype(str))
-            merged = pd.concat(
-                [existing[~existing['SITE_NAME'].astype(str).isin(new_sites)], df],
-                ignore_index=True)
+            old_kept = existing[~existing['SITE_NAME'].astype(str).isin(new_sites)].copy()
+            if not old_kept.empty:
+                old_kept['status'] = old_kept['status'].astype(str).apply(
+                    lambda s: s if s.startswith('미실행') else f'미실행(이전: {s[:20]})')
+            merged = pd.concat([old_kept, df], ignore_index=True)
         else:
             merged = df
 
@@ -1438,7 +1460,7 @@ def upload_dashboard(gc, df_log: pd.DataFrame, df_kw: pd.DataFrame, crawled_time
             ["▶ 크롤링 현황"], ["구분", "건수"],
             ["전체 대상", total], ["✅ 성공", success],
             ["🤖 Zero-Selector 성공", zero_s], ["🔧 자가치유 성공", healed],
-            ["❌ 실패", failed], ["성공률", rate], [""],
+            ["⏭ 스킵", skipped], ["❌ 실패", failed], ["성공률", rate], [""],
             ["▶ 오늘 키워드 공고", len(df_kw), "건"], [""],
             ["▶ 키워드별 집계"], ["키워드", "건수"],
         ]
