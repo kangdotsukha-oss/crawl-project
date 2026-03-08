@@ -123,9 +123,11 @@ echo "!PYTHON_PATH!" crawl.py ^>^> "%PROJECT_DIR%\cron.log" 2^>^&1>> "%PROJECT_D
 echo taskkill /F /IM chromedriver.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
 echo taskkill /F /IM chrome.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
 
-powershell -NoProfile -Command "$dir = $env:USERPROFILE + '\crawl-project'; $a = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument ('/c ' + [char]34 + $dir + '\run_crawl.bat' + [char]34) -WorkingDirectory $dir; $t = New-ScheduledTaskTrigger -Daily -At '07:00'; $s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1); $p = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest; Register-ScheduledTask -TaskName 'CrawlerAM' -Action $a -Trigger $t -Settings $s -Principal $p -Force | Out-Null; Write-Host '     CrawlerAM (07:00) OK'"
+schtasks /create /tn "CrawlerAM" /tr "cmd /c \"%PROJECT_DIR%\run_crawl.bat\"" /sc daily /st 07:00 /rl highest /f
+if %errorlevel% equ 0 (echo      CrawlerAM 07:00 OK) else (echo      [ERROR] CrawlerAM failed)
 
-powershell -NoProfile -Command "$dir = $env:USERPROFILE + '\crawl-project'; $a = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument ('/c ' + [char]34 + $dir + '\run_crawl.bat' + [char]34) -WorkingDirectory $dir; $t = New-ScheduledTaskTrigger -Daily -At '16:00'; $s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1); $p = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest; Register-ScheduledTask -TaskName 'CrawlerPM' -Action $a -Trigger $t -Settings $s -Principal $p -Force | Out-Null; Write-Host '     CrawlerPM (16:00) OK'"
+schtasks /create /tn "CrawlerPM" /tr "cmd /c \"%PROJECT_DIR%\run_crawl.bat\"" /sc daily /st 16:00 /rl highest /f
+if %errorlevel% equ 0 (echo      CrawlerPM 16:00 OK) else (echo      [ERROR] CrawlerPM failed)
 
 echo.
 echo ================================================
