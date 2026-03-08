@@ -114,15 +114,11 @@ for /f "delims=" %%P in ('where python 2^>nul') do (
 :got_python
 echo      Python: !PYTHON_PATH!
 
-echo @echo off> "%PROJECT_DIR%\run_crawl.bat"
-echo taskkill /F /IM chromedriver.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
-echo taskkill /F /IM chrome.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
-echo timeout /t 3 /nobreak ^>nul>> "%PROJECT_DIR%\run_crawl.bat"
-echo cd /d "%PROJECT_DIR%">> "%PROJECT_DIR%\run_crawl.bat"
-echo "!PYTHON_PATH!" crawl.py ^>^> "%PROJECT_DIR%\cron.log" 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
-echo taskkill /F /IM chromedriver.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
-echo taskkill /F /IM chrome.exe /T ^>nul 2^>^&1>> "%PROJECT_DIR%\run_crawl.bat"
+:: Create run_crawl.bat via PowerShell to avoid escaping hell
+powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_crawl.bat' -Encoding ASCII -Value @('@echo off','taskkill /F /IM chromedriver.exe /T >nul 2>&1','taskkill /F /IM chrome.exe /T >nul 2>&1','timeout /t 3 /nobreak >nul','cd /d %PROJECT_DIR%','!PYTHON_PATH! crawl.py >> %PROJECT_DIR%\cron.log 2>&1','taskkill /F /IM chromedriver.exe /T >nul 2>&1','taskkill /F /IM chrome.exe /T >nul 2>&1')"
+echo      run_crawl.bat created
 
+:: Register tasks via schtasks
 schtasks /create /tn "CrawlerAM" /tr "cmd /c \"%PROJECT_DIR%\run_crawl.bat\"" /sc daily /st 07:00 /rl highest /f
 if %errorlevel% equ 0 (echo      CrawlerAM 07:00 OK) else (echo      [ERROR] CrawlerAM failed)
 
