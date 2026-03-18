@@ -84,15 +84,18 @@ echo.
 echo [7/8] Checking .env...
 if not exist "%PROJECT_DIR%\.env" (
     echo.
-    echo      .env file not found!
-    echo      Copy your .env to: %PROJECT_DIR%\.env
-    echo      Then press any key...
-    pause >nul
-)
-if not exist "%PROJECT_DIR%\.env" (
-    echo      [ERROR] .env missing. Run again after placing .env
-    pause
-    exit /b 1
+    echo      .env file not found. Creating it now...
+    echo.
+    set /p "API_KEY=      Enter DATA_GO_KR API Key: "
+    set /p "SHEET_ID=      Enter GOOGLE_SHEET_ID (empty if none): "
+    set /p "GOOG_CRED=      Enter GOOGLE_CREDENTIALS_JSON path (empty if none): "
+    (
+        echo DATA_GO_KR_API_KEY=!API_KEY!
+        echo GOOGLE_SHEET_ID=!SHEET_ID!
+        echo GOOGLE_CREDENTIALS_JSON=!GOOG_CRED!
+    ) > "%PROJECT_DIR%\.env"
+    echo.
+    echo      .env created at %PROJECT_DIR%\.env
 )
 echo      OK
 
