@@ -73,8 +73,10 @@ EXCLUDE_KEYWORDS = [
     '아파트', '주택', '공동주택',
     '설비', '소방', '전기공사', '통신공사',
     '조경', '녹지', '공원',
-    '설계', '점검',
 ]
+
+# 필수 키워드: 공고명에 반드시 하나 이상 포함되어야 함
+REQUIRED_KEYWORDS = ['설계', '점검']
 
 # 제외 발주기관 키워드: 하나라도 매칭되면 제외
 EXCLUDE_AGENCIES = [
@@ -151,7 +153,8 @@ def to_won(amt) -> int:
 
 
 def is_target_project(name: str, agency: str = "") -> bool:
-    """공고명이 토목/도로/교량 관련인지 판단 (제외 기관 포함)"""
+    """공고명이 토목/도로/교량 관련인지 판단
+    조건: 포함키워드 AND 필수키워드(설계/점검) AND NOT 제외키워드 AND NOT 제외기관"""
     if not name:
         return False
     # 제외 기관
@@ -160,8 +163,13 @@ def is_target_project(name: str, agency: str = "") -> bool:
     # 제외 키워드
     if any(kw in name for kw in EXCLUDE_KEYWORDS):
         return False
-    # 포함 키워드
-    return any(kw in name for kw in INCLUDE_KEYWORDS)
+    # 포함 키워드 (도로/교량 등)
+    if not any(kw in name for kw in INCLUDE_KEYWORDS):
+        return False
+    # 필수 키워드 (설계 또는 점검이 반드시 포함)
+    if not any(kw in name for kw in REQUIRED_KEYWORDS):
+        return False
+    return True
 
 
 def classify_work_type(name: str, bsns_div: str = "") -> str:
