@@ -22,6 +22,7 @@ import gspread
 import pandas as pd
 import requests
 from google.oauth2.service_account import Credentials
+from urllib.parse import unquote, urlencode
 
 try:
     from dotenv import load_dotenv
@@ -40,19 +41,19 @@ GOOGLE_SHEET_ID         = os.environ.get("GOOGLE_SHEET_ID", "")
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
 
 # 나라장터 API 엔드포인트
-BASE_URL = "http://apis.data.go.kr/1230000"
+BASE_URL = "https://apis.data.go.kr/1230000"
 
 API_ENDPOINTS = {
     # 입찰공고정보서비스 - 용역 입찰공고 목록
-    "입찰공고": f"{BASE_URL}/BidPublicInfoService/getBidPblancListInfoServc",
-    # 사전규격정보서비스 - 용역 사전규격 목록
-    "사전규격": f"{BASE_URL}/PrdctSpcfctInfoService/getPreStndrdInfoServc",
+    "입찰공고": f"{BASE_URL}/ad/BidPublicInfoService/getBidPblancListInfoServc",
+    # 사전규격정보서비스 (조달물자사전규격정보서비스)
+    "사전규격": f"{BASE_URL}/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServc",
     # 발주계획현황서비스 - 용역 발주계획 목록
-    "발주계획": f"{BASE_URL}/ao/OrderPlanSttusService/getOrderPlanSttusListSrvce",
+    "발주계획": f"{BASE_URL}/ao/OrderPlanSttusService/getOrderPlanSttusListServc",
     # 낙찰정보서비스 - 용역 낙찰 목록
-    "개찰결과": f"{BASE_URL}/ScsbidInfoService/getOpengResultListInfoServc",
+    "개찰결과": f"{BASE_URL}/as/ScsbidInfoService/getOpengResultListInfoServc",
     # 계약정보서비스 - 용역 계약 목록
-    "계약현황": f"{BASE_URL}/CntrctInfoService/getCntrctInfoListServc",
+    "계약현황": f"{BASE_URL}/ao/CntrctInfoService/getCntrctInfoListServc",
     # 계약과정통합공개서비스 - 단계별 진행과정 추적 (공고번호 기반)
     "진행과정": f"{BASE_URL}/ao/CntrctProcssIntgOpenService/getCntrctProcssIntgOpenServc",
 }
@@ -135,7 +136,13 @@ def call_api(endpoint: str, params: dict) -> list:
         logger.error("[API] DATA_GO_KR_API_KEY 환경변수 미설정")
         return []
 
-    params.setdefault("ServiceKey", DATA_GO_KR_API_KEY)
+    # data.go.kr API 키는 Encoding 버전(URL인코딩됨)을 URL에 직접 삽입해야 함
+    # .env에 Decoding 키가 들어있으면 quote()로 인코딩, 이미 인코딩되어 있으면 그대로 사용
+    from urllib.parse import quote
+    if '%' in DATA_GO_KR_API_KEY:
+        api_key = DATA_GO_KR_API_KEY  # 이미 Encoding 키
+    else:
+        api_key = quote(DATA_GO_KR_API_KEY, safe='')  # Decoding 키 → Encoding 키로 변환
     params.setdefault("type", "json")
     params.setdefault("numOfRows", "999")
     params.setdefault("pageNo", "1")
@@ -145,9 +152,11 @@ def call_api(endpoint: str, params: dict) -> list:
 
     while True:
         params["pageNo"] = str(page)
+        query_str = urlencode(params) + f"&ServiceKey={api_key}"
+        url = f"{endpoint}?{query_str}"
         for attempt in range(3):
             try:
-                resp = requests.get(endpoint, params=params, timeout=30)
+                resp = requests.get(url, timeout=30)
                 resp.raise_for_status()
                 data = resp.json()
                 break
@@ -251,27 +260,30 @@ def fetch_pre_standards(bgn_dt: str, end_dt: str) -> pd.DataFrame:
 
 
 def fetch_order_plans(bgn_dt: str, end_dt: str) -> pd.DataFrame:
-    """발주계획 목록 조회 (용역)"""
+    """발주계획 목록 조회 (용역) - 발주계획 API는 년월 파라미터 사용"""
+    # bgn_dt: 202603010000 → orderBgnYm: 202603
+    order_bgn_ym = bgn_dt[:6]
+    order_end_ym = end_dt[:6]
     items = call_api(API_ENDPOINTS["발주계획"], {
         "inqryDiv": "1",
-        "inqryBgnDt": bgn_dt,
-        "inqryEndDt": end_dt,
+        "orderBgnYm": order_bgn_ym,
+        "orderEndYm": order_end_ym,
     })
     if not items:
         return pd.DataFrame()
 
     records = []
     for item in items:
-        name = item.get("orderPlanNm", "") or item.get("bidNtceNm", "")
+        name = item.get("bizNm", "") or item.get("orderPlanNm", "")
         if not is_design_service(name):
             continue
         records.append({
-            "발주계획번호": item.get("orderPlanNo", ""),
+            "발주계획번호": item.get("orderPlanUntyNo", ""),
             "공고명": name,
             "발주기관": item.get("orderInsttNm", ""),
-            "배정예산": item.get("asignBdgtAmt", ""),
-            "배정예산_표시": format_amount(item.get("asignBdgtAmt", "")),
-            "발주예정일": format_date(item.get("orderPlanDt", "")),
+            "배정예산": item.get("sumOrderAmt", ""),
+            "배정예산_표시": format_amount(item.get("sumOrderAmt", "")),
+            "발주예정월": f"{item.get('orderYear','')}-{item.get('orderMnth','').zfill(2)}",
             "현재단계": "발주계획",
         })
     return pd.DataFrame(records)
@@ -390,10 +402,12 @@ def collect_all(days_back: int = 30) -> pd.DataFrame:
         logger.info(f"  {stage}: {len(df)}건")
 
     # 통합
-    all_data = pd.concat(
-        [df for df in frames.values() if not df.empty],
-        ignore_index=True
-    )
+    non_empty = [df for df in frames.values() if not df.empty]
+    if not non_empty:
+        logger.warning("[수집] 설계용역 데이터 없음 (모든 API 결과 0건)")
+        return pd.DataFrame()
+
+    all_data = pd.concat(non_empty, ignore_index=True)
 
     if all_data.empty:
         logger.warning("[수집] 설계용역 데이터 없음")
@@ -581,7 +595,8 @@ def main():
 
     # 로컬 Excel 저장
     today_str = now_kst().strftime("%Y%m%d")
-    excel_path = f"./design_monitor_{today_str}.xlsx"
+    time_str = now_kst().strftime("%Y%m%d_%H%M%S")
+    excel_path = f"./design_monitor_{time_str}.xlsx"
     with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
         df.to_excel(writer, sheet_name="설계용역_현황", index=False)
 
