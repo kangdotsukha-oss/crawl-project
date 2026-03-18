@@ -44,7 +44,7 @@ BASE_URL = "http://apis.data.go.kr/1230000"
 
 API_ENDPOINTS = {
     # 입찰공고정보서비스 - 용역 입찰공고 목록
-    "입찰공고": f"{BASE_URL}/BidPublicInfoService04/getBidPblancListInfoServc04",
+    "입찰공고": f"{BASE_URL}/BidPublicInfoService/getBidPblancListInfoServc",
     # 사전규격정보서비스 - 용역 사전규격 목록
     "사전규격": f"{BASE_URL}/PrdctSpcfctInfoService/getPreStndrdInfoServc",
     # 발주계획현황서비스 - 용역 발주계획 목록
@@ -53,6 +53,8 @@ API_ENDPOINTS = {
     "개찰결과": f"{BASE_URL}/ScsbidInfoService/getOpengResultListInfoServc",
     # 계약정보서비스 - 용역 계약 목록
     "계약현황": f"{BASE_URL}/CntrctInfoService/getCntrctInfoListServc",
+    # 계약과정통합공개서비스 - 단계별 진행과정 추적 (공고번호 기반)
+    "진행과정": f"{BASE_URL}/ao/CntrctProcssIntgOpenService/getCntrctProcssIntgOpenServc",
 }
 
 # 설계용역 관련 키워드 필터
@@ -332,6 +334,36 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> pd.DataFrame:
             "현재단계": "계약현황",
         })
     return pd.DataFrame(records)
+
+
+def fetch_process_tracking(bid_ntce_no: str) -> dict:
+    """특정 공고번호의 계약 진행과정 조회 (계약과정통합공개서비스)
+    → 사전규격→입찰공고→낙찰→계약 전 과정을 한 번에 추적"""
+    items = call_api(API_ENDPOINTS["진행과정"], {
+        "bidNtceNo": bid_ntce_no,
+    })
+    if not items:
+        return {}
+
+    # 진행과정 정보를 단계별로 정리
+    item = items[0] if isinstance(items, list) else items
+    stages_found = []
+    if item.get("bfSpecRgstNo"):
+        stages_found.append("사전규격")
+    if item.get("bidNtceNo"):
+        stages_found.append("입찰공고")
+    if item.get("sucsfbiddrNm") or item.get("opengDt"):
+        stages_found.append("개찰결과")
+    if item.get("cntrctNo") or item.get("cntrctCnclsDt"):
+        stages_found.append("계약현황")
+
+    return {
+        "진행단계목록": " → ".join(stages_found) if stages_found else "",
+        "최종단계": stages_found[-1] if stages_found else "",
+        "낙찰자": item.get("sucsfbiddrNm", ""),
+        "계약번호": item.get("cntrctNo", ""),
+        "계약금액": item.get("cntrctAmt", ""),
+    }
 
 
 # ─────────────────────────────────────────────
