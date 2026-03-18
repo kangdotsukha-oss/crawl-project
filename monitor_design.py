@@ -5,8 +5,14 @@
 공고번호 기준으로 단계별 진행상황을 하나의 행으로 통합하여
 Google Sheets에 자동 업로드합니다.
 
+영업 지원 기능:
+  - 설계용역 vs 시공공사 자동 분류
+  - 발주처 유형 분류 (도로공사/국토부/지자체/공사공단)
+  - 설계사 추적 → 공사 시기 예측
+  - 금액 원 단위 정규화
+
 필요 환경변수:
-  DATA_GO_KR_API_KEY       - 공공데이터포털 서비스키 (인코딩 or 디코딩)
+  DATA_GO_KR_API_KEY       - 공공데이터포털 서비스키
   GOOGLE_SHEET_ID          - 구글 스프레드시트 ID
   GOOGLE_CREDENTIALS_JSON  - 구글 서비스 계정 JSON
 """
@@ -15,6 +21,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import time
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote, urlencode
@@ -40,7 +47,6 @@ DATA_GO_KR_API_KEY      = os.environ.get("DATA_GO_KR_API_KEY", "")
 GOOGLE_SHEET_ID         = os.environ.get("GOOGLE_SHEET_ID", "")
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
 
-# 나라장터 API 엔드포인트
 BASE_URL = "https://apis.data.go.kr/1230000"
 
 API_ENDPOINTS = {
@@ -51,8 +57,7 @@ API_ENDPOINTS = {
     "계약현황": f"{BASE_URL}/ao/CntrctInfoService/getCntrctInfoListServc",
 }
 
-# ── 토목/도로/교량 키워드 필터 ──
-# 포함 키워드: 하나라도 매칭되면 수집 대상
+# ── 키워드 필터 ──
 INCLUDE_KEYWORDS = [
     '교량', '교', '고가차도', '육교',
     '도로', '포장', '교면', '방수포장',
@@ -62,7 +67,6 @@ INCLUDE_KEYWORDS = [
     '보수', '점검', '진단', '보강',
 ]
 
-# 제외 키워드: 하나라도 매칭되면 제외
 EXCLUDE_KEYWORDS = [
     '초등학교', '중학교', '고등학교', '학교', '유치원',
     '건축', '리모델링', '인테리어', '실내',
@@ -70,6 +74,23 @@ EXCLUDE_KEYWORDS = [
     '설비', '소방', '전기공사', '통신공사',
     '조경', '녹지', '공원',
 ]
+
+# ── 업무구분 분류 키워드 ──
+DESIGN_KEYWORDS = ['설계', '감리', 'CM', '건설사업관리', '타당성', '기본계획', '실시설계', '기본설계']
+CONSTRUCTION_KEYWORDS = ['공사', '시공', '보수공사', '개량공사', '포장공사', '유지보수']
+
+# ── 발주처 분류 ──
+AGENCY_TYPES = {
+    "한국도로공사": ["한국도로공사", "도로공사", "고속도로"],
+    "국토부": ["국토교통부", "국토부", "익산지방국토관리청", "원주지방국토관리청",
+               "대전지방국토관리청", "부산지방국토관리청", "서울지방국토관리청",
+               "지방국토관리청", "국토관리청", "새만금개발청"],
+    "공사공단": ["한국수자원공사", "수자원공사", "LH", "한국토지주택공사",
+                "한국철도공사", "철도공사", "한국도로공사", "도로공사",
+                "한국환경공단", "한국수력원자력", "한국전력공사",
+                "한국농어촌공사", "농어촌공사"],
+    "지자체": [],  # 나머지는 모두 지자체로 분류
+}
 
 STAGE_ORDER = ['발주계획', '사전규격', '입찰공고', '개찰결과', '계약현황']
 
@@ -111,37 +132,117 @@ def format_date(dt_str: str) -> str:
     return dt_str
 
 
-def format_amount(amt) -> str:
-    """금액을 억 단위로 포맷"""
+def to_won(amt) -> int:
+    """금액을 원 단위 정수로 변환"""
     if not amt:
-        return ""
+        return 0
     try:
-        val = float(amt)
-        if val >= 100_000_000:
-            return f"{val / 100_000_000:.1f}억"
-        elif val >= 10_000:
-            return f"{val / 10_000:.0f}만"
-        return str(int(val))
+        return int(float(amt))
     except (ValueError, TypeError):
-        return str(amt)
+        return 0
 
 
 def is_target_project(name: str) -> bool:
-    """공고명이 토목/도로/교량 관련인지 판단 (제외 키워드 적용)"""
+    """공고명이 토목/도로/교량 관련인지 판단"""
     if not name:
         return False
-    # 제외 키워드에 매칭되면 바로 제외
     if any(kw in name for kw in EXCLUDE_KEYWORDS):
         return False
-    # 포함 키워드에 하나라도 매칭되면 대상
     return any(kw in name for kw in INCLUDE_KEYWORDS)
+
+
+def classify_work_type(name: str, bsns_div: str = "") -> str:
+    """업무구분 분류: 설계용역 / 시공공사 / 기타"""
+    if not name:
+        return "기타"
+    # API 업무구분 필드 우선
+    if bsns_div:
+        if "용역" in bsns_div or "기술" in bsns_div:
+            if any(kw in name for kw in DESIGN_KEYWORDS):
+                return "설계용역"
+        if "공사" in bsns_div:
+            return "시공공사"
+    # 키워드 기반 2차 분류
+    if any(kw in name for kw in DESIGN_KEYWORDS):
+        return "설계용역"
+    if any(kw in name for kw in CONSTRUCTION_KEYWORDS):
+        return "시공공사"
+    return "기타"
+
+
+def classify_agency(agency_name: str) -> tuple:
+    """발주처 분류 → (유형, 세부지역)"""
+    if not agency_name:
+        return ("기타", "")
+
+    # 1차: 기관유형 분류
+    agency_type = "지자체"  # 기본값
+    for atype, keywords in AGENCY_TYPES.items():
+        if atype == "지자체":
+            continue
+        if any(kw in agency_name for kw in keywords):
+            agency_type = atype
+            break
+
+    # 2차: 세부지역 추출
+    region = ""
+    # 광역시/도
+    metros = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종",
+              "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"]
+    for m in metros:
+        if m in agency_name:
+            region = m
+            break
+
+    # 시/군/구 추출
+    match = re.search(r'(\w{1,4}(?:시|군|구))', agency_name)
+    if match:
+        detail = match.group(1)
+        if detail not in ["특별시", "광역시", "특별자치시", "특별자치도"]:
+            if region:
+                region = f"{region} {detail}"
+            else:
+                region = detail
+
+    return (agency_type, region)
+
+
+def estimate_construction_date(contract_date: str, contract_period: str) -> str:
+    """설계 계약일 + 계약기간으로 공사 입찰 예상 시기 추정"""
+    if not contract_date or not contract_period:
+        return ""
+    try:
+        start = datetime.strptime(contract_date[:10], "%Y-%m-%d")
+        # 계약기간에서 일수 추출 (예: "365일", "12개월", "2025-12-31")
+        days = 0
+        if "일" in contract_period:
+            nums = re.findall(r'\d+', contract_period)
+            if nums:
+                days = int(nums[0])
+        elif "개월" in contract_period or "월" in contract_period:
+            nums = re.findall(r'\d+', contract_period)
+            if nums:
+                days = int(nums[0]) * 30
+        elif "-" in contract_period:
+            # 종료일 직접 지정 형태
+            try:
+                end = datetime.strptime(contract_period[:10], "%Y-%m-%d")
+                days = (end - start).days
+            except ValueError:
+                pass
+
+        if days > 0:
+            est_date = start + timedelta(days=days)
+            return est_date.strftime("%Y-%m")
+    except (ValueError, IndexError):
+        pass
+    return ""
 
 
 # ─────────────────────────────────────────────
 # 나라장터 API 호출
 # ─────────────────────────────────────────────
 def _get_api_key_encoded() -> str:
-    """API 키를 URL 인코딩된 형태로 반환"""
     if '%' in DATA_GO_KR_API_KEY:
         return DATA_GO_KR_API_KEY
     return quote(DATA_GO_KR_API_KEY, safe='')
@@ -178,7 +279,6 @@ def call_api(endpoint: str, params: dict) -> list:
             logger.error(f"[API 실패] {endpoint}")
             return all_items
 
-        # 에러 응답 처리
         if "nkoneps.com.response.ResponseError" in data:
             err = data["nkoneps.com.response.ResponseError"]
             logger.warning(f"[API 에러] {err.get('header',{}).get('resultMsg','')}")
@@ -189,7 +289,6 @@ def call_api(endpoint: str, params: dict) -> list:
 
         if not items or items == "":
             break
-
         if isinstance(items, dict):
             items = [items]
 
@@ -206,11 +305,9 @@ def call_api(endpoint: str, params: dict) -> list:
 
 
 # ─────────────────────────────────────────────
-# 단계별 데이터 수집 → dict 리스트 반환
-# 각 dict는 {공고번호, 공고명, 기관, 단계별 정보} 형태
+# 단계별 데이터 수집
 # ─────────────────────────────────────────────
 def fetch_bid_announcements(bgn_dt: str, end_dt: str) -> list:
-    """입찰공고 목록 조회 (용역)"""
     items = call_api(API_ENDPOINTS["입찰공고"], {
         "inqryDiv": "1", "inqryBgnDt": bgn_dt, "inqryEndDt": end_dt,
     })
@@ -224,11 +321,11 @@ def fetch_bid_announcements(bgn_dt: str, end_dt: str) -> list:
             "공고명": name,
             "발주기관": item.get("ntceInsttNm", ""),
             "수요기관": item.get("dminsttNm", ""),
-            "업무구분": item.get("ntceDivNm", ""),
+            "_bsns_div": item.get("ntceDivNm", ""),
             "입찰공고일": format_date(item.get("bidNtceDt", "")),
             "입찰마감일": format_date(item.get("bidClseDt", "")),
-            "추정가격": item.get("presmptPrce", ""),
-            "배정예산": item.get("asignBdgtAmt", ""),
+            "추정가격": to_won(item.get("presmptPrce", "")),
+            "배정예산": to_won(item.get("asignBdgtAmt", "")),
             "계약방법": item.get("cntrctMthdNm", ""),
             "입찰방식": item.get("bidMethdNm", ""),
             "낙찰방법": item.get("sucsfbidMthdNm", ""),
@@ -241,7 +338,6 @@ def fetch_bid_announcements(bgn_dt: str, end_dt: str) -> list:
 
 
 def fetch_pre_standards(bgn_dt: str, end_dt: str) -> list:
-    """사전규격 목록 조회"""
     items = call_api(API_ENDPOINTS["사전규격"], {
         "inqryDiv": "1", "inqryBgnDt": bgn_dt, "inqryEndDt": end_dt,
     })
@@ -250,7 +346,6 @@ def fetch_pre_standards(bgn_dt: str, end_dt: str) -> list:
         name = item.get("prdctClsfcNoNm", "") or item.get("bidNtceNm", "")
         if not is_target_project(name):
             continue
-        # bidNtceNoList에 연결된 공고번호가 있으면 그걸 키로 사용
         bid_no = item.get("bidNtceNoList", "") or item.get("bfSpecRgstNo", "")
         records.append({
             "공고번호": bid_no,
@@ -258,15 +353,15 @@ def fetch_pre_standards(bgn_dt: str, end_dt: str) -> list:
             "공고명": name,
             "발주기관": item.get("orderInsttNm", "") or item.get("rlDminsttNm", ""),
             "수요기관": item.get("rlDminsttNm", ""),
+            "_bsns_div": item.get("bsnsDivNm", ""),
             "사전규격등록일": format_date(item.get("rgstDt", "")),
-            "배정예산": item.get("asignBdgtAmt", ""),
+            "배정예산": to_won(item.get("asignBdgtAmt", "")),
             "_stage": "사전규격",
         })
     return records
 
 
 def fetch_order_plans(bgn_dt: str, end_dt: str) -> list:
-    """발주계획 목록 조회 (용역) - 년월 파라미터 사용"""
     order_bgn_ym = bgn_dt[:6]
     order_end_ym = end_dt[:6]
     items = call_api(API_ENDPOINTS["발주계획"], {
@@ -283,15 +378,15 @@ def fetch_order_plans(bgn_dt: str, end_dt: str) -> list:
             "발주계획번호": item.get("orderPlanUntyNo", ""),
             "공고명": name,
             "발주기관": item.get("orderInsttNm", ""),
+            "_bsns_div": item.get("bsnsDivNm", ""),
             "발주예정월": f"{item.get('orderYear','')}-{item.get('orderMnth','').zfill(2)}",
-            "발주도급금액": item.get("sumOrderAmt", ""),
+            "배정예산": to_won(item.get("sumOrderAmt", "")),
             "_stage": "발주계획",
         })
     return records
 
 
 def fetch_opening_results(bgn_dt: str, end_dt: str) -> list:
-    """개찰결과 목록 조회 (용역)"""
     items = call_api(API_ENDPOINTS["개찰결과"], {
         "inqryDiv": "1", "inqryBgnDt": bgn_dt, "inqryEndDt": end_dt,
     })
@@ -300,13 +395,21 @@ def fetch_opening_results(bgn_dt: str, end_dt: str) -> list:
         name = item.get("bidNtceNm", "")
         if not is_target_project(name):
             continue
+        # 낙찰자 추출: sucsfbiddrNm 또는 opengCorpInfo에서 파싱
+        winner = item.get("sucsfbiddrNm", "")
+        if not winner:
+            corp_info = item.get("opengCorpInfo", "")
+            if corp_info and "^" in corp_info:
+                winner = corp_info.split("^")[0]  # 첫 번째 필드가 회사명
+
         records.append({
             "공고번호": item.get("bidNtceNo", ""),
             "공고명": name,
             "발주기관": item.get("ntceInsttNm", ""),
+            "_bsns_div": "",
             "개찰일시": format_date(item.get("opengDt", "")),
-            "낙찰자": item.get("sucsfbiddrNm", ""),
-            "낙찰금액": item.get("sucsfbidAmt", ""),
+            "낙찰자": winner,
+            "낙찰금액": to_won(item.get("sucsfbidAmt", "")),
             "낙찰률": item.get("sucsfbidRate", ""),
             "참가업체수": item.get("prtcptCnum", ""),
             "_stage": "개찰결과",
@@ -315,7 +418,6 @@ def fetch_opening_results(bgn_dt: str, end_dt: str) -> list:
 
 
 def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
-    """계약현황 목록 조회 (용역)"""
     items = call_api(API_ENDPOINTS["계약현황"], {
         "inqryDiv": "1", "inqryBgnDt": bgn_dt, "inqryEndDt": end_dt,
     })
@@ -324,7 +426,6 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
         name = item.get("cntrctNm", "") or item.get("bidNtceNm", "")
         if not is_target_project(name):
             continue
-        # 업체 목록에서 첫 번째 업체명 추출
         corp_nm = ""
         corp_list = item.get("corpList", "")
         if isinstance(corp_list, list) and corp_list:
@@ -337,9 +438,10 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
             "확정계약번호": item.get("dcsnCntrctNo", "") or item.get("untyCntrctNo", ""),
             "공고명": name,
             "발주기관": item.get("cntrctInsttNm", ""),
+            "_bsns_div": item.get("bsnsDivNm", ""),
             "계약업체": corp_nm,
-            "총계약금액": item.get("totCntrctAmt", ""),
-            "금차계약금액": item.get("thtmCntrctAmt", ""),
+            "총계약금액": to_won(item.get("totCntrctAmt", "")),
+            "금차계약금액": to_won(item.get("thtmCntrctAmt", "")),
             "계약체결일": format_date(item.get("cntrctCnclsDate", "") or item.get("cntrctDate", "")),
             "계약기간": item.get("cntrctPrd", ""),
             "장기계속구분": item.get("lngtrmCtnuDivNm", ""),
@@ -350,11 +452,11 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
 
 
 # ─────────────────────────────────────────────
-# 공고번호 기준 통합 (가로 합치기)
+# 공고번호 기준 통합 + 영업 컬럼 추가
 # ─────────────────────────────────────────────
 def merge_by_bid_no(all_records: list) -> pd.DataFrame:
-    """공고번호를 키로 동일 공사를 하나의 행으로 합치기"""
-    projects = {}  # 공고번호 → 통합 데이터
+    """공고번호를 키로 동일 공사를 하나의 행으로 합치기 + 영업 컬럼"""
+    projects = {}
 
     for rec in all_records:
         bid_no = rec.get("공고번호", "")
@@ -362,6 +464,7 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
             continue
 
         stage = rec.pop("_stage", "")
+        bsns_div = rec.pop("_bsns_div", "")
 
         if bid_no not in projects:
             projects[bid_no] = {
@@ -369,37 +472,29 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
                 "공고명": rec.get("공고명", ""),
                 "발주기관": rec.get("발주기관", ""),
                 "수요기관": "",
+                "_bsns_div_raw": bsns_div,
                 # 단계별 날짜
-                "발주예정월": "",
-                "사전규격등록일": "",
-                "입찰공고일": "",
-                "입찰마감일": "",
-                "개찰일시": "",
-                "계약체결일": "",
-                # 금액
-                "배정예산": "",
-                "추정가격": "",
-                "낙찰금액": "",
-                "총계약금액": "",
+                "발주예정월": "", "사전규격등록일": "", "입찰공고일": "",
+                "입찰마감일": "", "개찰일시": "", "계약체결일": "",
+                # 금액 (원 단위)
+                "배정예산": 0, "추정가격": 0, "낙찰금액": 0,
+                "총계약금액": 0, "금차계약금액": 0,
                 # 결과
-                "낙찰자": "",
-                "계약업체": "",
-                "참가업체수": "",
+                "낙찰자": "", "계약업체": "", "낙찰률": "", "참가업체수": "",
                 # 기타
-                "계약방법": "",
-                "입찰방식": "",
-                "계약기간": "",
-                "공고URL": "",
-                "담당자": "",
-                "담당자연락처": "",
-                # 진행 단계 추적
+                "계약방법": "", "입찰방식": "", "낙찰방법": "",
+                "계약기간": "", "장기계속구분": "",
+                "공고URL": "", "담당자": "", "담당자연락처": "",
                 "_stages_found": set(),
             }
 
         proj = projects[bid_no]
         proj["_stages_found"].add(stage)
 
-        # 공고명이 비어있으면 채우기
+        if not proj["_bsns_div_raw"] and bsns_div:
+            proj["_bsns_div_raw"] = bsns_div
+
+        # 빈 필드 채우기
         if not proj["공고명"] and rec.get("공고명"):
             proj["공고명"] = rec["공고명"]
         if not proj["발주기관"] and rec.get("발주기관"):
@@ -407,33 +502,57 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
         if not proj["수요기관"] and rec.get("수요기관"):
             proj["수요기관"] = rec["수요기관"]
 
-        # 단계별 정보 채우기 (비어있는 필드만)
         for key in rec:
             if key in ("공고번호", "공고명", "발주기관", "수요기관"):
                 continue
-            if key in proj and not proj[key] and rec[key]:
-                proj[key] = rec[key]
+            if key in proj:
+                # 숫자 필드: 0이면 채우기
+                if isinstance(proj[key], int) and proj[key] == 0 and rec[key]:
+                    proj[key] = rec[key]
+                # 문자열 필드: 비어있으면 채우기
+                elif isinstance(proj[key], str) and not proj[key] and rec[key]:
+                    proj[key] = rec[key]
 
-    # 현재단계 결정 (가장 진행된 단계)
+    # ── 영업 컬럼 계산 ──
     for proj in projects.values():
         stages = proj.pop("_stages_found")
+        bsns_div = proj.pop("_bsns_div_raw", "")
+
+        # 현재단계 / 진행경로
         latest_stage = ""
         for s in STAGE_ORDER:
             if s in stages:
                 latest_stage = s
         proj["현재단계"] = latest_stage
-        # 진행경로
         proj["진행경로"] = " → ".join(s for s in STAGE_ORDER if s in stages)
+
+        # 업무구분 (설계용역 / 시공공사)
+        proj["업무구분"] = classify_work_type(proj["공고명"], bsns_div)
+
+        # 발주처유형 / 세부지역
+        agency_type, region = classify_agency(proj["발주기관"])
+        proj["발주처유형"] = agency_type
+        proj["세부지역"] = region
+
+        # 대표금액 (가장 신뢰할 수 있는 금액)
+        proj["대표금액"] = (proj["총계약금액"] or proj["낙찰금액"]
+                          or proj["추정가격"] or proj["배정예산"] or 0)
+
+        # 설계사 추적 (설계용역인 경우)
+        if proj["업무구분"] == "설계용역":
+            proj["설계사"] = proj["낙찰자"] or proj["계약업체"]
+            proj["설계계약일"] = proj["계약체결일"]
+            proj["공사예상시기"] = estimate_construction_date(
+                proj["계약체결일"], proj["계약기간"])
+        else:
+            proj["설계사"] = ""
+            proj["설계계약일"] = ""
+            proj["공사예상시기"] = ""
 
     if not projects:
         return pd.DataFrame()
 
     df = pd.DataFrame(projects.values())
-
-    # 금액 표시 컬럼 추가
-    for col in ["배정예산", "추정가격", "낙찰금액", "총계약금액"]:
-        if col in df.columns:
-            df[f"{col}_표시"] = df[col].apply(format_amount)
 
     # D-Day 계산 (입찰마감일 기준)
     today_date = now_kst().date()
@@ -454,27 +573,33 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
                 return ""
         df["마감D-Day"] = df["입찰마감일"].apply(calc_dday)
 
-    # 컬럼 순서 정리
+    # 금액 0 → 빈값 처리 (표시용)
+    for col in ["배정예산", "추정가격", "낙찰금액", "총계약금액", "금차계약금액", "대표금액"]:
+        if col in df.columns:
+            df[col] = df[col].apply(lambda x: x if x and x != 0 else "")
+
+    # 컬럼 순서
     col_order = [
-        "공고번호", "공고명", "발주기관", "수요기관", "현재단계", "진행경로",
+        "공고번호", "공고명", "업무구분", "발주처유형", "세부지역",
+        "발주기관", "수요기관", "현재단계", "진행경로",
         "발주예정월", "사전규격등록일", "입찰공고일", "입찰마감일", "마감D-Day",
         "개찰일시", "계약체결일",
-        "배정예산", "배정예산_표시", "추정가격", "추정가격_표시",
-        "낙찰금액", "낙찰금액_표시", "총계약금액", "총계약금액_표시",
-        "낙찰자", "계약업체", "참가업체수",
-        "계약방법", "입찰방식", "계약기간",
+        "대표금액", "배정예산", "추정가격", "낙찰금액", "총계약금액",
+        "낙찰자", "계약업체", "낙찰률", "참가업체수",
+        "설계사", "설계계약일", "공사예상시기",
+        "계약방법", "입찰방식", "낙찰방법", "계약기간", "장기계속구분",
         "공고URL", "담당자", "담당자연락처",
     ]
     existing_cols = [c for c in col_order if c in df.columns]
-    extra_cols = [c for c in df.columns if c not in col_order]
+    extra_cols = [c for c in df.columns if c not in col_order and not c.startswith("_")]
     df = df[existing_cols + extra_cols]
 
-    # 단계 순서 정렬 (최신 단계가 먼저)
+    # 정렬: 단계 → 금액 내림차순
     stage_rank = {s: i for i, s in enumerate(STAGE_ORDER)}
     df["_rank"] = df["현재단계"].map(stage_rank).fillna(99)
     df = df.sort_values(["_rank", "공고명"]).drop(columns=["_rank"])
 
-    # 중복 제거 (같은 공고번호)
+    # 중복 제거
     df = df.drop_duplicates(subset=["공고번호"], keep="first")
 
     logger.info(f"총 {len(df)}건 통합 완료 (중복 제거 후)")
@@ -485,14 +610,12 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
 # 통합 수집
 # ─────────────────────────────────────────────
 def collect_all(days_back: int = 30) -> pd.DataFrame:
-    """모든 단계의 데이터를 수집하여 공고번호 기준으로 통합"""
     today = now_kst()
     bgn_dt = (today - timedelta(days=days_back)).strftime("%Y%m%d0000")
     end_dt = today.strftime("%Y%m%d2359")
 
     logger.info(f"[수집] 기간: {bgn_dt} ~ {end_dt}")
 
-    # 각 단계별 수집 (dict 리스트)
     all_records = []
     all_records.extend(fetch_order_plans(bgn_dt, end_dt))
     all_records.extend(fetch_pre_standards(bgn_dt, end_dt))
@@ -501,10 +624,9 @@ def collect_all(days_back: int = 30) -> pd.DataFrame:
     all_records.extend(fetch_contracts(bgn_dt, end_dt))
 
     if not all_records:
-        logger.warning("[수집] 데이터 없음 (모든 API 결과 0건)")
+        logger.warning("[수집] 데이터 없음")
         return pd.DataFrame()
 
-    # 공고번호 기준 통합
     df = merge_by_bid_no(all_records)
 
     if not df.empty:
@@ -517,9 +639,8 @@ def collect_all(days_back: int = 30) -> pd.DataFrame:
 # Google Sheets 업로드
 # ─────────────────────────────────────────────
 def get_gc():
-    """Google Sheets 클라이언트 생성"""
     if not GOOGLE_CREDENTIALS_JSON:
-        logger.warning("[GSheets] GOOGLE_CREDENTIALS_JSON 환경변수 미설정")
+        logger.warning("[GSheets] GOOGLE_CREDENTIALS_JSON 미설정")
         return None
     try:
         scopes = ["https://spreadsheets.google.com/feeds",
@@ -533,88 +654,153 @@ def get_gc():
 
 
 def upload_monitoring(gc, df: pd.DataFrame):
-    """모니터링 데이터를 구글 시트에 업로드"""
     if gc is None or df.empty:
         return
 
     try:
         sh = gc.open_by_key(GOOGLE_SHEET_ID)
 
-        # ── 1) 토목공사_현황 시트 ──
-        try:
-            ws = sh.worksheet("토목공사_현황")
-        except gspread.exceptions.WorksheetNotFound:
-            ws = sh.add_worksheet(title="토목공사_현황", rows="500", cols="30")
-
+        # ── 1) 전체현황 시트 ──
+        ws = _get_or_create_sheet(sh, "토목공사_현황", rows=5000, cols=40)
         display_cols = [c for c in df.columns if not c.startswith("_")]
         df_display = df[display_cols].fillna("").astype(str)
-
         ws.clear()
         ws.update([df_display.columns.tolist()] + df_display.values.tolist(),
                    value_input_option="USER_ENTERED")
-        logger.info(f"[토목공사_현황] {len(df_display)}행 업로드 완료")
+        logger.info(f"[토목공사_현황] {len(df_display)}행 업로드")
 
-        # ── 2) 토목공사_대시보드 시트 ──
-        try:
-            ws_dash = sh.worksheet("토목공사_대시보드")
-        except gspread.exceptions.WorksheetNotFound:
-            ws_dash = sh.add_worksheet(title="토목공사_대시보드", rows="50", cols="10")
-
-        stage_counts = df["현재단계"].value_counts()
-        total = len(df)
-
-        # D-Day 임박 건수
-        urgent = 0
-        if "마감D-Day" in df.columns:
-            for val in df["마감D-Day"]:
-                if isinstance(val, str) and (val == "D-Day" or
-                    (val.startswith("D-") and val != "D-Day")):
-                    try:
-                        days = int(val.replace("D-", ""))
-                        if 0 < days <= 3:
-                            urgent += 1
-                    except ValueError:
-                        if val == "D-Day":
-                            urgent += 1
-
-        crawled_time = now_kst().strftime("%Y-%m-%d %H:%M KST")
-
-        dashboard_data = [
-            ["토목공사 모니터링 대시보드", "", f"기준: {crawled_time}"],
-            [""],
-            ["[요약]"],
-            ["구분", "건수"],
-            ["전체 건수", total],
-            ["D-Day 임박 (3일내)", urgent],
-            [""],
-            ["[단계별 현황]"],
-            ["단계", "건수"],
-        ]
-        for stage in STAGE_ORDER:
-            dashboard_data.append([stage, int(stage_counts.get(stage, 0))])
-
-        dashboard_data += [
-            [""],
-            ["[입찰 마감 임박 (상위 10건)]"],
-            ["공고명", "발주기관", "마감일", "D-Day", "추정가격"],
-        ]
-
-        bid_df = df[df["현재단계"] == "입찰공고"].head(10)
-        for _, row in bid_df.iterrows():
-            dashboard_data.append([
-                str(row.get("공고명", "")),
-                str(row.get("발주기관", "")),
-                str(row.get("입찰마감일", "")),
-                str(row.get("마감D-Day", "")),
-                str(row.get("추정가격_표시", "")),
-            ])
-
+        # ── 2) 영업용 대시보드 ──
+        ws_dash = _get_or_create_sheet(sh, "영업_대시보드", rows=100, cols=10)
+        dashboard = _build_dashboard(df)
         ws_dash.clear()
-        ws_dash.update(dashboard_data, value_input_option="USER_ENTERED")
-        logger.info("[토목공사_대시보드] 업로드 완료")
+        ws_dash.update(dashboard, value_input_option="USER_ENTERED")
+        logger.info("[영업_대시보드] 업로드")
+
+        # ── 3) 신규 사전규격 (최근 7일) ──
+        ws_pre = _get_or_create_sheet(sh, "신규_사전규격", rows=500, cols=20)
+        pre_df = df[df["현재단계"] == "사전규격"].head(100)
+        if not pre_df.empty:
+            pre_cols = ["공고명", "발주처유형", "세부지역", "발주기관",
+                       "사전규격등록일", "배정예산", "업무구분"]
+            pre_show = pre_df[[c for c in pre_cols if c in pre_df.columns]].fillna("").astype(str)
+            ws_pre.clear()
+            ws_pre.update([pre_show.columns.tolist()] + pre_show.values.tolist(),
+                         value_input_option="USER_ENTERED")
+            logger.info(f"[신규_사전규격] {len(pre_show)}행 업로드")
+
+        # ── 4) 설계용역 낙찰 (설계사 추적) ──
+        ws_design = _get_or_create_sheet(sh, "설계용역_낙찰", rows=500, cols=20)
+        design_df = df[(df["업무구분"] == "설계용역") &
+                       (df["현재단계"].isin(["개찰결과", "계약현황"]))].head(100)
+        if not design_df.empty:
+            d_cols = ["공고명", "발주처유형", "세부지역", "발주기관",
+                     "설계사", "설계계약일", "계약기간", "공사예상시기",
+                     "총계약금액", "현재단계"]
+            d_show = design_df[[c for c in d_cols if c in design_df.columns]].fillna("").astype(str)
+            ws_design.clear()
+            ws_design.update([d_show.columns.tolist()] + d_show.values.tolist(),
+                           value_input_option="USER_ENTERED")
+            logger.info(f"[설계용역_낙찰] {len(d_show)}행 업로드")
 
     except Exception as e:
         logger.error(f"[GSheets 업로드 오류] {e}")
+
+
+def _get_or_create_sheet(sh, name, rows=500, cols=30):
+    try:
+        return sh.worksheet(name)
+    except gspread.exceptions.WorksheetNotFound:
+        return sh.add_worksheet(title=name, rows=str(rows), cols=str(cols))
+
+
+def _build_dashboard(df: pd.DataFrame) -> list:
+    """영업용 대시보드 데이터 구성"""
+    crawled_time = now_kst().strftime("%Y-%m-%d %H:%M KST")
+    total = len(df)
+
+    # 업무구분별 건수
+    work_counts = df["업무구분"].value_counts() if "업무구분" in df.columns else {}
+
+    # 발주처유형별 건수
+    agency_counts = df["발주처유형"].value_counts() if "발주처유형" in df.columns else {}
+
+    # D-Day 임박
+    urgent = 0
+    if "마감D-Day" in df.columns:
+        for val in df["마감D-Day"]:
+            if isinstance(val, str):
+                if val == "D-Day":
+                    urgent += 1
+                elif val.startswith("D-") and val != "D-Day":
+                    try:
+                        if 0 < int(val.replace("D-", "")) <= 3:
+                            urgent += 1
+                    except ValueError:
+                        pass
+
+    # 대형 공고 (10억+)
+    big_count = 0
+    if "대표금액" in df.columns:
+        for val in df["대표금액"]:
+            try:
+                if float(val) >= 1_000_000_000:
+                    big_count += 1
+            except (ValueError, TypeError):
+                pass
+
+    dashboard = [
+        ["토목공사 영업 대시보드", "", f"기준: {crawled_time}"],
+        [""],
+        ["[전체 요약]"],
+        ["구분", "건수"],
+        ["전체", total],
+        ["설계용역", int(work_counts.get("설계용역", 0))],
+        ["시공공사", int(work_counts.get("시공공사", 0))],
+        ["마감임박(3일내)", urgent],
+        ["대형공고(10억+)", big_count],
+        [""],
+        ["[발주처 유형별]"],
+        ["유형", "건수"],
+    ]
+    for atype in ["한국도로공사", "국토부", "지자체", "공사공단", "기타"]:
+        dashboard.append([atype, int(agency_counts.get(atype, 0))])
+
+    dashboard += [
+        [""],
+        ["[단계별 현황]"],
+        ["단계", "건수"],
+    ]
+    stage_counts = df["현재단계"].value_counts()
+    for stage in STAGE_ORDER:
+        dashboard.append([stage, int(stage_counts.get(stage, 0))])
+
+    # 마감 임박 입찰 top 10
+    dashboard += [[""], ["[마감 임박 입찰 TOP 10]"],
+                  ["공고명", "발주처유형", "마감일", "D-Day", "추정가격"]]
+    bid_df = df[df["현재단계"] == "입찰공고"].head(10)
+    for _, row in bid_df.iterrows():
+        dashboard.append([
+            str(row.get("공고명", ""))[:40],
+            str(row.get("발주처유형", "")),
+            str(row.get("입찰마감일", "")),
+            str(row.get("마감D-Day", "")),
+            str(row.get("추정가격", "")),
+        ])
+
+    # 설계용역 → 공사 예측 top 10
+    design_df = df[(df["업무구분"] == "설계용역") & (df["설계사"] != "")].head(10)
+    if not design_df.empty:
+        dashboard += [[""], ["[설계 완료 → 공사 예측]"],
+                      ["공고명", "설계사", "설계계약일", "공사예상시기"]]
+        for _, row in design_df.iterrows():
+            dashboard.append([
+                str(row.get("공고명", ""))[:40],
+                str(row.get("설계사", "")),
+                str(row.get("설계계약일", "")),
+                str(row.get("공사예상시기", "")),
+            ])
+
+    return dashboard
 
 
 # ─────────────────────────────────────────────
@@ -622,26 +808,19 @@ def upload_monitoring(gc, df: pd.DataFrame):
 # ─────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(description="토목공사 단계별 모니터링 시스템")
-    parser.add_argument("--days", type=int, default=30,
-                        help="조회 기간 (기본: 30일)")
-    parser.add_argument("--no-upload", action="store_true",
-                        help="구글 시트 업로드 생략 (로컬 저장만)")
-    parser.add_argument("--add-keywords", nargs="+",
-                        help="추가 포함 키워드")
-    parser.add_argument("--add-exclude", nargs="+",
-                        help="추가 제외 키워드")
+    parser.add_argument("--days", type=int, default=30, help="조회 기간 (기본: 30일)")
+    parser.add_argument("--no-upload", action="store_true", help="구글 시트 업로드 생략")
+    parser.add_argument("--add-keywords", nargs="+", help="추가 포함 키워드")
+    parser.add_argument("--add-exclude", nargs="+", help="추가 제외 키워드")
     args = parser.parse_args()
 
     logger.info(f"===== 토목공사 모니터링 시작: {now_kst():%Y-%m-%d %H:%M:%S KST} =====")
 
     if args.add_keywords:
         INCLUDE_KEYWORDS.extend(args.add_keywords)
-        logger.info(f"[포함 키워드 추가] {args.add_keywords}")
     if args.add_exclude:
         EXCLUDE_KEYWORDS.extend(args.add_exclude)
-        logger.info(f"[제외 키워드 추가] {args.add_exclude}")
 
-    # 데이터 수집
     df = collect_all(days_back=args.days)
 
     if df.empty:
@@ -653,15 +832,42 @@ def main():
     time_str = now_kst().strftime("%Y%m%d_%H%M%S")
     excel_path = f"./civil_monitor_{time_str}.xlsx"
     with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-        df.to_excel(writer, sheet_name="통합현황", index=False)
-        for stage in STAGE_ORDER:
-            stage_df = df[df["현재단계"] == stage]
-            if not stage_df.empty:
-                stage_df.to_excel(writer, sheet_name=stage, index=False)
+        df.to_excel(writer, sheet_name="전체현황", index=False)
+
+        # 신규 사전규격
+        pre = df[df["현재단계"] == "사전규격"]
+        if not pre.empty:
+            pre.to_excel(writer, sheet_name="신규_사전규격", index=False)
+
+        # 마감 임박
+        if "마감D-Day" in df.columns:
+            urgent = df[df["마감D-Day"].str.match(r'^D-[1-3]$|^D-Day$', na=False)]
+            if not urgent.empty:
+                urgent.to_excel(writer, sheet_name="마감임박_입찰", index=False)
+
+        # 설계용역 낙찰
+        design = df[(df["업무구분"] == "설계용역") &
+                    (df["현재단계"].isin(["개찰결과", "계약현황"]))]
+        if not design.empty:
+            design.to_excel(writer, sheet_name="설계용역_낙찰", index=False)
+
+        # 발주처유형별 요약
+        if "발주처유형" in df.columns and "대표금액" in df.columns:
+            summary_data = []
+            for atype in df["발주처유형"].unique():
+                adf = df[df["발주처유형"] == atype]
+                summary_data.append({
+                    "발주처유형": atype,
+                    "건수": len(adf),
+                    "설계용역": len(adf[adf["업무구분"] == "설계용역"]),
+                    "시공공사": len(adf[adf["업무구분"] == "시공공사"]),
+                })
+            if summary_data:
+                pd.DataFrame(summary_data).to_excel(
+                    writer, sheet_name="발주처별_요약", index=False)
 
     logger.info(f"[로컬 저장] {excel_path}")
 
-    # Google Sheets 업로드
     if not args.no_upload:
         gc = get_gc()
         upload_monitoring(gc, df)
