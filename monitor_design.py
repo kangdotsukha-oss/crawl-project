@@ -250,12 +250,14 @@ def fetch_pre_standards(bgn_dt: str, end_dt: str) -> list:
         name = item.get("prdctClsfcNoNm", "") or item.get("bidNtceNm", "")
         if not is_target_project(name):
             continue
+        # bidNtceNoList에 연결된 공고번호가 있으면 그걸 키로 사용
+        bid_no = item.get("bidNtceNoList", "") or item.get("bfSpecRgstNo", "")
         records.append({
-            "공고번호": item.get("bidNtceNo", "") or item.get("bfSpecRgstNo", ""),
+            "공고번호": bid_no,
             "사전규격번호": item.get("bfSpecRgstNo", ""),
             "공고명": name,
-            "발주기관": item.get("ntceInsttNm", ""),
-            "수요기관": item.get("dminsttNm", ""),
+            "발주기관": item.get("orderInsttNm", "") or item.get("rlDminsttNm", ""),
+            "수요기관": item.get("rlDminsttNm", ""),
             "사전규격등록일": format_date(item.get("rgstDt", "")),
             "배정예산": item.get("asignBdgtAmt", ""),
             "_stage": "사전규격",
