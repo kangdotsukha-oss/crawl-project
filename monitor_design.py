@@ -463,8 +463,12 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
             "공고번호": item.get("bidNtceNo", "") or item.get("ntceNo", ""),
             "확정계약번호": item.get("dcsnCntrctNo", "") or item.get("untyCntrctNo", ""),
             "공고명": name,
-            "발주기관": item.get("cntrctInsttNm", ""),
+            "발주기관": agency,
             "_bsns_div": item.get("bsnsDivNm", ""),
+            "소관구분": item.get("cntrctInsttJrsdctnDivNm", ""),
+            "담당부서": item.get("cntrctInsttChrgDeptNm", ""),
+            "담당자": item.get("cntrctInsttOfclNm", ""),
+            "담당자연락처": item.get("cntrctInsttOfclTelNo", ""),
             "계약업체": corp_nm,
             "총계약금액": to_won(item.get("totCntrctAmt", "")),
             "금차계약금액": to_won(item.get("thtmCntrctAmt", "")),
@@ -500,17 +504,21 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
                 "수요기관": "",
                 "_bsns_div_raw": bsns_div,
                 # 단계별 날짜
-                "발주예정월": "", "사전규격등록일": "", "입찰공고일": "",
+                "사전규격등록일": "", "입찰공고일": "",
                 "입찰마감일": "", "개찰일시": "", "계약체결일": "",
                 # 금액 (원 단위)
                 "배정예산": 0, "추정가격": 0, "낙찰금액": 0,
                 "총계약금액": 0, "금차계약금액": 0,
                 # 결과
                 "낙찰자": "", "계약업체": "", "낙찰률": "", "참가업체수": "",
+                # 계약 상세
+                "확정계약번호": "", "계약기간": "", "장기계속구분": "",
+                "공동계약여부": "", "소관구분": "",
+                # 연락처
+                "담당부서": "", "담당자": "", "담당자연락처": "",
                 # 기타
                 "계약방법": "", "입찰방식": "", "낙찰방법": "",
-                "계약기간": "", "장기계속구분": "",
-                "공고URL": "", "담당자": "", "담당자연락처": "",
+                "공고URL": "",
                 "_stages_found": set(),
             }
 
@@ -604,17 +612,27 @@ def merge_by_bid_no(all_records: list) -> pd.DataFrame:
         if col in df.columns:
             df[col] = df[col].apply(lambda x: x if x and x != 0 else "")
 
-    # 컬럼 순서
+    # 빈 컬럼 제거 (모든 행이 빈 값인 컬럼)
+    for col in list(df.columns):
+        if col.startswith("_"):
+            continue
+        non_empty = df[col].apply(lambda x: x != "" and x != 0 and pd.notna(x)).sum()
+        if non_empty == 0:
+            df.drop(columns=[col], inplace=True)
+
+    # 컬럼 순서 (존재하는 것만)
     col_order = [
         "공고번호", "공고명", "업무구분", "발주처유형", "세부지역",
         "발주기관", "수요기관", "현재단계", "진행경로",
-        "발주예정월", "사전규격등록일", "입찰공고일", "입찰마감일", "마감D-Day",
+        "사전규격등록일", "입찰공고일", "입찰마감일", "마감D-Day",
         "개찰일시", "계약체결일",
-        "대표금액", "배정예산", "추정가격", "낙찰금액", "총계약금액",
+        "대표금액", "배정예산", "추정가격", "낙찰금액", "총계약금액", "금차계약금액",
         "낙찰자", "계약업체", "낙찰률", "참가업체수",
         "설계사", "설계계약일", "공사예상시기",
-        "계약방법", "입찰방식", "낙찰방법", "계약기간", "장기계속구분",
-        "공고URL", "담당자", "담당자연락처",
+        "확정계약번호", "계약기간", "장기계속구분", "공동계약여부", "소관구분",
+        "계약방법", "입찰방식", "낙찰방법",
+        "담당부서", "담당자", "담당자연락처",
+        "공고URL",
     ]
     existing_cols = [c for c in col_order if c in df.columns]
     extra_cols = [c for c in df.columns if c not in col_order and not c.startswith("_")]
