@@ -68,11 +68,19 @@ INCLUDE_KEYWORDS = [
 ]
 
 EXCLUDE_KEYWORDS = [
-    '초등학교', '중학교', '고등학교', '학교', '유치원',
+    '초등학교', '중학교', '고등학교', '학교', '유치원', '대학교',
     '건축', '리모델링', '인테리어', '실내',
     '아파트', '주택', '공동주택',
     '설비', '소방', '전기공사', '통신공사',
     '조경', '녹지', '공원',
+    '설계', '점검',
+]
+
+# 제외 발주기관 키워드: 하나라도 매칭되면 제외
+EXCLUDE_AGENCIES = [
+    '교육청', '교육부', '교육지원청', '교육문화',
+    '국방부', '국방시설본부', '군사', '사단', '여단', '연대',
+    '해군', '공군', '육군', '해병대', '국군', '방위사업청',
 ]
 
 # ── 업무구분 분류 키워드 ──
@@ -142,12 +150,17 @@ def to_won(amt) -> int:
         return 0
 
 
-def is_target_project(name: str) -> bool:
-    """공고명이 토목/도로/교량 관련인지 판단"""
+def is_target_project(name: str, agency: str = "") -> bool:
+    """공고명이 토목/도로/교량 관련인지 판단 (제외 기관 포함)"""
     if not name:
         return False
+    # 제외 기관
+    if agency and any(kw in agency for kw in EXCLUDE_AGENCIES):
+        return False
+    # 제외 키워드
     if any(kw in name for kw in EXCLUDE_KEYWORDS):
         return False
+    # 포함 키워드
     return any(kw in name for kw in INCLUDE_KEYWORDS)
 
 
@@ -314,12 +327,13 @@ def fetch_bid_announcements(bgn_dt: str, end_dt: str) -> list:
     records = []
     for item in items:
         name = item.get("bidNtceNm", "")
-        if not is_target_project(name):
+        agency = item.get("ntceInsttNm", "")
+        if not is_target_project(name, agency):
             continue
         records.append({
             "공고번호": item.get("bidNtceNo", ""),
             "공고명": name,
-            "발주기관": item.get("ntceInsttNm", ""),
+            "발주기관": agency,
             "수요기관": item.get("dminsttNm", ""),
             "_bsns_div": item.get("ntceDivNm", ""),
             "입찰공고일": format_date(item.get("bidNtceDt", "")),
@@ -344,14 +358,15 @@ def fetch_pre_standards(bgn_dt: str, end_dt: str) -> list:
     records = []
     for item in items:
         name = item.get("prdctClsfcNoNm", "") or item.get("bidNtceNm", "")
-        if not is_target_project(name):
+        agency = item.get("orderInsttNm", "") or item.get("rlDminsttNm", "")
+        if not is_target_project(name, agency):
             continue
         bid_no = item.get("bidNtceNoList", "") or item.get("bfSpecRgstNo", "")
         records.append({
             "공고번호": bid_no,
             "사전규격번호": item.get("bfSpecRgstNo", ""),
             "공고명": name,
-            "발주기관": item.get("orderInsttNm", "") or item.get("rlDminsttNm", ""),
+            "발주기관": agency,
             "수요기관": item.get("rlDminsttNm", ""),
             "_bsns_div": item.get("bsnsDivNm", ""),
             "사전규격등록일": format_date(item.get("rgstDt", "")),
@@ -370,7 +385,8 @@ def fetch_order_plans(bgn_dt: str, end_dt: str) -> list:
     records = []
     for item in items:
         name = item.get("bizNm", "") or item.get("orderPlanNm", "")
-        if not is_target_project(name):
+        agency = item.get("orderInsttNm", "")
+        if not is_target_project(name, agency):
             continue
         bid_list = item.get("bidNtceNoList", "")
         records.append({
@@ -393,7 +409,8 @@ def fetch_opening_results(bgn_dt: str, end_dt: str) -> list:
     records = []
     for item in items:
         name = item.get("bidNtceNm", "")
-        if not is_target_project(name):
+        agency = item.get("ntceInsttNm", "")
+        if not is_target_project(name, agency):
             continue
         # 낙찰자 추출: sucsfbiddrNm 또는 opengCorpInfo에서 파싱
         winner = item.get("sucsfbiddrNm", "")
@@ -424,7 +441,8 @@ def fetch_contracts(bgn_dt: str, end_dt: str) -> list:
     records = []
     for item in items:
         name = item.get("cntrctNm", "") or item.get("bidNtceNm", "")
-        if not is_target_project(name):
+        agency = item.get("cntrctInsttNm", "")
+        if not is_target_project(name, agency):
             continue
         corp_nm = ""
         corp_list = item.get("corpList", "")
