@@ -118,12 +118,21 @@ echo      Python: !PYTHON_PATH!
 powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_crawl.bat' -Encoding ASCII -Value @('@echo off','taskkill /F /IM chromedriver.exe /T >nul 2>&1','taskkill /F /IM chrome.exe /T >nul 2>&1','timeout /t 3 /nobreak >nul','cd /d %PROJECT_DIR%','!PYTHON_PATH! crawl.py >> %PROJECT_DIR%\cron.log 2>&1','taskkill /F /IM chromedriver.exe /T >nul 2>&1','taskkill /F /IM chrome.exe /T >nul 2>&1')"
 echo      run_crawl.bat created
 
+:: Create run_monitor.bat for design service monitoring
+powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_monitor_task.bat' -Encoding ASCII -Value @('@echo off','cd /d %PROJECT_DIR%','!PYTHON_PATH! monitor_design.py --days 30 >> %PROJECT_DIR%\monitor.log 2>&1')"
+echo      run_monitor_task.bat created
+
 :: Register tasks via schtasks
 schtasks /create /tn "CrawlerAM" /tr "cmd /c \"%PROJECT_DIR%\run_crawl.bat\"" /sc daily /st 07:00 /rl highest /f
 if %errorlevel% equ 0 (echo      CrawlerAM 07:00 OK) else (echo      [ERROR] CrawlerAM failed)
 
 schtasks /create /tn "CrawlerPM" /tr "cmd /c \"%PROJECT_DIR%\run_crawl.bat\"" /sc daily /st 16:00 /rl highest /f
 if %errorlevel% equ 0 (echo      CrawlerPM 16:00 OK) else (echo      [ERROR] CrawlerPM failed)
+
+:: Design service monitoring (08:00 daily)
+schtasks /delete /tn "DesignMonitor" /f >nul 2>&1
+schtasks /create /tn "DesignMonitor" /tr "cmd /c \"%PROJECT_DIR%\run_monitor_task.bat\"" /sc daily /st 08:00 /rl highest /f
+if %errorlevel% equ 0 (echo      DesignMonitor 08:00 OK) else (echo      [ERROR] DesignMonitor failed)
 
 echo.
 echo ================================================
@@ -132,11 +141,14 @@ echo ================================================
 echo.
 echo   Path: %PROJECT_DIR%
 echo   Log:  %PROJECT_DIR%\cron.log
+echo   Monitor Log: %PROJECT_DIR%\monitor.log
 echo.
 echo   Schedule:
 echo     07:00  Crawling AM
+echo     08:00  Design Monitor
 echo     16:00  Crawling PM
 echo.
-echo   Test: cd %PROJECT_DIR% ^& python crawl.py --test 3
+echo   Test crawl:   cd %PROJECT_DIR% ^& python crawl.py --test 3
+echo   Test monitor: cd %PROJECT_DIR% ^& python monitor_design.py --days 7 --no-upload
 echo.
 pause
