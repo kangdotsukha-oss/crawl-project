@@ -1,15 +1,15 @@
 """
-발주처별 계약 단계 모니터링 시스템
-──────────────────────────────────
-나라장터 API로 토목공사/설계용역 공고를 수집하고,
-공고번호 기준으로 단계 진행(발주계획→사전규격→입찰공고→개찰→계약)을 추적하여
-단계 변경 시 Google Sheets에 알림.
+발주처별 계약 단계 모니터링 v2
+─────────────────────────────
+나라장터 API로 토목공사/설계 공고를 발견하고,
+계약과정통합공개 API로 각 사업의 실제 단계를 추적.
+단계 변경 시 이벤트로 기록하여 Google Sheets에 보고.
 
-필요 환경변수:
-  DATA_GO_KR_API_KEY       - 공공데이터포털 서비스키
-  GOOGLE_SHEET_ID          - 구글 스프레드시트 ID
-  GOOGLE_CREDENTIALS_JSON  - 구글 서비스 계정 JSON
-  WATCH_CLIENTS            - (선택) 관심 발주처 쉼표구분
+환경변수:
+  DATA_GO_KR_API_KEY       공공데이터포털 서비스키
+  GOOGLE_SHEET_ID          구글 스프레드시트 ID
+  GOOGLE_CREDENTIALS_JSON  구글 서비스 계정 JSON
+  WATCH_CLIENTS            (선택) 관심 발주처 쉼표구분
 """
 
 import argparse
@@ -33,7 +33,7 @@ except ImportError:
     pass
 
 # ─────────────────────────────────────────────
-# 환경변수 / 상수
+# 설정
 # ─────────────────────────────────────────────
 KST = timezone(timedelta(hours=9))
 
@@ -42,32 +42,40 @@ GOOGLE_SHEET_ID         = os.environ.get("GOOGLE_SHEET_ID", "")
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
 WATCH_CLIENTS           = [c.strip() for c in os.environ.get("WATCH_CLIENTS", "").split(",") if c.strip()]
 
-BASE_URL = "http://apis.data.go.kr/1230000"
-DB_PATH  = "./monitor.db"
+BASE = "http://apis.data.go.kr/1230000"
+DB   = "./monitor.db"
 
 ENDPOINTS = {
-    "입찰공고":  f"{BASE_URL}/BidPublicInfoService/getBidPblancListInfoServc",
-    "사전규격":  f"{BASE_URL}/PrdctSpcfctInfoService/getPreStndrdInfoServc",
-    "발주계획":  f"{BASE_URL}/ao/OrderPlanSttusService/getOrderPlanSttusListSrvce",
-    "개찰결과":  f"{BASE_URL}/ScsbidInfoService/getOpengResultListInfoServc",
-    "계약현황":  f"{BASE_URL}/CntrctInfoService/getCntrctInfoListServc",
-    "진행과정":  f"{BASE_URL}/ao/CntrctProcssIntgOpenService/getCntrctProcssIntgOpenServc",
+    "입찰공고": f"{BASE}/BidPublicInfoService/getBidPblancListInfoServc",
+    "사전규격": f"{BASE}/PrdctSpcfctInfoService/getPreStndrdInfoServc",
+    "발주계획": f"{BASE}/ao/OrderPlanSttusService/getOrderPlanSttusListSrvce",
+    "개찰결과": f"{BASE}/ScsbidInfoService/getOpengResultListInfoServc",
+    "계약현황": f"{BASE}/CntrctInfoService/getCntrctInfoListServc",
+    "통합조회": f"{BASE}/ao/CntrctProcssIntgOpenService/getCntrctProcssIntgOpenServc",
 }
 
-STAGE_ORDER = ["발주계획", "사전규격", "입찰공고", "개찰결과", "계약현황"]
-STAGE_RANK  = {s: i for i, s in enumerate(STAGE_ORDER)}
+단계순서 = ["발주계획", "사전규격", "입찰공고", "개찰결과", "계약현황"]
+단계순위 = {s: i for i, s in enumerate(단계순서)}
 
-# 토목공사가 주 관심사, 나머지도 수집
-PRIMARY_KEYWORDS = [
+# 이벤트 타입
+신규     = "신규"
+단계진행 = "단계진행"
+정정공고 = "정정공고"
+정보갱신 = "정보갱신"
+취소유찰 = "취소유찰"
+
+# 토목이 주 관심사
+토목키워드 = [
     "토목", "도로", "교량", "터널", "하천", "상하수도", "포장",
-    "배수", "옹벽", "절토", "성토", "기반", "지반", "측량",
-    "구조물", "암거", "관로", "우수", "하수", "오수",
+    "배수", "옹벽", "절토", "성토", "지반", "측량", "구조물",
+    "암거", "관로", "우수", "하수", "오수", "댐", "제방",
+    "항만", "준설", "매립", "철도", "궤도", "고가", "지하차도",
 ]
-SECONDARY_KEYWORDS = [
+기타키워드 = [
     "설계", "감리", "CM", "건설사업관리", "타당성",
     "건축", "조경", "전기", "통신", "기계", "소방",
 ]
-ALL_KEYWORDS = PRIMARY_KEYWORDS + SECONDARY_KEYWORDS
+전체키워드 = 토목키워드 + 기타키워드
 
 # ─────────────────────────────────────────────
 # 로깅
@@ -77,27 +85,25 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-logger = logging.getLogger(__name__)
-
+log = logging.getLogger(__name__)
 
 # ─────────────────────────────────────────────
 # 유틸
 # ─────────────────────────────────────────────
-def now_kst() -> datetime:
+def 지금() -> datetime:
     return datetime.now(KST)
 
 
-def fmt_date(raw: str) -> str:
+def 날짜변환(raw) -> str:
     if not raw:
         return ""
-    raw = str(raw).strip()
-    digits = "".join(c for c in raw if c.isdigit())
+    digits = "".join(c for c in str(raw) if c.isdigit())
     if len(digits) >= 8:
         return f"{digits[:4]}-{digits[4:6]}-{digits[6:8]}"
-    return raw
+    return str(raw).strip()
 
 
-def fmt_amount(val) -> str:
+def 금액표시(val) -> str:
     try:
         n = float(val)
         if n >= 1_0000_0000:
@@ -109,68 +115,92 @@ def fmt_amount(val) -> str:
         return ""
 
 
-def calc_dday(date_str: str) -> str:
+def 디데이(date_str: str) -> str:
     if not date_str or len(date_str) < 10:
         return ""
     try:
-        target = datetime.strptime(date_str[:10], "%Y-%m-%d").date()
-        diff = (target - now_kst().date()).days
-        if diff > 0:
-            return f"D-{diff}"
-        if diff == 0:
-            return "D-Day"
+        d = datetime.strptime(date_str[:10], "%Y-%m-%d").date()
+        diff = (d - 지금().date()).days
+        if diff > 0:  return f"D-{diff}"
+        if diff == 0: return "D-Day"
         return f"D+{abs(diff)}"
     except ValueError:
         return ""
 
 
-def classify_interest(name: str) -> str:
+def 분류(name: str) -> str:
     if not name:
         return ""
-    if any(kw in name for kw in PRIMARY_KEYWORDS):
+    if any(k in name for k in 토목키워드):
         return "토목"
-    if any(kw in name for kw in SECONDARY_KEYWORDS):
+    if any(k in name for k in 기타키워드):
         return "기타"
     return ""
 
 
-def matches_keywords(name: str) -> bool:
-    return any(kw in name for kw in ALL_KEYWORDS)
+def 키워드매칭(name: str) -> bool:
+    return any(k in name for k in 전체키워드)
 
 
 # ─────────────────────────────────────────────
 # SQLite
 # ─────────────────────────────────────────────
-def init_db():
-    con = sqlite3.connect(DB_PATH)
+def db_초기화():
+    con = sqlite3.connect(DB)
     con.executescript("""
         CREATE TABLE IF NOT EXISTS projects (
-            bid_ntce_no    TEXT PRIMARY KEY,
-            project_name   TEXT,
-            client_org     TEXT,
-            announce_org   TEXT,
-            current_stage  TEXT,
-            prev_stage     TEXT,
-            stage_changed  TEXT,
-            announce_date  TEXT,
-            deadline       TEXT,
-            est_price      REAL,
-            contract_amt   REAL,
-            contractor     TEXT,
-            detail_url     TEXT,
-            interest       TEXT,
-            first_seen     TEXT,
-            last_updated   TEXT
+            bid_no         TEXT PRIMARY KEY,
+            bid_ord        TEXT DEFAULT '00',
+            order_plan_no  TEXT,
+            spec_no        TEXT,
+            cntrct_no      TEXT,
+
+            사업명         TEXT,
+            발주처         TEXT,
+            공고기관       TEXT,
+            분류           TEXT,
+
+            현재단계       TEXT,
+            활성여부       INTEGER DEFAULT 1,
+
+            공고일         TEXT,
+            마감일         TEXT,
+            개찰일         TEXT,
+            계약일         TEXT,
+            납기일         TEXT,
+
+            배정예산       REAL,
+            추정가격       REAL,
+            계약금액       REAL,
+
+            낙찰업체       TEXT,
+            상세URL        TEXT,
+            원본JSON       TEXT,
+
+            최초수집       TEXT,
+            최종갱신       TEXT,
+            최종동기화     TEXT
         );
-        CREATE TABLE IF NOT EXISTS stage_history (
-            id             INTEGER PRIMARY KEY AUTOINCREMENT,
-            bid_ntce_no    TEXT,
-            stage          TEXT,
-            detected_at    TEXT,
-            FOREIGN KEY (bid_ntce_no) REFERENCES projects(bid_ntce_no)
+
+        CREATE TABLE IF NOT EXISTS events (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            bid_no      TEXT,
+            유형        TEXT,
+            이전단계    TEXT,
+            현재단계    TEXT,
+            설명        TEXT,
+            감지일시    TEXT,
+            FOREIGN KEY (bid_no) REFERENCES projects(bid_no)
         );
-        CREATE TABLE IF NOT EXISTS watch_clients (
-            name TEXT PRIMARY KEY
+
+        CREATE TABLE IF NOT EXISTS sync_log (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            시작        TEXT,
+            종료        TEXT,
+            신규        INTEGER,
+            단계변경    INTEGER,
+            갱신        INTEGER,
+            오류        INTEGER
         );
     """)
     con.commit()
@@ -178,8 +208,8 @@ def init_db():
 
 
 @contextmanager
-def db_conn():
-    con = sqlite3.connect(DB_PATH)
+def db연결():
+    con = sqlite3.connect(DB)
     con.row_factory = sqlite3.Row
     try:
         yield con
@@ -188,626 +218,638 @@ def db_conn():
         con.close()
 
 
-def upsert_project(con, data: dict) -> bool:
-    """프로젝트 upsert. 단계가 바뀌었으면 True 반환."""
-    bid_no = data["bid_ntce_no"]
-    now = now_kst().isoformat()
-
-    existing = con.execute(
-        "SELECT current_stage FROM projects WHERE bid_ntce_no=?", (bid_no,)
-    ).fetchone()
-
-    new_stage = data.get("current_stage", "")
-    stage_changed = False
-
-    if existing:
-        old_stage = existing["current_stage"]
-        new_rank = STAGE_RANK.get(new_stage, -1)
-        old_rank = STAGE_RANK.get(old_stage, -1)
-
-        # 단계가 진행된 경우만 업데이트 (역행 방지)
-        if new_rank > old_rank:
-            stage_changed = True
-            con.execute("""
-                UPDATE projects SET
-                    current_stage=?, prev_stage=?, stage_changed=?,
-                    deadline=COALESCE(?, deadline),
-                    est_price=COALESCE(?, est_price),
-                    contract_amt=COALESCE(?, contract_amt),
-                    contractor=COALESCE(?, contractor),
-                    detail_url=COALESCE(?, detail_url),
-                    last_updated=?
-                WHERE bid_ntce_no=?
-            """, (
-                new_stage, old_stage, now,
-                data.get("deadline") or None,
-                data.get("est_price") or None,
-                data.get("contract_amt") or None,
-                data.get("contractor") or None,
-                data.get("detail_url") or None,
-                now, bid_no,
-            ))
-            con.execute(
-                "INSERT INTO stage_history (bid_ntce_no, stage, detected_at) VALUES (?,?,?)",
-                (bid_no, new_stage, now),
-            )
-        else:
-            # 단계 변경 없으면 메타 정보만 갱신
-            con.execute("""
-                UPDATE projects SET
-                    deadline=COALESCE(?, deadline),
-                    est_price=COALESCE(?, est_price),
-                    contract_amt=COALESCE(?, contract_amt),
-                    contractor=COALESCE(?, contractor),
-                    last_updated=?
-                WHERE bid_ntce_no=?
-            """, (
-                data.get("deadline") or None,
-                data.get("est_price") or None,
-                data.get("contract_amt") or None,
-                data.get("contractor") or None,
-                now, bid_no,
-            ))
-    else:
-        # 신규 프로젝트
-        stage_changed = True
-        con.execute("""
-            INSERT INTO projects
-            (bid_ntce_no, project_name, client_org, announce_org,
-             current_stage, prev_stage, stage_changed,
-             announce_date, deadline, est_price, contract_amt,
-             contractor, detail_url, interest, first_seen, last_updated)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (
-            bid_no, data.get("project_name", ""), data.get("client_org", ""),
-            data.get("announce_org", ""), new_stage, "", now,
-            data.get("announce_date", ""), data.get("deadline", ""),
-            data.get("est_price"), data.get("contract_amt"),
-            data.get("contractor", ""), data.get("detail_url", ""),
-            data.get("interest", ""), now, now,
-        ))
-        con.execute(
-            "INSERT INTO stage_history (bid_ntce_no, stage, detected_at) VALUES (?,?,?)",
-            (bid_no, new_stage, now),
-        )
-
-    return stage_changed
-
-
 # ─────────────────────────────────────────────
-# 나라장터 API
+# 나라장터 API 공통
 # ─────────────────────────────────────────────
-def call_api(endpoint: str, params: dict) -> list:
+def api호출(endpoint: str, params: dict) -> list:
     if not DATA_GO_KR_API_KEY:
-        logger.error("[API] DATA_GO_KR_API_KEY 미설정")
+        log.error("[API] DATA_GO_KR_API_KEY 미설정")
         return []
 
     params["ServiceKey"] = DATA_GO_KR_API_KEY
     params.setdefault("type", "json")
     params.setdefault("numOfRows", "999")
 
-    all_items = []
+    전체 = []
     page = 1
 
     while True:
         params["pageNo"] = str(page)
-        for attempt in range(3):
+        data = None
+        for retry in range(3):
             try:
-                resp = requests.get(endpoint, params=params, timeout=30)
-                resp.raise_for_status()
-                data = resp.json()
+                r = requests.get(endpoint, params=params, timeout=30)
+                r.raise_for_status()
+                data = r.json()
                 break
             except Exception as e:
-                logger.warning(f"[API 재시도 {attempt+1}/3] {e}")
-                time.sleep(2 ** attempt)
-        else:
-            logger.error(f"[API 실패] {endpoint.split('/')[-1]}")
-            return all_items
+                log.warning(f"[API 재시도 {retry+1}/3] {e}")
+                time.sleep(2 ** retry)
 
-        body = data.get("response", {}).get("body", {})
+        if data is None:
+            log.error(f"[API 실패] {endpoint.split('/')[-1]}")
+            break
+
+        body  = data.get("response", {}).get("body", {})
         items = body.get("items", [])
         if not items or items == "":
             break
         if isinstance(items, dict):
             items = [items]
-        all_items.extend(items)
+        전체.extend(items)
 
         total = int(body.get("totalCount", 0))
-        rows = int(body.get("numOfRows", 999))
+        rows  = int(body.get("numOfRows", 999))
         if page * rows >= total:
             break
         page += 1
 
-    return all_items
+    return 전체
 
 
 # ─────────────────────────────────────────────
-# 단계별 수집
+# Phase 1: 발견 — 신규 후보 수집
 # ─────────────────────────────────────────────
-def collect_bid_announcements(bgn: str, end: str) -> list:
-    """입찰공고 수집 → 프로젝트 데이터 리스트 반환"""
-    items = call_api(ENDPOINTS["입찰공고"], {
-        "inqryDiv": "1", "inqryBgnDt": bgn, "inqryEndDt": end,
-    })
-    results = []
-    for item in items:
+def 발견(시작일: str, 종료일: str) -> list[dict]:
+    """입찰공고 + 사전규격 + 발주계획에서 키워드 매칭되는 신규 후보 수집"""
+    후보 = []
+
+    # 입찰공고
+    for item in api호출(ENDPOINTS["입찰공고"], {
+        "inqryDiv": "1", "inqryBgnDt": 시작일, "inqryEndDt": 종료일,
+    }):
         name = item.get("bidNtceNm", "")
-        if not matches_keywords(name):
+        if not 키워드매칭(name):
             continue
-        results.append({
-            "bid_ntce_no":   item.get("bidNtceNo", ""),
-            "project_name":  name,
-            "client_org":    item.get("dminsttNm", ""),
-            "announce_org":  item.get("ntceInsttNm", ""),
-            "current_stage": "입찰공고",
-            "announce_date": fmt_date(item.get("bidNtceDt", "")),
-            "deadline":      fmt_date(item.get("bidClseDt", "")),
-            "est_price":     item.get("presmptPrce"),
-            "contract_amt":  None,
-            "contractor":    "",
-            "detail_url":    item.get("bidNtceDtlUrl", ""),
-            "interest":      classify_interest(name),
+        후보.append({
+            "bid_no":     item.get("bidNtceNo", ""),
+            "bid_ord":    item.get("bidNtceOrd", "00"),
+            "사업명":     name,
+            "발주처":     item.get("dminsttNm", ""),
+            "공고기관":   item.get("ntceInsttNm", ""),
+            "분류":       분류(name),
+            "발견단계":   "입찰공고",
+            "공고일":     날짜변환(item.get("bidNtceDt", "")),
+            "마감일":     날짜변환(item.get("bidClseDt", "")),
+            "추정가격":   item.get("presmptPrce"),
+            "배정예산":   item.get("asignBdgtAmt"),
+            "상세URL":    item.get("bidNtceDtlUrl", ""),
+            "공고종류":   item.get("ntceKindNm", ""),
+            "원본":       item,
         })
-    logger.info(f"[입찰공고] {len(results)}건 (키워드 매칭)")
-    return results
+    log.info(f"[발견-입찰공고] {len(후보)}건")
 
-
-def collect_pre_standards(bgn: str, end: str) -> list:
-    items = call_api(ENDPOINTS["사전규격"], {
-        "inqryDiv": "1", "inqryBgnDt": bgn, "inqryEndDt": end,
-    })
-    results = []
-    for item in items:
+    n = len(후보)
+    # 사전규격
+    for item in api호출(ENDPOINTS["사전규격"], {
+        "inqryDiv": "1", "inqryBgnDt": 시작일, "inqryEndDt": 종료일,
+    }):
         name = item.get("prdctClsfcNoNm", "") or item.get("bidNtceNm", "")
-        if not matches_keywords(name):
+        if not 키워드매칭(name):
             continue
-        results.append({
-            "bid_ntce_no":   item.get("bfSpecRgstNo", ""),
-            "project_name":  name,
-            "client_org":    item.get("dminsttNm", ""),
-            "announce_org":  item.get("ntceInsttNm", ""),
-            "current_stage": "사전규격",
-            "announce_date": fmt_date(item.get("rgstDt", "")),
-            "deadline":      "",
-            "est_price":     item.get("asignBdgtAmt"),
-            "contract_amt":  None,
-            "contractor":    "",
-            "detail_url":    "",
-            "interest":      classify_interest(name),
+        후보.append({
+            "bid_no":     item.get("bfSpecRgstNo", ""),
+            "bid_ord":    "00",
+            "사업명":     name,
+            "발주처":     item.get("dminsttNm", ""),
+            "공고기관":   item.get("ntceInsttNm", ""),
+            "분류":       분류(name),
+            "발견단계":   "사전규격",
+            "공고일":     날짜변환(item.get("rgstDt", "")),
+            "마감일":     "",
+            "추정가격":   None,
+            "배정예산":   item.get("asignBdgtAmt"),
+            "상세URL":    "",
+            "공고종류":   "",
+            "원본":       item,
         })
-    logger.info(f"[사전규격] {len(results)}건")
-    return results
+    log.info(f"[발견-사전규격] {len(후보) - n}건")
 
-
-def collect_order_plans(bgn: str, end: str) -> list:
-    items = call_api(ENDPOINTS["발주계획"], {
-        "inqryDiv": "1", "inqryBgnDt": bgn, "inqryEndDt": end,
-    })
-    results = []
-    for item in items:
+    n = len(후보)
+    # 발주계획
+    for item in api호출(ENDPOINTS["발주계획"], {
+        "inqryDiv": "1", "inqryBgnDt": 시작일, "inqryEndDt": 종료일,
+    }):
         name = item.get("orderPlanNm", "") or item.get("bidNtceNm", "")
-        if not matches_keywords(name):
+        if not 키워드매칭(name):
             continue
-        results.append({
-            "bid_ntce_no":   item.get("orderPlanNo", ""),
-            "project_name":  name,
-            "client_org":    item.get("orderInsttNm", ""),
-            "announce_org":  item.get("orderInsttNm", ""),
-            "current_stage": "발주계획",
-            "announce_date": fmt_date(item.get("orderPlanDt", "")),
-            "deadline":      "",
-            "est_price":     item.get("asignBdgtAmt"),
-            "contract_amt":  None,
-            "contractor":    "",
-            "detail_url":    "",
-            "interest":      classify_interest(name),
+        후보.append({
+            "bid_no":     item.get("orderPlanNo", ""),
+            "bid_ord":    "00",
+            "사업명":     name,
+            "발주처":     item.get("orderInsttNm", ""),
+            "공고기관":   item.get("orderInsttNm", ""),
+            "분류":       분류(name),
+            "발견단계":   "발주계획",
+            "공고일":     날짜변환(item.get("orderPlanDt", "")),
+            "마감일":     "",
+            "추정가격":   None,
+            "배정예산":   item.get("asignBdgtAmt"),
+            "상세URL":    "",
+            "공고종류":   "",
+            "원본":       item,
         })
-    logger.info(f"[발주계획] {len(results)}건")
-    return results
+    log.info(f"[발견-발주계획] {len(후보) - n}건")
 
-
-def collect_opening_results(bgn: str, end: str) -> list:
-    items = call_api(ENDPOINTS["개찰결과"], {
-        "inqryDiv": "1", "inqryBgnDt": bgn, "inqryEndDt": end,
-    })
-    results = []
-    for item in items:
-        name = item.get("bidNtceNm", "")
-        if not matches_keywords(name):
-            continue
-        results.append({
-            "bid_ntce_no":   item.get("bidNtceNo", ""),
-            "project_name":  name,
-            "client_org":    item.get("dminsttNm", "") or item.get("ntceInsttNm", ""),
-            "announce_org":  item.get("ntceInsttNm", ""),
-            "current_stage": "개찰결과",
-            "announce_date": fmt_date(item.get("opengDt", "")),
-            "deadline":      "",
-            "est_price":     item.get("presmptPrce"),
-            "contract_amt":  item.get("sucsfbidAmt"),
-            "contractor":    item.get("sucsfbiddrNm", ""),
-            "detail_url":    "",
-            "interest":      classify_interest(name),
-        })
-    logger.info(f"[개찰결과] {len(results)}건")
-    return results
-
-
-def collect_contracts(bgn: str, end: str) -> list:
-    items = call_api(ENDPOINTS["계약현황"], {
-        "inqryDiv": "1", "inqryBgnDt": bgn, "inqryEndDt": end,
-    })
-    results = []
-    for item in items:
-        name = item.get("cntrctNm", "") or item.get("bidNtceNm", "")
-        if not matches_keywords(name):
-            continue
-        results.append({
-            "bid_ntce_no":   item.get("bidNtceNo", ""),
-            "project_name":  name,
-            "client_org":    item.get("dminsttNm", "") or item.get("ntceInsttNm", ""),
-            "announce_org":  item.get("ntceInsttNm", ""),
-            "current_stage": "계약현황",
-            "announce_date": "",
-            "deadline":      fmt_date(item.get("dlvrDayNm", "")),
-            "est_price":     item.get("presmptPrce"),
-            "contract_amt":  item.get("cntrctAmt"),
-            "contractor":    item.get("cntrctCorpNm", ""),
-            "detail_url":    "",
-            "interest":      classify_interest(name),
-        })
-    logger.info(f"[계약현황] {len(results)}건")
-    return results
-
-
-# ─────────────────────────────────────────────
-# 메인 수집 + DB 저장
-# ─────────────────────────────────────────────
-def collect_and_save(days_back: int = 7) -> tuple[int, int]:
-    """전체 수집 → DB upsert. (신규건수, 단계변경건수) 반환"""
-    today = now_kst()
-    bgn = (today - timedelta(days=days_back)).strftime("%Y%m%d0000")
-    end = today.strftime("%Y%m%d2359")
-    logger.info(f"[수집] {bgn[:8]} ~ {end[:8]} ({days_back}일)")
-
-    all_data = []
-    all_data += collect_order_plans(bgn, end)
-    all_data += collect_pre_standards(bgn, end)
-    all_data += collect_bid_announcements(bgn, end)
-    all_data += collect_opening_results(bgn, end)
-    all_data += collect_contracts(bgn, end)
-
-    logger.info(f"[수집 합계] {len(all_data)}건")
-
-    # 관심 발주처 필터 (설정 시)
+    # 관심 발주처 필터
     if WATCH_CLIENTS:
-        before = len(all_data)
-        all_data = [d for d in all_data
-                    if any(c in (d.get("client_org", "") + d.get("announce_org", ""))
-                           for c in WATCH_CLIENTS)]
-        logger.info(f"[발주처 필터] {before} → {len(all_data)}건")
+        before = len(후보)
+        후보 = [h for h in 후보
+                if any(c in (h["발주처"] + h["공고기관"]) for c in WATCH_CLIENTS)]
+        log.info(f"[발주처 필터] {before} → {len(후보)}건")
 
-    new_count = 0
-    changed_count = 0
-
-    with db_conn() as con:
-        for data in all_data:
-            if not data.get("bid_ntce_no"):
-                continue
-            changed = upsert_project(con, data)
-            if changed:
-                existing = con.execute(
-                    "SELECT first_seen, stage_changed FROM projects WHERE bid_ntce_no=?",
-                    (data["bid_ntce_no"],)
-                ).fetchone()
-                if existing and existing["first_seen"] == existing["stage_changed"]:
-                    new_count += 1
-                else:
-                    changed_count += 1
-
-    logger.info(f"[DB] 신규 {new_count}건 / 단계변경 {changed_count}건")
-    return new_count, changed_count
+    log.info(f"[발견 합계] {len(후보)}건")
+    return 후보
 
 
 # ─────────────────────────────────────────────
-# DB → DataFrame 조회
+# Phase 2: 추적 — 통합 API로 실제 단계 확인
 # ─────────────────────────────────────────────
-def get_all_projects() -> pd.DataFrame:
-    with db_conn() as con:
-        rows = con.execute("SELECT * FROM projects ORDER BY last_updated DESC").fetchall()
+def 단계판정(응답: dict) -> tuple[str, dict]:
+    """통합 API 응답에서 현재 단계 도출 + 부가정보 추출.
+    가장 진행된 단계를 현재 단계로 판정."""
+    부가 = {}
+
+    # 계약 정보 있으면 → 계약현황
+    if 응답.get("cntrctNo") or 응답.get("cntrctCnclsDt"):
+        부가["계약번호"]  = 응답.get("cntrctNo", "")
+        부가["계약금액"]  = 응답.get("cntrctAmt")
+        부가["낙찰업체"]  = 응답.get("cntrctCorpNm", "") or 응답.get("sucsfbiddrNm", "")
+        부가["계약일"]    = 날짜변환(응답.get("cntrctCnclsDt", ""))
+        부가["납기일"]    = 날짜변환(응답.get("dlvrDayNm", ""))
+        return "계약현황", 부가
+
+    # 낙찰 정보 있으면 → 개찰결과
+    if 응답.get("sucsfbiddrNm") or 응답.get("opengDt"):
+        부가["낙찰업체"]  = 응답.get("sucsfbiddrNm", "")
+        부가["계약금액"]  = 응답.get("sucsfbidAmt")
+        부가["개찰일"]    = 날짜변환(응답.get("opengDt", ""))
+        return "개찰결과", 부가
+
+    # 입찰공고
+    if 응답.get("bidNtceNo") and 응답.get("bidNtceDt"):
+        부가["마감일"] = 날짜변환(응답.get("bidClseDt", ""))
+        return "입찰공고", 부가
+
+    # 사전규격
+    if 응답.get("bfSpecRgstNo"):
+        return "사전규격", 부가
+
+    # 발주계획
+    if 응답.get("orderPlanNo"):
+        return "발주계획", 부가
+
+    return "미상", 부가
+
+
+def 통합추적(bid_no: str) -> tuple[str, dict] | None:
+    """계약과정통합공개 API로 사업의 현재 단계를 확인"""
+    items = api호출(ENDPOINTS["통합조회"], {"bidNtceNo": bid_no})
+    if not items:
+        return None
+    item = items[0] if isinstance(items, list) else items
+    return 단계판정(item)
+
+
+# ─────────────────────────────────────────────
+# Phase 3: 차분 엔진 — DB 비교 + 이벤트 생성
+# ─────────────────────────────────────────────
+def 처리(con, 후보목록: list[dict]) -> dict:
+    """후보를 DB와 비교하여 이벤트 생성. 통계 반환."""
+    now = 지금().isoformat()
+    stats = {"신규": 0, "단계변경": 0, "정정": 0, "갱신": 0, "취소유찰": 0, "오류": 0}
+
+    처리된 = set()
+
+    for h in 후보목록:
+        bid_no = h["bid_no"]
+        if not bid_no or bid_no in 처리된:
+            continue
+        처리된.add(bid_no)
+
+        기존 = con.execute("SELECT * FROM projects WHERE bid_no=?", (bid_no,)).fetchone()
+
+        # 통합 API로 실제 단계 확인 시도
+        추적결과 = 통합추적(bid_no)
+        if 추적결과:
+            실제단계, 부가 = 추적결과
+        else:
+            실제단계 = h["발견단계"]
+            부가 = {}
+
+        # 취소/유찰 체크
+        공고종류 = h.get("공고종류", "")
+        취소여부 = any(w in 공고종류 for w in ["취소", "유찰", "무효", "철회"])
+
+        if 기존:
+            이전단계 = 기존["현재단계"]
+            이전차수 = 기존["bid_ord"]
+            새차수   = h.get("bid_ord", "00")
+
+            if 취소여부:
+                # 취소/유찰
+                con.execute("UPDATE projects SET 현재단계=?, 활성여부=0, 최종갱신=? WHERE bid_no=?",
+                            (f"취소유찰({공고종류})", now, bid_no))
+                con.execute(
+                    "INSERT INTO events (bid_no, 유형, 이전단계, 현재단계, 설명, 감지일시) VALUES (?,?,?,?,?,?)",
+                    (bid_no, 취소유찰, 이전단계, "취소유찰", 공고종류, now))
+                stats["취소유찰"] += 1
+
+            elif 새차수 != 이전차수 and 새차수 > 이전차수:
+                # 차수 변경 (정정공고)
+                con.execute("""
+                    UPDATE projects SET bid_ord=?, 현재단계=?, 마감일=COALESCE(?,마감일),
+                    상세URL=COALESCE(?,상세URL), 최종갱신=?, 최종동기화=? WHERE bid_no=?
+                """, (새차수, 실제단계, 부가.get("마감일") or h.get("마감일"),
+                      h.get("상세URL"), now, now, bid_no))
+                con.execute(
+                    "INSERT INTO events (bid_no, 유형, 이전단계, 현재단계, 설명, 감지일시) VALUES (?,?,?,?,?,?)",
+                    (bid_no, 정정공고, 이전단계, 실제단계, f"차수 {이전차수}→{새차수}", now))
+                stats["정정"] += 1
+
+            elif 단계순위.get(실제단계, -1) > 단계순위.get(이전단계, -1):
+                # 단계 진행
+                updates = {
+                    "현재단계": 실제단계,
+                    "낙찰업체": 부가.get("낙찰업체"),
+                    "계약금액": 부가.get("계약금액"),
+                    "계약일":   부가.get("계약일"),
+                    "납기일":   부가.get("납기일"),
+                    "개찰일":   부가.get("개찰일"),
+                    "마감일":   부가.get("마감일") or h.get("마감일"),
+                }
+                set_clauses = []
+                vals = []
+                for k, v in updates.items():
+                    if v:
+                        set_clauses.append(f"{k}=?")
+                        vals.append(v)
+                set_clauses.append("최종갱신=?")
+                vals.append(now)
+                set_clauses.append("최종동기화=?")
+                vals.append(now)
+                vals.append(bid_no)
+                con.execute(f"UPDATE projects SET {','.join(set_clauses)} WHERE bid_no=?", vals)
+                con.execute(
+                    "INSERT INTO events (bid_no, 유형, 이전단계, 현재단계, 설명, 감지일시) VALUES (?,?,?,?,?,?)",
+                    (bid_no, 단계진행, 이전단계, 실제단계, f"{이전단계} → {실제단계}", now))
+                stats["단계변경"] += 1
+
+            else:
+                # 메타데이터만 갱신
+                con.execute("UPDATE projects SET 최종갱신=?, 최종동기화=? WHERE bid_no=?",
+                            (now, now, bid_no))
+                stats["갱신"] += 1
+
+        else:
+            # 신규 프로젝트
+            활성 = 0 if 취소여부 else 1
+            stage = f"취소유찰({공고종류})" if 취소여부 else 실제단계
+
+            con.execute("""
+                INSERT INTO projects
+                (bid_no, bid_ord, 사업명, 발주처, 공고기관, 분류,
+                 현재단계, 활성여부, 공고일, 마감일, 개찰일, 계약일, 납기일,
+                 배정예산, 추정가격, 계약금액, 낙찰업체, 상세URL, 원본JSON,
+                 최초수집, 최종갱신, 최종동기화)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """, (
+                bid_no, h.get("bid_ord", "00"), h["사업명"], h["발주처"], h["공고기관"],
+                h["분류"], stage, 활성,
+                h.get("공고일", ""), 부가.get("마감일") or h.get("마감일", ""),
+                부가.get("개찰일", ""), 부가.get("계약일", ""), 부가.get("납기일", ""),
+                h.get("배정예산"), h.get("추정가격"), 부가.get("계약금액"),
+                부가.get("낙찰업체", ""), h.get("상세URL", ""),
+                json.dumps(h.get("원본", {}), ensure_ascii=False),
+                now, now, now,
+            ))
+
+            이벤트유형 = 취소유찰 if 취소여부 else 신규
+            con.execute(
+                "INSERT INTO events (bid_no, 유형, 이전단계, 현재단계, 설명, 감지일시) VALUES (?,?,?,?,?,?)",
+                (bid_no, 이벤트유형, "", stage, h["사업명"][:50], now))
+            stats["신규" if not 취소여부 else "취소유찰"] += 1
+
+    return stats
+
+
+def 기존사업_추적(con) -> dict:
+    """DB에 있는 활성 사업 중 통합 API 호출이 필요한 것들을 갱신"""
+    stats = {"단계변경": 0, "갱신": 0}
+    now = 지금().isoformat()
+
+    rows = con.execute("""
+        SELECT bid_no, 현재단계 FROM projects
+        WHERE 활성여부=1 AND 현재단계 NOT IN ('계약현황')
+    """).fetchall()
+
     if not rows:
-        return pd.DataFrame()
-    return pd.DataFrame([dict(r) for r in rows])
+        return stats
+
+    log.info(f"[기존 추적] 활성 {len(rows)}건 통합 API 확인")
+
+    for row in rows:
+        bid_no = row["bid_no"]
+        이전 = row["현재단계"]
+        결과 = 통합추적(bid_no)
+        if not 결과:
+            continue
+
+        실제단계, 부가 = 결과
+
+        if 단계순위.get(실제단계, -1) > 단계순위.get(이전, -1):
+            updates = {"현재단계": 실제단계, "최종갱신": now, "최종동기화": now}
+            for k in ["낙찰업체", "계약금액", "계약일", "납기일", "개찰일", "마감일"]:
+                if 부가.get(k):
+                    updates[k] = 부가[k]
+
+            set_parts = [f"{k}=?" for k in updates]
+            con.execute(f"UPDATE projects SET {','.join(set_parts)} WHERE bid_no=?",
+                        list(updates.values()) + [bid_no])
+            con.execute(
+                "INSERT INTO events (bid_no, 유형, 이전단계, 현재단계, 설명, 감지일시) VALUES (?,?,?,?,?,?)",
+                (bid_no, 단계진행, 이전, 실제단계, f"{이전} → {실제단계}", now))
+            stats["단계변경"] += 1
+        else:
+            con.execute("UPDATE projects SET 최종동기화=? WHERE bid_no=?", (now, bid_no))
+            stats["갱신"] += 1
+
+    return stats
 
 
-def get_stage_changes(since_days: int = 7) -> pd.DataFrame:
-    cutoff = (now_kst() - timedelta(days=since_days)).isoformat()
-    with db_conn() as con:
+# ─────────────────────────────────────────────
+# DB → DataFrame
+# ─────────────────────────────────────────────
+def 전체사업() -> pd.DataFrame:
+    with db연결() as con:
+        rows = con.execute("SELECT * FROM projects ORDER BY 최종갱신 DESC").fetchall()
+    return pd.DataFrame([dict(r) for r in rows]) if rows else pd.DataFrame()
+
+
+def 최근이벤트(days: int = 7) -> pd.DataFrame:
+    cutoff = (지금() - timedelta(days=days)).isoformat()
+    with db연결() as con:
         rows = con.execute("""
-            SELECT h.detected_at, h.bid_ntce_no, h.stage,
-                   p.project_name, p.prev_stage, p.client_org, p.interest
-            FROM stage_history h
-            JOIN projects p ON h.bid_ntce_no = p.bid_ntce_no
-            WHERE h.detected_at >= ?
-            ORDER BY h.detected_at DESC
+            SELECT e.감지일시, e.bid_no, e.유형, e.이전단계, e.현재단계, e.설명,
+                   p.사업명, p.발주처, p.분류
+            FROM events e
+            JOIN projects p ON e.bid_no = p.bid_no
+            WHERE e.감지일시 >= ?
+            ORDER BY e.감지일시 DESC
         """, (cutoff,)).fetchall()
-    if not rows:
-        return pd.DataFrame()
-    return pd.DataFrame([dict(r) for r in rows])
+    return pd.DataFrame([dict(r) for r in rows]) if rows else pd.DataFrame()
 
 
 # ─────────────────────────────────────────────
-# Google Sheets 업로드
+# Google Sheets
 # ─────────────────────────────────────────────
-def get_gc():
+def gc연결():
     if not GOOGLE_CREDENTIALS_JSON:
-        logger.warning("[GSheets] GOOGLE_CREDENTIALS_JSON 미설정")
+        log.warning("[GSheets] GOOGLE_CREDENTIALS_JSON 미설정")
         return None
     try:
-        scopes = ["https://spreadsheets.google.com/feeds",
-                   "https://www.googleapis.com/auth/drive"]
         creds = Credentials.from_service_account_info(
-            json.loads(GOOGLE_CREDENTIALS_JSON), scopes=scopes)
+            json.loads(GOOGLE_CREDENTIALS_JSON),
+            scopes=["https://spreadsheets.google.com/feeds",
+                    "https://www.googleapis.com/auth/drive"])
         return gspread.authorize(creds)
     except Exception as e:
-        logger.error(f"[GSheets 연결 오류] {e}")
+        log.error(f"[GSheets 오류] {e}")
         return None
 
 
-def _get_or_create_ws(sh, title: str, rows: int = 500, cols: int = 20):
+def _시트(sh, title, rows=500, cols=15):
     try:
         return sh.worksheet(title)
     except gspread.exceptions.WorksheetNotFound:
         return sh.add_worksheet(title=title, rows=str(rows), cols=str(cols))
 
 
-def upload_sheets(gc, df_all: pd.DataFrame, df_changes: pd.DataFrame):
+def 시트업로드(gc, df_all: pd.DataFrame, df_events: pd.DataFrame):
     if gc is None:
         return
     try:
         sh = gc.open_by_key(GOOGLE_SHEET_ID)
     except Exception as e:
-        logger.error(f"[GSheets 열기 오류] {e}")
+        log.error(f"[GSheets 열기 오류] {e}")
         return
 
-    crawled = now_kst().strftime("%Y-%m-%d %H:%M KST")
+    기준 = 지금().strftime("%Y-%m-%d %H:%M KST")
 
-    # ── 1) 대시보드 ──
-    ws = _get_or_create_ws(sh, "📊 대시보드", 80, 10)
-    dash = [
-        ["📊 발주처별 계약 모니터링", "", f"기준: {crawled}"],
-        [""],
-    ]
+    # ── 🔥 이번 주 이벤트 ──
+    ws = _시트(sh, "🔥 이번주 이벤트")
+    data = [["🔥 이번 주 이벤트", "", f"기준: {기준}"], [""]]
 
-    if not df_all.empty:
-        # 단계별 현황
-        dash += [["▶ 단계별 현황"], ["단계", "전체", "토목", "기타"]]
-        for stage in STAGE_ORDER:
-            s_df = df_all[df_all["current_stage"] == stage]
-            dash.append([
-                stage,
-                len(s_df),
-                len(s_df[s_df["interest"] == "토목"]),
-                len(s_df[s_df["interest"] == "기타"]),
+    if not df_events.empty:
+        # 유형별 요약
+        유형별 = df_events["유형"].value_counts()
+        data += [["▶ 이벤트 요약"], ["유형", "건수"]]
+        for t in [신규, 단계진행, 정정공고, 취소유찰, 정보갱신]:
+            if t in 유형별:
+                data.append([t, int(유형별[t])])
+        data.append([""])
+
+        # 토목 이벤트
+        토목ev = df_events[df_events["분류"] == "토목"]
+        if not 토목ev.empty:
+            data += [["▶ 토목공사 이벤트", f"{len(토목ev)}건"],
+                     ["일시", "유형", "사업명", "변경내용", "발주처"]]
+            for _, r in 토목ev.iterrows():
+                data.append([
+                    str(r["감지일시"])[:16], r["유형"], r["사업명"],
+                    r["설명"], r["발주처"],
+                ])
+            data.append([""])
+
+        # 전체 이벤트
+        data += [["▶ 전체 이벤트", f"{len(df_events)}건"],
+                 ["일시", "유형", "사업명", "변경내용", "발주처", "분류"]]
+        for _, r in df_events.iterrows():
+            data.append([
+                str(r["감지일시"])[:16], r["유형"], r["사업명"],
+                r["설명"], r["발주처"], r.get("분류", ""),
             ])
-        dash.append(["합계", len(df_all),
-                      len(df_all[df_all["interest"] == "토목"]),
-                      len(df_all[df_all["interest"] == "기타"])])
-        dash.append([""])
-
-        # D-Day 임박
-        urgent = df_all[df_all["deadline"].apply(
-            lambda x: calc_dday(x).startswith("D-") and
-                       calc_dday(x) not in ("", "D-Day") and
-                       int(calc_dday(x).replace("D-", "")) <= 7
-            if isinstance(x, str) and x else False
-        )]
-        dash += [["▶ 마감 임박 (7일내)", f"{len(urgent)}건"]]
-        if not urgent.empty:
-            dash.append(["사업명", "발주처", "마감일", "D-Day", "단계"])
-            for _, r in urgent.head(10).iterrows():
-                dash.append([
-                    r["project_name"], r["client_org"],
-                    r["deadline"], calc_dday(r["deadline"]), r["current_stage"],
-                ])
-        dash.append([""])
-
-        # 발주처 TOP 10
-        top_clients = df_all["client_org"].value_counts().head(10)
-        dash += [["▶ 발주처별 건수 (TOP 10)"], ["발주처", "건수"]]
-        for client, cnt in top_clients.items():
-            dash.append([client, int(cnt)])
-        dash.append([""])
-
-        # 이번주 단계 변경
-        if not df_changes.empty:
-            dash += [["▶ 최근 단계 변경", f"{len(df_changes)}건"],
-                     ["시간", "사업명", "변경", "발주처", "분류"]]
-            for _, r in df_changes.head(15).iterrows():
-                prev = r.get("prev_stage", "")
-                change = f"{prev} → {r['stage']}" if prev else f"신규 ({r['stage']})"
-                dash.append([
-                    r["detected_at"][:16], r["project_name"],
-                    change, r["client_org"], r.get("interest", ""),
-                ])
+    else:
+        data.append(["이번 주 이벤트 없음"])
 
     ws.clear()
-    ws.update(dash, value_input_option="USER_ENTERED")
-    logger.info("[📊 대시보드] 업로드 완료")
+    ws.update(data, value_input_option="USER_ENTERED")
+    log.info("[🔥 이번주 이벤트] 업로드")
 
-    # ── 2) 전체현황 ──
-    if not df_all.empty:
-        ws2 = _get_or_create_ws(sh, "📋 전체현황", 1000, 15)
-        display = df_all.copy()
-        display["D-Day"] = display["deadline"].apply(calc_dday)
-        display["추정가_표시"] = display["est_price"].apply(fmt_amount)
-        display["계약금_표시"] = display["contract_amt"].apply(fmt_amount)
+    if df_all.empty:
+        return
 
-        cols = ["bid_ntce_no", "project_name", "client_org", "current_stage",
-                "announce_date", "deadline", "D-Day", "추정가_표시",
-                "계약금_표시", "contractor", "interest", "detail_url"]
-        headers = ["공고번호", "사업명", "발주처", "현재단계",
-                   "공고일", "마감일", "D-Day", "추정가격",
-                   "계약금액", "계약업체", "분류", "상세URL"]
+    # ── 🚧 토목공사 추적 ──
+    토목 = df_all[df_all["분류"] == "토목"].copy()
+    if not 토목.empty:
+        ws2 = _시트(sh, "🚧 토목공사 추적")
+        토목["D-Day"] = 토목["마감일"].apply(디데이)
+        토목["추정가_표시"] = 토목["추정가격"].apply(금액표시)
+        토목["계약금_표시"] = 토목["계약금액"].apply(금액표시)
 
-        existing_cols = [c for c in cols if c in display.columns]
-        out = display[existing_cols].fillna("").astype(str)
-        header_map = dict(zip(cols, headers))
-        out.columns = [header_map.get(c, c) for c in existing_cols]
-
+        out = [["🚧 토목공사 추적", f"총 {len(토목)}건", f"기준: {기준}"], [""],
+               ["공고번호", "사업명", "발주처", "현재단계", "공고일", "마감일",
+                "D-Day", "추정가격", "계약금액", "낙찰업체", "활성"]]
+        for _, r in 토목.iterrows():
+            out.append([
+                str(r["bid_no"]), str(r["사업명"]), str(r["발주처"]),
+                str(r["현재단계"]), str(r.get("공고일", "")), str(r.get("마감일", "")),
+                str(r["D-Day"]), str(r["추정가_표시"]), str(r["계약금_표시"]),
+                str(r.get("낙찰업체", "")),
+                "진행" if r.get("활성여부") else "종료",
+            ])
         ws2.clear()
-        ws2.update([out.columns.tolist()] + out.values.tolist(),
-                    value_input_option="USER_ENTERED")
-        logger.info(f"[📋 전체현황] {len(out)}행 업로드")
+        ws2.update(out, value_input_option="USER_ENTERED")
+        log.info(f"[🚧 토목공사] {len(토목)}행 업로드")
 
-    # ── 3) 변경알림 ──
-    if not df_changes.empty:
-        ws3 = _get_or_create_ws(sh, "🔔 변경알림", 500, 8)
-        ch = df_changes.copy()
-        ch["변경"] = ch.apply(
-            lambda r: f"{r.get('prev_stage', '')} → {r['stage']}"
-                      if r.get("prev_stage") else f"신규 ({r['stage']})", axis=1)
-        out_ch = ch[["detected_at", "bid_ntce_no", "project_name",
-                      "변경", "client_org", "interest"]].fillna("").astype(str)
-        out_ch.columns = ["감지일시", "공고번호", "사업명",
-                          "단계변경", "발주처", "분류"]
+    # ── 🏢 발주처별 매트릭스 ──
+    ws3 = _시트(sh, "🏢 발주처별")
+    활성 = df_all[df_all["활성여부"] == 1]
+    if not 활성.empty:
+        pivot = 활성.groupby(["발주처", "현재단계"]).size().unstack(fill_value=0)
+        for s in 단계순서:
+            if s not in pivot.columns:
+                pivot[s] = 0
+        pivot = pivot[단계순서]
+        pivot["합계"] = pivot.sum(axis=1)
+        pivot = pivot.sort_values("합계", ascending=False)
+
+        out = [["🏢 발주처별 현황", "", "", "", "", "", f"기준: {기준}"], [""],
+               ["발주처"] + 단계순서 + ["합계"]]
+        for client, row in pivot.head(30).iterrows():
+            out.append([client] + [int(row[s]) for s in 단계순서] + [int(row["합계"])])
         ws3.clear()
-        ws3.update([out_ch.columns.tolist()] + out_ch.values.tolist(),
-                    value_input_option="USER_ENTERED")
-        logger.info(f"[🔔 변경알림] {len(out_ch)}행 업로드")
+        ws3.update(out, value_input_option="USER_ENTERED")
+        log.info(f"[🏢 발주처별] {len(pivot)}개 기관 업로드")
 
-    # ── 4) 토목 전용 탭 ──
-    if not df_all.empty:
-        civil = df_all[df_all["interest"] == "토목"]
-        if not civil.empty:
-            ws4 = _get_or_create_ws(sh, "🚧 토목공사", 500, 12)
-            civil_out = civil[["bid_ntce_no", "project_name", "client_org",
-                                "current_stage", "announce_date", "deadline",
-                                "est_price", "contractor"]].copy()
-            civil_out["D-Day"] = civil_out["deadline"].apply(calc_dday)
-            civil_out["추정가_표시"] = civil_out["est_price"].apply(fmt_amount)
-            civil_out = civil_out.drop(columns=["est_price"]).fillna("").astype(str)
-            civil_out.columns = ["공고번호", "사업명", "발주처", "현재단계",
-                                  "공고일", "마감일", "계약업체", "D-Day", "추정가격"]
-            ws4.clear()
-            ws4.update([civil_out.columns.tolist()] + civil_out.values.tolist(),
-                        value_input_option="USER_ENTERED")
-            logger.info(f"[🚧 토목공사] {len(civil_out)}행 업로드")
+    # ── 📋 전체 마스터 ──
+    ws4 = _시트(sh, "📋 전체 마스터", 2000, 15)
+    df_all["D-Day"] = df_all["마감일"].apply(디데이)
+    df_all["추정가_표시"] = df_all["추정가격"].apply(금액표시)
+    df_all["계약금_표시"] = df_all["계약금액"].apply(금액표시)
+
+    cols = ["bid_no", "사업명", "발주처", "분류", "현재단계",
+            "공고일", "마감일", "D-Day", "추정가_표시", "계약금_표시",
+            "낙찰업체", "활성여부"]
+    headers = ["공고번호", "사업명", "발주처", "분류", "현재단계",
+               "공고일", "마감일", "D-Day", "추정가격", "계약금액",
+               "낙찰업체", "활성"]
+    existing = [c for c in cols if c in df_all.columns]
+    out_df = df_all[existing].fillna("").astype(str)
+    hmap = dict(zip(cols, headers))
+    out_df.columns = [hmap.get(c, c) for c in existing]
+
+    ws4.clear()
+    ws4.update([out_df.columns.tolist()] + out_df.values.tolist(),
+                value_input_option="USER_ENTERED")
+    log.info(f"[📋 전체 마스터] {len(out_df)}행 업로드")
+
+    # ── 📜 이벤트 로그 ──
+    if not df_events.empty:
+        ws5 = _시트(sh, "📜 이벤트 로그", 2000, 8)
+        ev_out = df_events[["감지일시", "bid_no", "유형", "사업명",
+                             "설명", "발주처", "분류"]].fillna("").astype(str)
+        ev_out.columns = ["일시", "공고번호", "유형", "사업명",
+                          "변경내용", "발주처", "분류"]
+        ws5.clear()
+        ws5.update([ev_out.columns.tolist()] + ev_out.values.tolist(),
+                    value_input_option="USER_ENTERED")
+        log.info(f"[📜 이벤트 로그] {len(ev_out)}행 업로드")
 
 
 # ─────────────────────────────────────────────
 # CLI
 # ─────────────────────────────────────────────
-def cmd_add_client(names: list[str]):
-    with db_conn() as con:
-        for n in names:
-            con.execute("INSERT OR IGNORE INTO watch_clients (name) VALUES (?)", (n,))
-    logger.info(f"[관심 발주처 추가] {names}")
-
-
-def cmd_list_clients():
-    with db_conn() as con:
-        rows = con.execute("SELECT name FROM watch_clients ORDER BY name").fetchall()
-    if rows:
-        print("관심 발주처 목록:")
-        for r in rows:
-            print(f"  - {r['name']}")
-    else:
-        print("등록된 관심 발주처가 없습니다.")
-    # 환경변수도 표시
-    if WATCH_CLIENTS:
-        print(f"\n.env WATCH_CLIENTS: {', '.join(WATCH_CLIENTS)}")
-
-
-def cmd_stats():
-    with db_conn() as con:
-        total = con.execute("SELECT COUNT(*) c FROM projects").fetchone()["c"]
-        by_stage = con.execute(
-            "SELECT current_stage, COUNT(*) c FROM projects GROUP BY current_stage"
-        ).fetchall()
-        by_interest = con.execute(
-            "SELECT interest, COUNT(*) c FROM projects GROUP BY interest"
-        ).fetchall()
-    print(f"\n전체 추적 사업: {total}건")
-    print("\n단계별:")
-    for r in by_stage:
-        print(f"  {r['current_stage']}: {r['c']}건")
-    print("\n분류별:")
-    for r in by_interest:
-        print(f"  {r['interest'] or '미분류'}: {r['c']}건")
-
-
-# ─────────────────────────────────────────────
-# Main
-# ─────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="발주처별 계약 단계 모니터링")
-    parser.add_argument("--days", type=int, default=7,
-                        help="수집 기간 (기본: 7일)")
-    parser.add_argument("--no-upload", action="store_true",
-                        help="구글 시트 업로드 생략")
-    parser.add_argument("--client", type=str,
-                        help="특정 발주처만 필터")
-    parser.add_argument("--add-client", nargs="+",
-                        help="관심 발주처 추가")
-    parser.add_argument("--list-clients", action="store_true",
-                        help="관심 발주처 목록 조회")
-    parser.add_argument("--stats", action="store_true",
-                        help="DB 통계 조회")
+    parser = argparse.ArgumentParser(description="발주처별 계약 단계 모니터링 v2")
+    parser.add_argument("--days", type=int, default=7, help="수집 기간 (기본 7일)")
+    parser.add_argument("--no-upload", action="store_true", help="구글 시트 업로드 생략")
+    parser.add_argument("--client", type=str, help="특정 발주처만 필터")
+    parser.add_argument("--stats", action="store_true", help="DB 통계")
     args = parser.parse_args()
 
-    init_db()
+    db_초기화()
 
-    if args.add_client:
-        cmd_add_client(args.add_client)
-        return
-    if args.list_clients:
-        cmd_list_clients()
-        return
     if args.stats:
-        cmd_stats()
+        with db연결() as con:
+            total = con.execute("SELECT COUNT(*) c FROM projects").fetchone()["c"]
+            active = con.execute("SELECT COUNT(*) c FROM projects WHERE 활성여부=1").fetchone()["c"]
+            by_stage = con.execute(
+                "SELECT 현재단계, COUNT(*) c FROM projects GROUP BY 현재단계 ORDER BY c DESC"
+            ).fetchall()
+            by_type = con.execute(
+                "SELECT 분류, COUNT(*) c FROM projects GROUP BY 분류 ORDER BY c DESC"
+            ).fetchall()
+            recent = con.execute(
+                "SELECT 유형, COUNT(*) c FROM events WHERE 감지일시 >= ? GROUP BY 유형",
+                ((지금() - timedelta(days=7)).isoformat(),)
+            ).fetchall()
+        print(f"\n전체: {total}건 (활성 {active}건)")
+        print("\n단계별:")
+        for r in by_stage: print(f"  {r['현재단계']}: {r['c']}건")
+        print("\n분류별:")
+        for r in by_type: print(f"  {r['분류'] or '미분류'}: {r['c']}건")
+        if recent:
+            print("\n최근 7일 이벤트:")
+            for r in recent: print(f"  {r['유형']}: {r['c']}건")
         return
 
-    logger.info(f"===== 모니터링 시작: {now_kst():%Y-%m-%d %H:%M:%S KST} =====")
+    log.info(f"===== 모니터링 시작: {지금():%Y-%m-%d %H:%M:%S KST} =====")
 
-    # 특정 발주처 임시 필터
     if args.client:
         global WATCH_CLIENTS
         WATCH_CLIENTS = [args.client]
-        logger.info(f"[필터] 발주처: {args.client}")
 
-    # 수집 + DB 저장
-    new_cnt, changed_cnt = collect_and_save(days_back=args.days)
+    시작 = 지금()
 
-    # DB에서 전체 조회
-    df_all = get_all_projects()
-    df_changes = get_stage_changes(since_days=args.days)
+    # Phase 1: 발견
+    bgn = (시작 - timedelta(days=args.days)).strftime("%Y%m%d0000")
+    end = 시작.strftime("%Y%m%d2359")
+    후보 = 발견(bgn, end)
 
-    if df_all.empty:
-        logger.warning("수집된 데이터 없음")
-        logger.info("===== 완료 =====")
-        return
+    # Phase 2+3: 추적 + 차분
+    with db연결() as con:
+        stats1 = 처리(con, 후보)
+        stats2 = 기존사업_추적(con)
 
-    # 로컬 Excel 저장
-    today_str = now_kst().strftime("%Y%m%d")
-    excel_path = f"./monitor_{today_str}.xlsx"
-    with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-        df_all.to_excel(writer, sheet_name="전체현황", index=False)
-        if not df_changes.empty:
-            df_changes.to_excel(writer, sheet_name="변경알림", index=False)
-        civil = df_all[df_all["interest"] == "토목"]
-        if not civil.empty:
-            civil.to_excel(writer, sheet_name="토목공사", index=False)
-    logger.info(f"[로컬 저장] {excel_path}")
+    총신규   = stats1["신규"]
+    총변경   = stats1["단계변경"] + stats2["단계변경"]
+    총정정   = stats1["정정"]
+    총취소   = stats1["취소유찰"]
 
-    # Google Sheets 업로드
+    log.info(f"[결과] 신규 {총신규} / 단계변경 {총변경} / 정정 {총정정} / 취소유찰 {총취소}")
+
+    # sync_log 기록
+    with db연결() as con:
+        con.execute(
+            "INSERT INTO sync_log (시작, 종료, 신규, 단계변경, 갱신, 오류) VALUES (?,?,?,?,?,?)",
+            (시작.isoformat(), 지금().isoformat(), 총신규, 총변경,
+             stats1["갱신"] + stats2["갱신"], stats1["오류"]))
+
+    # 데이터 조회
+    df_all = 전체사업()
+    df_events = 최근이벤트(days=args.days)
+
+    # 로컬 저장
+    if not df_all.empty:
+        path = f"./monitor_{시작:%Y%m%d}.xlsx"
+        with pd.ExcelWriter(path, engine="openpyxl") as w:
+            df_all.to_excel(w, sheet_name="전체", index=False)
+            if not df_events.empty:
+                df_events.to_excel(w, sheet_name="이벤트", index=False)
+            토목 = df_all[df_all["분류"] == "토목"]
+            if not 토목.empty:
+                토목.to_excel(w, sheet_name="토목", index=False)
+        log.info(f"[로컬 저장] {path}")
+
+    # Google Sheets
     if not args.no_upload:
-        gc = get_gc()
-        upload_sheets(gc, df_all, df_changes)
+        gc = gc연결()
+        시트업로드(gc, df_all, df_events)
     else:
-        logger.info("[업로드 생략]")
+        log.info("[업로드 생략]")
 
-    logger.info(f"===== 완료: 전체 {len(df_all)}건 / 신규 {new_cnt} / 변경 {changed_cnt} =====")
+    log.info(f"===== 완료: {지금():%Y-%m-%d %H:%M:%S KST} =====")
 
 
 if __name__ == "__main__":
