@@ -12,6 +12,7 @@ result_*.xlsx
 df_list_*.xlsx
 df_log_*.xlsx
 design_monitor_*.xlsx
+monitor_*.xlsx
 
 # 캐시 / DB
 *.db

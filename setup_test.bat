@@ -54,7 +54,7 @@ echo ================================================
 echo.
 echo   Test commands:
 echo     python crawl.py --test 3
-echo     python monitor_design.py --days 7 --no-upload
+echo     python monitor.py --days 7 --no-upload
 echo.
 echo   When ready for production, run setup_windows.bat
 echo   on the work PC (as Administrator) to register schedules.

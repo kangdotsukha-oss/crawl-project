@@ -122,7 +122,7 @@ powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_crawl.bat' 
 echo      run_crawl.bat created
 
 :: Create run_monitor.bat for design service monitoring
-powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_monitor_task.bat' -Encoding ASCII -Value @('@echo off','cd /d %PROJECT_DIR%','!PYTHON_PATH! monitor_design.py --days 30 >> %PROJECT_DIR%\monitor.log 2>&1')"
+powershell -NoProfile -Command "Set-Content -Path '%PROJECT_DIR%\run_monitor_task.bat' -Encoding ASCII -Value @('@echo off','cd /d %PROJECT_DIR%','!PYTHON_PATH! monitor.py --days 7 >> %PROJECT_DIR%\monitor.log 2>&1')"
 echo      run_monitor_task.bat created
 
 :: Register tasks via schtasks
