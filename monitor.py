@@ -20,6 +20,7 @@ import sqlite3
 import time
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
+from urllib.parse import unquote
 
 import gspread
 import pandas as pd
@@ -221,12 +222,22 @@ def db연결():
 # ─────────────────────────────────────────────
 # 나라장터 API 공통
 # ─────────────────────────────────────────────
+def _서비스키() -> str:
+    """이중 인코딩 방지: 사용자가 인코딩 키를 넣어도 디코딩해서 사용.
+    requests의 params=가 다시 인코딩하므로 디코딩 키 형태가 필요."""
+    key = DATA_GO_KR_API_KEY.strip()
+    # %로 인코딩된 흔적이 있으면 한번 디코딩
+    if "%" in key:
+        return unquote(key)
+    return key
+
+
 def api호출(endpoint: str, params: dict) -> list:
     if not DATA_GO_KR_API_KEY:
         log.error("[API] DATA_GO_KR_API_KEY 미설정")
         return []
 
-    params["ServiceKey"] = DATA_GO_KR_API_KEY
+    params["ServiceKey"] = _서비스키()
     params.setdefault("type", "json")
     params.setdefault("numOfRows", "999")
 
